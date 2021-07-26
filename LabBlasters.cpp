@@ -12,14 +12,6 @@ SDL_Renderer* gameRenderer = NULL;
 SDL_Rect playerSpriteClips[PLAYER_TOTAL_SPRITES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
-enum gameKeys {
-	KEY_W,
-	KEY_S,
-	KEY_A,
-	KEY_D,
-	TOTAL_KEYS
-};
-
 bool keyStates[TOTAL_KEYS];
 
 bool init() {
@@ -204,25 +196,7 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				if (keyStates[KEY_W])
-				{
-					gamePlayer->move(0, -5);
-				}
-
-				if (keyStates[KEY_S])
-				{
-					gamePlayer->move(0, 5);
-				}
-
-				if (keyStates[KEY_A])
-				{
-					gamePlayer->move(-5, 0);
-				}
-
-				if (keyStates[KEY_D])
-				{
-					gamePlayer->move(5, 0);
-				}
+				gamePlayer->move(keyStates);
 
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);

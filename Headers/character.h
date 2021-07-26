@@ -15,11 +15,12 @@ private:
 	int yPos;
 	int maxHealth;
 	int currentHealth;
+	int speed;
 	bool living;
 
 public:
 	// Constructors
-	Character(int x = 0, int y = 0, int mHealth = 0);
+	Character(int x = 0, int y = 0, int mHealth = 0, int s = 5);
 
 	// Functions
 	// Change the xPos by x units, and the yPos by y units.
@@ -37,10 +38,12 @@ public:
 	int getMaxHealth();
 	int getCurrentHealth();
 	bool isAlive();
+	int getSpeed();
 
 	// Setter Functions
 	void setX(int x);
 	void setY(int y);
 	void setMaxHealth(int mHealth);
 	void setCurrentHealth(int cHealth);
+	void setSpeed(int s);
 };

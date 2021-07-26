@@ -1,11 +1,13 @@
 #include <character.h>
+#include <math.h>
 
-Character::Character(int x, int y, int mHealth)
+Character::Character(int x, int y, int mHealth, int s)
 {
 	xPos = x;
 	yPos = y;
 	maxHealth = mHealth;
 	currentHealth = mHealth;
+	speed = s;
 	living = true;
 }
 
@@ -69,6 +71,11 @@ bool Character::isAlive()
 	return living;
 }
 
+int Character::getSpeed()
+{
+	return speed;
+}
+
 void Character::setX(int x)
 {
 	xPos = x;
@@ -87,4 +94,9 @@ void Character::setMaxHealth(int h)
 void Character::setCurrentHealth(int h)
 {
 	currentHealth = h;
+}
+
+void Character::setSpeed(int s)
+{
+	speed = s;
 }
