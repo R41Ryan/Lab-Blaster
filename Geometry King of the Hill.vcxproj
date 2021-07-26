@@ -147,12 +147,18 @@
   <ItemGroup>
     <ClInclude Include="Headers\character.h" />
     <ClInclude Include="headers\enemy.h" />
+    <ClInclude Include="headers\gun.h" />
+    <ClInclude Include="headers\item.h" />
+    <ClInclude Include="headers\pistol.h" />
     <ClInclude Include="headers\player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LabBlasters.cpp" />
     <ClCompile Include="Source\character.cpp" />
     <ClCompile Include="source\enemy.cpp" />
+    <ClCompile Include="source\gun.cpp" />
+    <ClCompile Include="source\item.cpp" />
+    <ClCompile Include="source\pistol.cpp" />
     <ClCompile Include="source\player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
