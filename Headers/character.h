@@ -1,3 +1,13 @@
+#include <SDL_render.h>
+#include <SDL_surface.h>
+#include <SDL_image.h>
+#include <string>
+
+enum characterTypes {
+	PLAYER,
+	TOTAL_CHARACTER_TYPES
+};
+
 class Character
 {
 private:
@@ -6,6 +16,7 @@ private:
 	int maxHealth;
 	int currentHealth;
 	bool living;
+
 public:
 	// Constructors
 	Character(int x = 0, int y = 0, int mHealth = 0);
@@ -17,6 +28,8 @@ public:
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.
 	void restoreHealth();
+	// Renders the character according to the given renderer and clip of the sprite sheet.
+	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip);
 
 	// Getter Functions
 	int getX();

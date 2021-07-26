@@ -18,9 +18,24 @@
     <ClInclude Include="Headers\character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LabBlasters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

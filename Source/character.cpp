@@ -37,6 +37,13 @@ void Character::restoreHealth()
 	currentHealth = maxHealth;
 }
 
+void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip)
+{
+	SDL_Rect renderClip = { xPos, yPos, spriteClip.w, spriteClip.h };
+
+	SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
+}
+
 int Character::getX()
 {
 	return xPos;
