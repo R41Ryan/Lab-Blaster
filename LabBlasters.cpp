@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			Player* gamePlayer = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100);
+			Player* gamePlayer = new Player(0, 0, 100);
 
 			SDL_Event e;
 

@@ -41,7 +41,7 @@ void Character::restoreHealth()
 
 void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip)
 {
-	SDL_Rect renderClip = { xPos, yPos, spriteClip.w, spriteClip.h };
+	SDL_Rect renderClip = { xPos - spriteClip.w/2, yPos - spriteClip.h/2, spriteClip.w, spriteClip.h };
 
 	SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
 }
