@@ -1,5 +1,15 @@
 #include "..\headers\player.h"
 
+Player::Player(int x, int y, int mHealth, int gun, int melee)
+{
+	setX(x);
+	setY(y);
+	setMaxHealth(mHealth);
+	setCurrentHealth(mHealth);
+	this->gun = gun;
+	this->melee = melee;
+}
+
 void Player::move(bool* states)
 {
 	int xDir = 0;
@@ -49,4 +59,24 @@ void Player::move(bool* states)
 
 	setX(getX() + xVel);
 	setY(getY() + yVel);
+}
+
+int Player::getGun()
+{
+	return gun;
+}
+
+int Player::getMelee()
+{
+	return melee;
+}
+
+void Player::setGun(int newGun)
+{
+	gun = newGun;
+}
+
+void Player::setMelee(int newMelee)
+{
+	melee = newMelee;
 }

@@ -24,13 +24,7 @@
     <ClInclude Include="headers\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\gun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\pistol.h">
+    <ClInclude Include="headers\weaponStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,13 +41,7 @@
     <ClCompile Include="LabBlasters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\gun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pistol.cpp">
+    <ClCompile Include="source\weaponStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
