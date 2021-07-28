@@ -1,17 +1,17 @@
 #include <player.h>
-#include <enemy.h>
+#include <grunt.h>
 #include <map.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-const int SCREEN_WIDTH = 1008;
-const int SCREEN_HEIGHT = 630;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 SDL_Window* gameWindow = NULL;
 
 SDL_Renderer* gameRenderer = NULL;
 
-SDL_Rect playerSpriteClips[PLAYER_TOTAL_SPRITES];
+SDL_Rect* spriteClips[TOTAL_CHARACTER_TYPES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
 WeaponStats stats;
@@ -74,10 +74,18 @@ bool init() {
 void setupClips()
 {
 	// Setting up player sprites
-	playerSpriteClips[PLAYER_IDLE].x = 0;
-	playerSpriteClips[PLAYER_IDLE].y = 0;
-	playerSpriteClips[PLAYER_IDLE].w = 50;
-	playerSpriteClips[PLAYER_IDLE].h = 50;
+	spriteClips[PLAYER] = new SDL_Rect[PLAYER_TOTAL_SPRITES];
+	spriteClips[PLAYER][PLAYER_IDLE].x = 0;
+	spriteClips[PLAYER][PLAYER_IDLE].y = 0;
+	spriteClips[PLAYER][PLAYER_IDLE].w = 50;
+	spriteClips[PLAYER][PLAYER_IDLE].h = 50;
+	
+	// Setting up grunt sprites
+	spriteClips[GRUNT] = new SDL_Rect[GRUNT_TOTAL_SPRITES];
+	spriteClips[GRUNT][GRUNT_IDLE].x = 0;
+	spriteClips[GRUNT][GRUNT_IDLE].y = 0;
+	spriteClips[GRUNT][GRUNT_IDLE].w = 50;
+	spriteClips[GRUNT][GRUNT_IDLE].h = 50;
 }
 
 bool loadSpriteSheet(SDL_Texture* spriteSheet[], std::string path)
@@ -112,6 +120,12 @@ bool loadSpriteSheets()
 	bool success = true;
 
 	if (!loadSpriteSheet(&characterSpriteSheets[PLAYER], "sprites/player.png"))
+	{
+		printf("Failed to load player sprite sheet.\n");
+		success = false;
+	}
+
+	if (!loadSpriteSheet(&characterSpriteSheets[GRUNT], "sprites/grunt.png"))
 	{
 		printf("Failed to load player sprite sheet.\n");
 		success = false;
@@ -183,7 +197,9 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			Player gamePlayer = Player(0, 0, 100, PISTOL, FISTS);
+			Player gamePlayer = Player(0, 0, 100, 5, PISTOL, FISTS);
+
+			Grunt testGrunt = Grunt(0, 0, 100, 3);
 
 			SDL_Event e;
 
@@ -204,17 +220,23 @@ int main(int argc, char* argv[])
 						break;
 					}
 				}
-
+				
 				gamePlayer.move(keyStates, gameMap.getWidth(), gameMap.getHeight());
-
+				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
-
+				
 				gameMap.setCentrePlayer(gamePlayer, SCREEN_WIDTH, SCREEN_HEIGHT);
 				gameMap.render(gameRenderer);
+				
+				testGrunt.move(gamePlayer.getX(), gamePlayer.getY());
 
-				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], playerSpriteClips[PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
-
+				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
+					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
+				
+				testGrunt.render(gameRenderer, characterSpriteSheets[GRUNT], 
+					spriteClips[GRUNT][GRUNT_IDLE], gameMap.getX(), gameMap.getY());
+				
 				SDL_RenderPresent(gameRenderer);
 			}
 		}

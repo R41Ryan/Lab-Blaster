@@ -2,7 +2,7 @@
 #include <character.h>
 #include <weaponStats.h>
 
-enum playerFrames {
+enum playerSprites {
 	PLAYER_IDLE,
 	PLAYER_TOTAL_SPRITES
 };
@@ -22,7 +22,7 @@ private:
 	int melee;
 public:
 	// Constructors
-	Player(int x = 0, int y = 0, int mHealth = 100, int gun = PISTOL, int melee = FISTS);
+	Player(int x = 0, int y = 0, int mHealth = 100, int s = 5, int gun = PISTOL, int melee = FISTS);
 	// Functions
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states, int mapWidth, int mapHeight);

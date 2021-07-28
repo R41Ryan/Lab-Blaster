@@ -1,11 +1,12 @@
 #include "..\headers\player.h"
 
-Player::Player(int x, int y, int mHealth, int gun, int melee)
+Player::Player(int x, int y, int mHealth, int s, int gun, int melee)
 {
 	setX(x);
 	setY(y);
 	setMaxHealth(mHealth);
 	setCurrentHealth(mHealth);
+	setSpeed(s);
 	this->gun = gun;
 	this->melee = melee;
 }

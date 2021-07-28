@@ -11,10 +11,24 @@ Character::Character(int x, int y, int mHealth, int s)
 	living = true;
 }
 
-void Character::move(int x, int y)
+int Character::move(int x, int y)
 {
-	xPos += x;
-	yPos += y;
+	int xDif = x - xPos;
+	int yDif = y - yPos;
+
+	if (xDif + yDif == 0)
+	{
+		return 1;
+	}
+
+	// Using similar triangles to determing xVel and yVel.
+	double hypotenuse = hypot((double)xDif, (double)yDif);
+	double convertingFactor = speed / hypotenuse;
+
+	xPos += (int)(xDif * convertingFactor);
+	yPos += (int)(yDif * convertingFactor);
+
+	return 0;
 }
 
 void Character::incrementHealth(int h)
@@ -39,9 +53,13 @@ void Character::restoreHealth()
 	currentHealth = maxHealth;
 }
 
-void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip)
+void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
+	int mapXPos, int mapYPos)
 {
-	SDL_Rect renderClip = { xPos - spriteClip.w/2, yPos - spriteClip.h/2, spriteClip.w, spriteClip.h };
+	int renderXPos = mapXPos + xPos;
+	int renderYPos = mapYPos + yPos;
+
+	SDL_Rect renderClip = { renderXPos - spriteClip.w/2, renderYPos - spriteClip.h/2, spriteClip.w, spriteClip.h };
 
 	SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
 }
