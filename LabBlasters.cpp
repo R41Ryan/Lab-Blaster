@@ -1,5 +1,6 @@
 #include <player.h>
 #include <enemy.h>
+#include <map.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
@@ -12,6 +13,9 @@ SDL_Renderer* gameRenderer = NULL;
 
 SDL_Rect playerSpriteClips[PLAYER_TOTAL_SPRITES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
+
+WeaponStats stats;
+Map gameMap;
 
 bool keyStates[TOTAL_KEYS];
 
@@ -172,10 +176,11 @@ int main(int argc, char* argv[])
 		else
 		{
 			setupClips();
+			gameMap.loadFloor(gameRenderer, "map/map_floor.png");
 
 			bool quit = false;
 
-			Player* gamePlayer = new Player(0, 0, 100);
+			Player* gamePlayer = new Player(0, 0, 100, PISTOL, FISTS);
 
 			SDL_Event e;
 
@@ -201,6 +206,8 @@ int main(int argc, char* argv[])
 
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
+
+				gameMap.render(gameRenderer);
 
 				gamePlayer->render(gameRenderer, characterSpriteSheets[PLAYER], playerSpriteClips[PLAYER_IDLE]);
 

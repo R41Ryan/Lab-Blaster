@@ -61,6 +61,11 @@ void Player::move(bool* states)
 	setY(getY() + yVel);
 }
 
+void Player::shoot()
+{
+
+}
+
 int Player::getGun()
 {
 	return gun;

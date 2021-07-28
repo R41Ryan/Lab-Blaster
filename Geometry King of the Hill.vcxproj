@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\character.h" />
     <ClInclude Include="headers\enemy.h" />
+    <ClInclude Include="Headers\map.h" />
     <ClInclude Include="headers\weaponStats.h" />
     <ClInclude Include="headers\player.h" />
   </ItemGroup>
@@ -154,6 +155,7 @@
     <ClCompile Include="LabBlasters.cpp" />
     <ClCompile Include="Source\character.cpp" />
     <ClCompile Include="source\enemy.cpp" />
+    <ClCompile Include="Source\map.cpp" />
     <ClCompile Include="source\weaponStats.cpp" />
     <ClCompile Include="source\player.cpp" />
   </ItemGroup>

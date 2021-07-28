@@ -26,11 +26,13 @@ private:
 	int gunDamage[TOTAL_GUN_TYPES];
 	double gunAccuracyConeAngle[TOTAL_GUN_TYPES];
 	int gunPrice[TOTAL_GUN_TYPES];
+	int gunKnockback[TOTAL_GUN_TYPES];
 
 	int meleeDamage[TOTAL_MELEE_TYPES];
 	double meleeConeOfEffectAngle[TOTAL_MELEE_TYPES];
 	int meleeRange[TOTAL_MELEE_TYPES];
 	int meleePrice[TOTAL_MELEE_TYPES];
+	int meleeKnockback[TOTAL_MELEE_TYPES];
 
 public:
 	// Constructor
@@ -41,6 +43,8 @@ public:
 	double getGunAngle(int weapon);
 	// Get the price of the specified gun type.
 	int getGunPrice(int weapon);
+	// Get the knockback power of the specified gun type;
+	int getGunKnockback(int weapon);
 	// Get the damage of the specified melee type.
 	int getMeleeDamage(int weapon);
 	// Get the angle of the cone of effect for the specified melee type.
@@ -49,6 +53,8 @@ public:
 	int getMeleeRange(int weapon);
 	// Get the price of the specified melee type.
 	int getMeleePrice(int weapon);
+	// Get the knockback power of the specified melee type.
+	int getMeleeKnockback(int weapon);
 	// Sets the stats for the pistol;
 	void setPistol();
 	/*
@@ -60,8 +66,10 @@ public:
 	void setSniper();
 	// Sets the stats for the machine gun;
 	void setMachineGun();
+	*/
 	// Sets the stats for the fists;
 	void setFists();
+	/*
 	// Sets the stats for the knife;
 	void setKnife();
 	// Sets the stats for the baseball bat;

@@ -27,6 +27,9 @@
     <ClInclude Include="headers\weaponStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\character.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\weaponStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

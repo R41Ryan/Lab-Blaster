@@ -32,6 +32,11 @@ int WeaponStats::getGunPrice(int weapon)
 	return gunPrice[weapon];
 }
 
+int WeaponStats::getGunKnockback(int weapon)
+{
+	return gunKnockback[weapon];
+}
+
 int WeaponStats::getMeleeDamage(int weapon)
 {
 	return meleeDamage[weapon];
@@ -52,9 +57,24 @@ int WeaponStats::getMeleePrice(int weapon)
 	return meleePrice[weapon];
 }
 
+int WeaponStats::getMeleeKnockback(int weapon)
+{
+	return meleeKnockback[weapon];
+}
+
 void WeaponStats::setPistol()
 {
 	gunDamage[PISTOL] = 50;
 	gunAccuracyConeAngle[PISTOL] = 10;
 	gunPrice[PISTOL] = 0;
+	gunKnockback[PISTOL] = 0;
+}
+
+void WeaponStats::setFists()
+{
+	meleeDamage[FISTS] = 50;
+	meleeConeOfEffectAngle[FISTS] = 30;
+	meleeRange[FISTS] = 30;
+	meleePrice[FISTS] = 0;
+	meleeKnockback[FISTS] = 50;
 }

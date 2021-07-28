@@ -26,6 +26,8 @@ public:
 	// Functions
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states);
+	// Fires the gun that is equipped in the general direction of the mouse.
+	void shoot();
 	// Getters
 	int getGun();
 	int getMelee();
