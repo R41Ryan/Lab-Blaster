@@ -10,7 +10,7 @@ Player::Player(int x, int y, int mHealth, int gun, int melee)
 	this->melee = melee;
 }
 
-void Player::move(bool* states)
+void Player::move(bool* states, int mapWidth, int mapHeight)
 {
 	int xDir = 0;
 	int yDir = 0;
@@ -35,35 +35,69 @@ void Player::move(bool* states)
 		xDir = 1;
 	}
 
-	float xVel = 0;
-	float yVel = 0;
+	double xVel = 0;
+	double yVel = 0;
 
 	if (xDir == 0)
 	{
 		if (yDir == 1)
 		{
-			yVel = getSpeed();
+			yVel = (float)getSpeed();
 		}
 		else if (yDir == -1)
 		{
-			yVel = -getSpeed();
+			yVel = (float)-getSpeed();
 		}
 	}
 	else
 	{
-		float angle = atan(yDir / xDir);
+		double angle = atan(yDir / xDir);
 
 		xVel = xDir * getSpeed() * cos(angle);
 		yVel = yDir * abs(getSpeed() * sin(angle));
 	}
 
-	setX(getX() + xVel);
-	setY(getY() + yVel);
+	int newX = getX() + xVel;
+	int newY = getY() + yVel;
+
+	if (newX < 0)
+	{
+		setX(0);
+	}
+	else if (newX > mapWidth)
+	{
+		setX(mapWidth);
+	}
+	else
+	{
+		setX(newX);
+	}
+
+	if (newY < 0)
+	{
+		setY(0);
+	}
+	else if (newY > mapHeight)
+	{
+		setY(mapHeight);
+	}
+	else
+	{
+		setY(newY);
+	}
 }
 
 void Player::shoot()
 {
 
+}
+
+void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
+	int screenWidth, int screenHeight)
+{
+	SDL_Rect renderClip = { screenWidth / 2 - spriteClip.w / 2, screenHeight / 2 - spriteClip.h / 2, spriteClip.w, spriteClip.h };
+
+	SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
 }
 
 int Player::getGun()

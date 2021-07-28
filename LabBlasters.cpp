@@ -176,11 +176,14 @@ int main(int argc, char* argv[])
 		else
 		{
 			setupClips();
-			gameMap.loadFloor(gameRenderer, "map/map_floor.png");
+			if (!gameMap.loadFloor(gameRenderer, "map/map_floor.png"))
+			{
+				printf("Failed to load floor.\n");
+			}
 
 			bool quit = false;
 
-			Player* gamePlayer = new Player(0, 0, 100, PISTOL, FISTS);
+			Player gamePlayer = Player(0, 0, 100, PISTOL, FISTS);
 
 			SDL_Event e;
 
@@ -202,14 +205,15 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				gamePlayer->move(keyStates);
+				gamePlayer.move(keyStates, gameMap.getWidth(), gameMap.getHeight());
 
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
 
+				gameMap.setCentrePlayer(gamePlayer, SCREEN_WIDTH, SCREEN_HEIGHT);
 				gameMap.render(gameRenderer);
 
-				gamePlayer->render(gameRenderer, characterSpriteSheets[PLAYER], playerSpriteClips[PLAYER_IDLE]);
+				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], playerSpriteClips[PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
 
 				SDL_RenderPresent(gameRenderer);
 			}

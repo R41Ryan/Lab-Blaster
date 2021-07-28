@@ -25,9 +25,12 @@ public:
 	Player(int x = 0, int y = 0, int mHealth = 100, int gun = PISTOL, int melee = FISTS);
 	// Functions
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
-	void move(bool* states);
+	void move(bool* states, int mapWidth, int mapHeight);
 	// Fires the gun that is equipped in the general direction of the mouse.
 	void shoot();
+	// Renders the character according to the given renderer and clip of the sprite sheet.
+	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
+		int screenWidth, int screenHeight);
 	// Getters
 	int getGun();
 	int getMelee();

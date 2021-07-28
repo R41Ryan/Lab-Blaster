@@ -33,7 +33,7 @@ public:
 	// Renders the map.
 	void render(SDL_Renderer* renderer);
 	// Set the x and y rendering position of the map such that the player's location on the map is at the centre of the renderer.
-	void setCentrePlayer(Player player);
+	void setCentrePlayer(Player player, int screenWidth, int screenHeight);
 	// Getters
 	SDL_Texture* getFloor();
 	int getX();

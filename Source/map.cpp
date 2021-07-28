@@ -59,9 +59,18 @@ bool Map::loadFloor(SDL_Renderer* renderer, std::string path)
 
 void Map::render(SDL_Renderer* renderer)
 {
-	SDL_Rect renderRect = { xPos, yPos, width, height };
+	if (floor != NULL)
+	{
+		SDL_Rect renderRect = { xPos, yPos, width, height };
 
-	SDL_RenderCopy(renderer, floor, NULL, &renderRect);
+		SDL_RenderCopy(renderer, floor, NULL, &renderRect);
+	}
+}
+
+void Map::setCentrePlayer(Player player, int screenWidth, int screenHeight)
+{
+	xPos = screenWidth / 2 - player.getX();
+	yPos = screenHeight / 2 - player.getY();
 }
 
 SDL_Texture* Map::getFloor()
