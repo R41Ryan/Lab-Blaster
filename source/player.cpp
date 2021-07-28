@@ -87,7 +87,7 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 	}
 }
 
-void Player::shoot()
+void Player::shoot(int mouseX, int mouseY)
 {
 
 }

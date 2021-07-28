@@ -27,7 +27,7 @@ public:
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states, int mapWidth, int mapHeight);
 	// Fires the gun that is equipped in the general direction of the mouse.
-	void shoot();
+	void shoot(int mouseX, int mouseY);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 		int screenWidth, int screenHeight);
