@@ -231,6 +231,13 @@ int main(int argc, char* argv[])
 				
 				testGrunt.move(gamePlayer.getX(), gamePlayer.getY());
 
+				int mouseX, mouseY;
+
+				SDL_GetMouseState(&mouseX, &mouseY);
+
+				gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT,
+					mouseX, mouseY);
+
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
 				

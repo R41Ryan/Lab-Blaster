@@ -1,6 +1,7 @@
 #pragma once
 #include <character.h>
 #include <weaponStats.h>
+#include <myMath.h>
 
 enum playerSprites {
 	PLAYER_IDLE,
@@ -18,6 +19,8 @@ enum inputKeys {
 class Player : public Character
 {
 private:
+	bool shooting;
+	bool meleeing;
 	int gun;
 	int melee;
 public:
@@ -27,14 +30,19 @@ public:
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states, int mapWidth, int mapHeight);
 	// Fires the gun that is equipped in the general direction of the mouse.
-	void shoot(int mouseX, int mouseY);
+	void shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 		int screenWidth, int screenHeight);
+	
 	// Getters
 	int getGun();
 	int getMelee();
+	bool isShooting();
+	bool isMeleeing();
 	// Setters
 	void setGun(int newGun);
 	void setMelee(int newMelee);
+	void setShooting(bool s);
+	void setMeleeing(bool s);
 };

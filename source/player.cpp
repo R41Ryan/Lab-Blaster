@@ -7,6 +7,8 @@ Player::Player(int x, int y, int mHealth, int s, int gun, int melee)
 	setMaxHealth(mHealth);
 	setCurrentHealth(mHealth);
 	setSpeed(s);
+	shooting = false;
+	meleeing = false;
 	this->gun = gun;
 	this->melee = melee;
 }
@@ -45,27 +47,6 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 		double xVel = (double)xDir * convertingFactor;
 		double yVel = (double)yDir * convertingFactor;
 
-		/*
-		if (xDir == 0)
-		{
-			if (yDir == 1)
-			{
-				yVel = (float)getSpeed();
-			}
-			else if (yDir == -1)
-			{
-				yVel = (float)-getSpeed();
-			}
-		}
-		else
-		{
-			double angle = atan(yDir / xDir);
-
-			xVel = xDir * getSpeed() * cos(angle);
-			yVel = yDir * abs(getSpeed() * sin(angle));
-		}
-		*/
-
 		int newX = getX() + (int)xVel;
 		int newY = getY() + (int)yVel;
 		
@@ -97,9 +78,35 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 	}
 }
 
-void Player::shoot(int mouseX, int mouseY)
+void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY)
 {
+	if ((mouseX > 0 && mouseX < screenWidth) && (mouseY > 0 && mouseY < screenHeight))
+	{
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
+		int xDif = mouseX - screenWidth / 2;
+		int yDif = mouseY - screenHeight / 2;
+		double hypotenus = hypot((double)xDif, (double)yDif);
+		double convertingFactor = 1 / hypotenus;
 
+		float x1, y1, x2, y2, xUnit, yUnit;
+		x1 = (float)(screenWidth / 2);
+		y1 = (float)(screenHeight / 2);
+		x2 = (float)(x1 + xDif * convertingFactor);
+		y2 = (float)(y1 + yDif * convertingFactor);
+		xUnit = x2 - x1;
+		yUnit = y2 - y1;
+
+		// (x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight)
+		while ((x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight))
+		{
+			SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
+
+			x1 += xUnit;
+			x2 += xUnit;
+			y1 += yUnit;
+			y2 += yUnit;
+		}
+	}
 }
 
 void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
@@ -120,6 +127,16 @@ int Player::getMelee()
 	return melee;
 }
 
+bool Player::isShooting()
+{
+	return shooting;
+}
+
+bool Player::isMeleeing()
+{
+	return meleeing;
+}
+
 void Player::setGun(int newGun)
 {
 	gun = newGun;
@@ -128,4 +145,14 @@ void Player::setGun(int newGun)
 void Player::setMelee(int newMelee)
 {
 	melee = newMelee;
+}
+
+void Player::setShooting(bool s)
+{
+	shooting = s;
+}
+
+void Player::setMeleeing(bool s)
+{
+	meleeing = s;
 }
