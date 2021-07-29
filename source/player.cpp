@@ -36,55 +36,64 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 		xDir = 1;
 	}
 
-	double xVel = 0;
-	double yVel = 0;
-
-	if (xDir == 0)
+	if (xDir != 0 || yDir != 0)
 	{
-		if (yDir == 1)
+		// Finding x velocity and y velocity using similar triangles
+		double hypotenuse = hypot((double)xDir, (double)yDir);
+		double convertingFactor = getSpeed() / hypotenuse;
+
+		double xVel = (double)xDir * convertingFactor;
+		double yVel = (double)yDir * convertingFactor;
+
+		/*
+		if (xDir == 0)
 		{
-			yVel = (float)getSpeed();
+			if (yDir == 1)
+			{
+				yVel = (float)getSpeed();
+			}
+			else if (yDir == -1)
+			{
+				yVel = (float)-getSpeed();
+			}
 		}
-		else if (yDir == -1)
+		else
 		{
-			yVel = (float)-getSpeed();
+			double angle = atan(yDir / xDir);
+
+			xVel = xDir * getSpeed() * cos(angle);
+			yVel = yDir * abs(getSpeed() * sin(angle));
 		}
-	}
-	else
-	{
-		double angle = atan(yDir / xDir);
+		*/
 
-		xVel = xDir * getSpeed() * cos(angle);
-		yVel = yDir * abs(getSpeed() * sin(angle));
-	}
+		int newX = getX() + (int)xVel;
+		int newY = getY() + (int)yVel;
+		
+		if (newX < 0)
+		{
+			setX(0);
+		}
+		else if (newX > mapWidth)
+		{
+			setX(mapWidth);
+		}
+		else
+		{
+			setX(newX);
+		}
 
-	int newX = getX() + xVel;
-	int newY = getY() + yVel;
-
-	if (newX < 0)
-	{
-		setX(0);
-	}
-	else if (newX > mapWidth)
-	{
-		setX(mapWidth);
-	}
-	else
-	{
-		setX(newX);
-	}
-
-	if (newY < 0)
-	{
-		setY(0);
-	}
-	else if (newY > mapHeight)
-	{
-		setY(mapHeight);
-	}
-	else
-	{
-		setY(newY);
+		if (newY < 0)
+		{
+			setY(0);
+		}
+		else if (newY > mapHeight)
+		{
+			setY(mapHeight);
+		}
+		else
+		{
+			setY(newY);
+		}
 	}
 }
 

@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
 
 			Player gamePlayer = Player(0, 0, 100, 5, PISTOL, FISTS);
 
-			Grunt testGrunt = Grunt(0, 0, 100, 3);
+			Grunt testGrunt = Grunt(0, 0, 100, 5);
 
 			SDL_Event e;
 
