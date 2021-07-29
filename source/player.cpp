@@ -82,7 +82,7 @@ void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, in
 {
 	if ((mouseX > 0 && mouseX < screenWidth) && (mouseY > 0 && mouseY < screenHeight))
 	{
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
+		SDL_SetRenderDrawColor(renderer, 200, 200, 0, 0xFF);
 		int xDif = mouseX - screenWidth / 2;
 		int yDif = mouseY - screenHeight / 2;
 		double hypotenus = hypot((double)xDif, (double)yDif);

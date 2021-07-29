@@ -18,6 +18,7 @@ WeaponStats stats;
 Map gameMap;
 
 bool keyStates[TOTAL_KEYS];
+bool mouseStates[TOTAL_MOUSE_BUTTONS];
 
 bool init() {
 	bool success = true;
@@ -170,6 +171,19 @@ void setKeyState(SDL_Keycode sym, bool state)
 	}
 }
 
+void setMouseState(SDL_MouseButtonEvent button, bool state)
+{
+	switch (button.button)
+	{
+	case SDL_BUTTON_LEFT:
+		mouseStates[LEFT_MOUSE_BUTTON] = state;
+		break;
+	case SDL_BUTTON_RIGHT:
+		mouseStates[RIGHT_MOUSE_BUTTON] = state;
+		break;
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	for (int i = 0; i < TOTAL_KEYS; i++)
@@ -196,6 +210,7 @@ int main(int argc, char* argv[])
 			}
 
 			bool quit = false;
+			int mouseX = 0, mouseY = 0;
 
 			Player gamePlayer = Player(0, 0, 100, 5, PISTOL, FISTS);
 
@@ -205,6 +220,8 @@ int main(int argc, char* argv[])
 
 			while (!quit)
 			{
+				SDL_GetMouseState(&mouseX, &mouseY);
+
 				while (SDL_PollEvent(&e) > 0)
 				{
 					switch (e.type)
@@ -218,9 +235,15 @@ int main(int argc, char* argv[])
 					case SDL_KEYUP:
 						setKeyState(e.key.keysym.sym, false);
 						break;
+					case SDL_MOUSEBUTTONDOWN:
+						setMouseState(e.button, true);
+						break;
+					case SDL_MOUSEBUTTONUP:
+						setMouseState(e.button, false);
+						break;
 					}
 				}
-				
+
 				gamePlayer.move(keyStates, gameMap.getWidth(), gameMap.getHeight());
 				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -231,12 +254,11 @@ int main(int argc, char* argv[])
 				
 				testGrunt.move(gamePlayer.getX(), gamePlayer.getY());
 
-				int mouseX, mouseY;
-
-				SDL_GetMouseState(&mouseX, &mouseY);
-
-				gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT,
-					mouseX, mouseY);
+				if (mouseStates[LEFT_MOUSE_BUTTON])
+				{
+					gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT,
+						mouseX, mouseY);
+				}
 
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);

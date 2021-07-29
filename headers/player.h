@@ -16,6 +16,12 @@ enum inputKeys {
 	TOTAL_KEYS
 };
 
+enum inputMouseButtons {
+	LEFT_MOUSE_BUTTON,
+	RIGHT_MOUSE_BUTTON,
+	TOTAL_MOUSE_BUTTONS
+};
+
 class Player : public Character
 {
 private:
