@@ -13,40 +13,40 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\characters">
+      <UniqueIdentifier>{16e3bb3b-d820-48e0-b3d2-26efb5d1f6ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\characters">
+      <UniqueIdentifier>{8e1e2e22-ec10-4d10-bdf5-f338bca96b06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\character.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\weaponStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\grunt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\myMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\character.h">
+      <Filter>Header Files\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\enemy.h">
+      <Filter>Header Files\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\grunt.h">
+      <Filter>Header Files\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\player.h">
+      <Filter>Header Files\characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LabBlasters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,11 +56,23 @@
     <ClCompile Include="Source\map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\grunt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\myMath.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\character.cpp">
+      <Filter>Source Files\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="source\enemy.cpp">
+      <Filter>Source Files\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\grunt.cpp">
+      <Filter>Source Files\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="source\player.cpp">
+      <Filter>Source Files\characters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
