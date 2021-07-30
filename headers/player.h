@@ -29,6 +29,9 @@ private:
 	bool meleeing;
 	int gun;
 	int melee;
+
+	Timer gunTimer;
+	Timer meleeTimer;
 public:
 	// Constructors
 	Player(int x = 0, int y = 0, int mHealth = 100, int s = 5, int gun = PISTOL, int melee = FISTS);
@@ -46,6 +49,9 @@ public:
 	int getMelee();
 	bool isShooting();
 	bool isMeleeing();
+	Timer getGunTimer();
+	Timer getMeleeTimer();
+
 	// Setters
 	void setGun(int newGun);
 	void setMelee(int newMelee);

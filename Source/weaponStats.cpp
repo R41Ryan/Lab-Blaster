@@ -78,7 +78,7 @@ void WeaponStats::setPistol()
 	gunAccuracyConeAngle[PISTOL] = 10;
 	gunPrice[PISTOL] = 0;
 	gunKnockback[PISTOL] = 0;
-	gunFireRate[PISTOL] = 500;
+	gunFireRate[PISTOL] = 4;
 }
 
 void WeaponStats::setFists()
@@ -87,5 +87,5 @@ void WeaponStats::setFists()
 	meleeConeOfEffectAngle[FISTS] = 30;
 	meleeRange[FISTS] = 30;
 	meleePrice[FISTS] = 0;
-	meleeKnockback[FISTS] = 50;
+	meleeKnockback[FISTS] = 5;
 }

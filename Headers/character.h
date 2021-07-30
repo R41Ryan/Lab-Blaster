@@ -3,6 +3,7 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 #include <string>
+#include <timer.h>
 
 enum characterTypes {
 	PLAYER,

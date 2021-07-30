@@ -213,6 +213,7 @@ int main(int argc, char* argv[])
 			int mouseX = 0, mouseY = 0;
 
 			Player gamePlayer = Player(0, 0, 100, 5, PISTOL, FISTS);
+			WeaponStats gameWeapStats = WeaponStats();
 
 			Grunt testGrunt = Grunt(0, 0, 100, 5);
 
@@ -256,8 +257,22 @@ int main(int argc, char* argv[])
 
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
-					gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT,
-						mouseX, mouseY);
+					if (gamePlayer.getGunTimer().isTimerOn())
+					{
+						gamePlayer.getGunTimer().updateTime();
+					}
+					else
+					{
+						gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, 
+							mouseX, mouseY);
+						Uint32 fireRateMilliseconds = (Uint32)(1000 / 
+							gameWeapStats.getGunFireRate(PISTOL));
+						gamePlayer.getGunTimer().markTimer(fireRateMilliseconds);
+					}
+				}
+				else
+				{
+					gamePlayer.getGunTimer().setTimerState(false);
 				}
 
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 

@@ -11,6 +11,9 @@ Player::Player(int x, int y, int mHealth, int s, int gun, int melee)
 	meleeing = false;
 	this->gun = gun;
 	this->melee = melee;
+
+	gunTimer = Timer();
+	meleeTimer = Timer();
 }
 
 void Player::move(bool* states, int mapWidth, int mapHeight)
@@ -135,6 +138,16 @@ bool Player::isShooting()
 bool Player::isMeleeing()
 {
 	return meleeing;
+}
+
+Timer Player::getGunTimer()
+{
+	return gunTimer;
+}
+
+Timer Player::getMeleeTimer()
+{
+	return meleeTimer;
 }
 
 void Player::setGun(int newGun)
