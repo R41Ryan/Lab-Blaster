@@ -212,10 +212,13 @@ int main(int argc, char* argv[])
 			bool quit = false;
 			int mouseX = 0, mouseY = 0;
 
-			Player gamePlayer = Player(0, 0, 100, 5, PISTOL, FISTS);
+			Player gamePlayer = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 5, PISTOL, FISTS);
 			WeaponStats gameWeapStats = WeaponStats();
 
-			Grunt testGrunt = Grunt(0, 0, 100, 5);
+			Grunt testGrunt = Grunt(0, 0, 100, 3);
+			Enemy entities[1];
+			entities[0] = testGrunt;
+			printf("Testing. testGrunt.xPos = %d.\n", entities[0].getX());
 
 			Timer testTimer = Timer();
 
