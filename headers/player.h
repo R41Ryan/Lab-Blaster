@@ -31,6 +31,9 @@ private:
 	int melee;
 
 	Timer gunTimer;
+	int bulletFrames;
+	int bulletFrameCounter;
+
 	Timer meleeTimer;
 public:
 	// Constructors
@@ -39,7 +42,7 @@ public:
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states, int mapWidth, int mapHeight);
 	// Fires the gun that is equipped in the general direction of the mouse.
-	void shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY);
+	void shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY, WeaponStats stats);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 		int screenWidth, int screenHeight);

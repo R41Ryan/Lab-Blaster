@@ -1,10 +1,11 @@
 #include <timer.h>
+#include <stdio.h>
 
 Timer::Timer()
 {
 	currentTime = SDL_GetTicks();
 	markedTime = currentTime;
-	timerOn = 0;
+	timerOn = false;
 }
 
 void Timer::markTimer(Uint32 t)

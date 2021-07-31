@@ -217,6 +217,8 @@ int main(int argc, char* argv[])
 
 			Grunt testGrunt = Grunt(0, 0, 100, 5);
 
+			Timer testTimer = Timer();
+
 			SDL_Event e;
 
 			while (!quit)
@@ -254,25 +256,18 @@ int main(int argc, char* argv[])
 				gameMap.render(gameRenderer);
 				
 				testGrunt.move(gamePlayer.getX(), gamePlayer.getY());
-
+				
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
-					if (gamePlayer.getGunTimer().isTimerOn())
-					{
-						gamePlayer.getGunTimer().updateTime();
-					}
-					else
-					{
-						gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, 
-							mouseX, mouseY);
-						Uint32 fireRateMilliseconds = (Uint32)(1000 / 
-							gameWeapStats.getGunFireRate(PISTOL));
-						gamePlayer.getGunTimer().markTimer(fireRateMilliseconds);
-					}
+					gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, mouseX,
+						mouseY, gameWeapStats);
 				}
 				else
 				{
-					gamePlayer.getGunTimer().setTimerState(false);
+					if (gamePlayer.getGunTimer().isTimerOn())
+					{
+						gamePlayer.getGunTimer().setTimerState(false);
+					}
 				}
 
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 

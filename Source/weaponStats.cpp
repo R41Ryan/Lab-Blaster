@@ -78,7 +78,7 @@ void WeaponStats::setPistol()
 	gunAccuracyConeAngle[PISTOL] = 10;
 	gunPrice[PISTOL] = 0;
 	gunKnockback[PISTOL] = 0;
-	gunFireRate[PISTOL] = 4;
+	gunFireRate[PISTOL] = 3;
 }
 
 void WeaponStats::setFists()

@@ -13,6 +13,9 @@ Player::Player(int x, int y, int mHealth, int s, int gun, int melee)
 	this->melee = melee;
 
 	gunTimer = Timer();
+	bulletFrameCounter = 0;
+	bulletFrames = 4;
+
 	meleeTimer = Timer();
 }
 
@@ -81,34 +84,51 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 	}
 }
 
-void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY)
+void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY,
+	WeaponStats stats)
 {
-	if ((mouseX > 0 && mouseX < screenWidth) && (mouseY > 0 && mouseY < screenHeight))
+	if (gunTimer.isTimerOn())
 	{
-		SDL_SetRenderDrawColor(renderer, 200, 200, 0, 0xFF);
-		int xDif = mouseX - screenWidth / 2;
-		int yDif = mouseY - screenHeight / 2;
-		double hypotenus = hypot((double)xDif, (double)yDif);
-		double convertingFactor = 1 / hypotenus;
-
-		float x1, y1, x2, y2, xUnit, yUnit;
-		x1 = (float)(screenWidth / 2);
-		y1 = (float)(screenHeight / 2);
-		x2 = (float)(x1 + xDif * convertingFactor);
-		y2 = (float)(y1 + yDif * convertingFactor);
-		xUnit = x2 - x1;
-		yUnit = y2 - y1;
-
-		// (x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight)
-		while ((x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight))
+		gunTimer.updateTime();
+	}
+	else
+	{
+		if ((mouseX > 0 && mouseX < screenWidth) && (mouseY > 0 && mouseY < screenHeight))
 		{
-			SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
+			SDL_SetRenderDrawColor(renderer, 215, 215, 0, 0xFF);
+			int xDif = mouseX - screenWidth / 2;
+			int yDif = mouseY - screenHeight / 2;
+			double hypotenus = hypot((double)xDif, (double)yDif);
+			double convertingFactor = 1 / hypotenus;
 
-			x1 += xUnit;
-			x2 += xUnit;
-			y1 += yUnit;
-			y2 += yUnit;
+			float x1, y1, x2, y2, xUnit, yUnit;
+			x1 = (float)(screenWidth / 2);
+			y1 = (float)(screenHeight / 2);
+			x2 = (float)(x1 + xDif * convertingFactor);
+			y2 = (float)(y1 + yDif * convertingFactor);
+			xUnit = x2 - x1;
+			yUnit = y2 - y1;
+
+			while ((x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight))
+			{
+				SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
+				SDL_RenderDrawLineF(renderer, x1 + 1, y1 + 1, x2 + 1, y2 + 1);
+				SDL_RenderDrawLineF(renderer, x1 - 1, y1 - 1, x2 - 1, y2 - 1);
+				SDL_RenderDrawLineF(renderer, x1 + 1, y1 - 1, x2 + 1, y2 - 1);
+				SDL_RenderDrawLineF(renderer, x1 - 1, y1 + 1, x2 - 1, y2 + 1);
+
+				x1 += xUnit;
+				x2 += xUnit;
+				y1 += yUnit;
+				y2 += yUnit;
+			}
 		}
+
+		// bulletFrameCounter++;
+
+		Uint32 fireRateMilliseconds = (Uint32)(1000 /
+			stats.getGunFireRate(PISTOL));
+		gunTimer.markTimer(fireRateMilliseconds);
 	}
 }
 
