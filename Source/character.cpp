@@ -1,7 +1,7 @@
 #include <character.h>
 #include <math.h>
 
-Character::Character(int x, int y, int mHealth, int s)
+Character::Character(int e, int x, int y, int mHealth, int s, int w, int h)
 {
 	xPos = x;
 	yPos = y;
@@ -9,26 +9,33 @@ Character::Character(int x, int y, int mHealth, int s)
 	currentHealth = mHealth;
 	speed = s;
 	living = true;
+	
+	hitboxWidth = w;
+	hitboxHeight = h;
 }
 
 int Character::move(int x, int y)
 {
-	int xDif = x - xPos;
-	int yDif = y - yPos;
-
-	if (xDif + yDif == 0)
+	if (living)
 	{
-		return 1;
+		int xDif = x - xPos;
+		int yDif = y - yPos;
+
+		if (xDif + yDif == 0)
+		{
+			return 1;
+		}
+
+		// Using similar triangles to determing xVel and yVel.
+		double hypotenuse = hypot((double)xDif, (double)yDif);
+		double convertingFactor = speed / hypotenuse;
+
+		xPos += (int)(xDif * convertingFactor);
+		yPos += (int)(yDif * convertingFactor);
+
+		return 0;
 	}
-
-	// Using similar triangles to determing xVel and yVel.
-	double hypotenuse = hypot((double)xDif, (double)yDif);
-	double convertingFactor = speed / hypotenuse;
-
-	xPos += (int)(xDif * convertingFactor);
-	yPos += (int)(yDif * convertingFactor);
-
-	return 0;
+	return -1;
 }
 
 void Character::incrementHealth(int h)
@@ -51,17 +58,21 @@ void Character::incrementHealth(int h)
 void Character::restoreHealth()
 {
 	currentHealth = maxHealth;
+	living = true;
 }
 
 void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 	int mapXPos, int mapYPos)
 {
-	int renderXPos = mapXPos + xPos;
-	int renderYPos = mapYPos + yPos;
+	if (living)
+	{
+		int renderXPos = mapXPos + xPos;
+		int renderYPos = mapYPos + yPos;
 
-	SDL_Rect renderClip = { renderXPos - spriteClip.w/2, renderYPos - spriteClip.h/2, spriteClip.w, spriteClip.h };
+		SDL_Rect renderClip = { renderXPos - spriteClip.w / 2, renderYPos - spriteClip.h / 2, spriteClip.w, spriteClip.h };
 
-	SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
+		SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
+	}
 }
 
 int Character::getX()
@@ -94,6 +105,16 @@ int Character::getSpeed()
 	return speed;
 }
 
+int Character::getHitboxWidth()
+{
+	return hitboxWidth;
+}
+
+int Character::getHitboxHeight()
+{
+	return hitboxHeight;
+}
+
 void Character::setX(int x)
 {
 	xPos = x;
@@ -117,4 +138,14 @@ void Character::setCurrentHealth(int h)
 void Character::setSpeed(int s)
 {
 	speed = s;
+}
+
+void Character::setHitboxWidth(int w)
+{
+	hitboxWidth = w;
+}
+
+void Character::setHitboxHeight(int h)
+{
+	hitboxHeight = h;
 }

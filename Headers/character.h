@@ -21,13 +21,15 @@ private:
 	int speed;
 	bool living;
 
+	int hitboxWidth;
+	int hitboxHeight;
 public:
 	// Constructors
-	Character(int x = 0, int y = 0, int mHealth = 0, int s = 5);
+	Character(int e = NULL, int x = 0, int y = 0, int mHealth = 0, int s = 5, int w = 50, int h = 50);
 
 	// Functions
 	// Based on the given x and y coordinates, move the character in the direction of the coordinates using its speed as the distance travelled.
-	// If the character is already at the desired location, it returns 1. Otherwise, it returns 0.
+	// If the character is already at the desired location, it returns 1. If dead, returns -1. Otherwise, it returns 0.
 	int move(int x, int y);
 	// Increment the character's health by h points. Negative units are allowed. Health cannot be greater than max or less than 0.
 	void incrementHealth(int h);
@@ -43,6 +45,8 @@ public:
 	int getCurrentHealth();
 	bool isAlive();
 	int getSpeed();
+	int getHitboxWidth();
+	int getHitboxHeight();
 
 	// Setter Functions
 	void setX(int x);
@@ -50,4 +54,6 @@ public:
 	void setMaxHealth(int mHealth);
 	void setCurrentHealth(int cHealth);
 	void setSpeed(int s);
+	void setHitboxWidth(int w);
+	void setHitboxHeight(int h);
 };

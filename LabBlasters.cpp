@@ -212,18 +212,20 @@ int main(int argc, char* argv[])
 			bool quit = false;
 			int mouseX = 0, mouseY = 0;
 
-			Player gamePlayer = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 5, PISTOL, FISTS);
+			Player gamePlayer = Player(0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100,
+				5, 50, 50, PISTOL, FISTS);
 			WeaponStats gameWeapStats = WeaponStats();
 
-			Grunt testGrunt = Grunt(0, 0, 100, 3);
-			Enemy entities[1];
-			entities[0] = testGrunt;
-			printf("Testing. testGrunt.xPos = %d.\n", entities[0].getX());
-
+			Grunt arrGrunt[4];
+			for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+			{
+				arrGrunt[i] = Grunt(i, rand() % gameMap.getWidth(), rand() % gameMap.getHeight(),
+					100, 3, 50, 50);
+			}
 			Timer testTimer = Timer();
 
 			SDL_Event e;
-
+			
 			while (!quit)
 			{
 				SDL_GetMouseState(&mouseX, &mouseY);
@@ -258,8 +260,11 @@ int main(int argc, char* argv[])
 				gameMap.setCentrePlayer(gamePlayer, SCREEN_WIDTH, SCREEN_HEIGHT);
 				gameMap.render(gameRenderer);
 				
-				testGrunt.move(gamePlayer.getX(), gamePlayer.getY());
-				
+				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+				{
+					arrGrunt[i].move(gamePlayer.getX(), gamePlayer.getY());
+				}
+								
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, mouseX,
@@ -273,12 +278,39 @@ int main(int argc, char* argv[])
 					}
 				}
 
+				int closestGrunt = -1;
+				double smallestDistance = -1.f;
+				double currentDistance;
+				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+				{
+					currentDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
+					if (closestGrunt == -1)
+					{
+						closestGrunt = i;
+						smallestDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
+					}
+					else if (currentDistance < smallestDistance)
+					{
+						closestGrunt = i;
+						smallestDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
+					}
+				}
+				if (closestGrunt >= 0)
+				{
+					SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0, 0, 0xFF);
+					SDL_RenderDrawLine(gameRenderer, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+						gameMap.getX() + arrGrunt[closestGrunt].getX(), gameMap.getY() + arrGrunt[closestGrunt].getY());
+				}
+
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
 				
-				testGrunt.render(gameRenderer, characterSpriteSheets[GRUNT], 
-					spriteClips[GRUNT][GRUNT_IDLE], gameMap.getX(), gameMap.getY());
-				
+				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+				{
+					arrGrunt[i].render(gameRenderer, characterSpriteSheets[GRUNT],
+						spriteClips[GRUNT][GRUNT_IDLE], gameMap.getX(), gameMap.getY());
+				}
+
 				SDL_RenderPresent(gameRenderer);
 			}
 		}
