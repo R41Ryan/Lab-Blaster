@@ -4,6 +4,8 @@
 #include <SDL_image.h>
 #include <string>
 #include <timer.h>
+#include <screenDimensions.h>
+#include <mouseCoordinates.h>
 
 enum characterTypes {
 	PLAYER,

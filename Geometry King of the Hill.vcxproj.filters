@@ -45,6 +45,12 @@
     <ClInclude Include="headers\player.h">
       <Filter>Header Files\characters</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\mouseCoordinates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\screenDimensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LabBlasters.cpp">
@@ -73,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="source\player.cpp">
       <Filter>Source Files\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\mouseCoordinates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\screenDimensions.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

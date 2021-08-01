@@ -3,9 +3,11 @@
 #include <map.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <screenDimensions.h>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
+
+const int TOTAL_GRUNTS = 5;
 
 SDL_Window* gameWindow = NULL;
 
@@ -16,9 +18,14 @@ SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
 WeaponStats stats;
 Map gameMap;
+MouseCoordinates mouse = MouseCoordinates();
 
 bool keyStates[TOTAL_KEYS];
 bool mouseStates[TOTAL_MOUSE_BUTTONS];
+
+int characterArraySizes[TOTAL_CHARACTER_TYPES];
+
+Grunt arrGrunt[TOTAL_GRUNTS];
 
 bool init() {
 	bool success = true;
@@ -29,7 +36,8 @@ bool init() {
 	else
 	{
 		gameWindow = SDL_CreateWindow("Lab Blasters", SDL_WINDOWPOS_UNDEFINED,
-			SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+			SDL_WINDOWPOS_UNDEFINED, SCREEN_DIMENSIONS.width, 
+			SCREEN_DIMENSIONS.height, SDL_WINDOW_SHOWN);
 		if (gameWindow == NULL)
 		{
 			printf("Failed to create window. SDL_ERROR: %s\n", SDL_GetError());
@@ -204,31 +212,32 @@ int main(int argc, char* argv[])
 		else
 		{
 			setupClips();
+			WeaponStats gameWeapStats = WeaponStats();
+
+			characterArraySizes[PLAYER] = 1;
+			characterArraySizes[GRUNT] = 1;
+
 			if (!gameMap.loadFloor(gameRenderer, "map/map_floor.png"))
 			{
 				printf("Failed to load floor.\n");
 			}
 
 			bool quit = false;
-			int mouseX = 0, mouseY = 0;
 
-			Player gamePlayer = Player(0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100,
+			Player gamePlayer = Player(0, SCREEN_DIMENSIONS.width / 2, SCREEN_DIMENSIONS.height / 2, 100,
 				5, 50, 50, PISTOL, FISTS);
-			WeaponStats gameWeapStats = WeaponStats();
 
-			Grunt arrGrunt[4];
 			for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
 			{
 				arrGrunt[i] = Grunt(i, rand() % gameMap.getWidth(), rand() % gameMap.getHeight(),
 					100, 3, 50, 50);
 			}
-			Timer testTimer = Timer();
 
 			SDL_Event e;
 			
 			while (!quit)
 			{
-				SDL_GetMouseState(&mouseX, &mouseY);
+				mouse.update();
 
 				while (SDL_PollEvent(&e) > 0)
 				{
@@ -252,14 +261,14 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				gamePlayer.move(keyStates, gameMap.getWidth(), gameMap.getHeight());
+				gamePlayer.move(keyStates, &gameMap);
 				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
 				
-				gameMap.setCentrePlayer(gamePlayer, SCREEN_WIDTH, SCREEN_HEIGHT);
+				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS);
 				gameMap.render(gameRenderer);
-				
+
 				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
 				{
 					arrGrunt[i].move(gamePlayer.getX(), gamePlayer.getY());
@@ -267,8 +276,8 @@ int main(int argc, char* argv[])
 								
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
-					gamePlayer.shoot(gameRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, mouseX,
-						mouseY, gameWeapStats);
+					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
+						arrGrunt, characterArraySizes, gameWeapStats);
 				}
 				else
 				{
@@ -277,40 +286,16 @@ int main(int argc, char* argv[])
 						gamePlayer.getGunTimer().setTimerState(false);
 					}
 				}
-
-				int closestGrunt = -1;
-				double smallestDistance = -1.f;
-				double currentDistance;
-				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
-				{
-					currentDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
-					if (closestGrunt == -1)
-					{
-						closestGrunt = i;
-						smallestDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
-					}
-					else if (currentDistance < smallestDistance)
-					{
-						closestGrunt = i;
-						smallestDistance = gamePlayer.distanceTo(arrGrunt[i].getX(), arrGrunt[i].getY());
-					}
-				}
-				if (closestGrunt >= 0)
-				{
-					SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0, 0, 0xFF);
-					SDL_RenderDrawLine(gameRenderer, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
-						gameMap.getX() + arrGrunt[closestGrunt].getX(), gameMap.getY() + arrGrunt[closestGrunt].getY());
-				}
-
+				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
-					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_WIDTH, SCREEN_HEIGHT);
+					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
 				
 				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
 				{
 					arrGrunt[i].render(gameRenderer, characterSpriteSheets[GRUNT],
 						spriteClips[GRUNT][GRUNT_IDLE], gameMap.getX(), gameMap.getY());
 				}
-
+				
 				SDL_RenderPresent(gameRenderer);
 			}
 		}

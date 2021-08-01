@@ -1,10 +1,10 @@
 #pragma once
-#include <player.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_render.h>
 #include <SDL_surface.h>
 #include <string>
+#include <screenDimensions.h>
 
 enum mapAssets
 {
@@ -33,7 +33,7 @@ public:
 	// Renders the map.
 	void render(SDL_Renderer* renderer);
 	// Set the x and y rendering position of the map such that the player's location on the map is at the centre of the renderer.
-	void setCentrePlayer(Player player, int screenWidth, int screenHeight);
+	void setCentrePlayer(int playerX, int playerY, ScreenDimensions screen);
 	// Getters
 	SDL_Texture* getFloor();
 	int getX();

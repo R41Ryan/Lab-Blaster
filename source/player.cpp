@@ -19,7 +19,7 @@ Player::Player(int e, int x, int y, int mHealth, int s, int w, int h, int gun, i
 	meleeTimer = Timer();
 }
 
-void Player::move(bool* states, int mapWidth, int mapHeight)
+void Player::move(bool* states, Map* map)
 {
 	if (isAlive())
 	{
@@ -62,9 +62,9 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 			{
 				setX(0);
 			}
-			else if (newX > mapWidth)
+			else if (newX > map->getWidth())
 			{
-				setX(mapWidth);
+				setX(map->getWidth());
 			}
 			else
 			{
@@ -75,9 +75,9 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 			{
 				setY(0);
 			}
-			else if (newY > mapHeight)
+			else if (newY > map->getHeight())
 			{
-				setY(mapHeight);
+				setY(map->getHeight());
 			}
 			else
 			{
@@ -87,8 +87,8 @@ void Player::move(bool* states, int mapWidth, int mapHeight)
 	}
 }
 
-void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY,
-	WeaponStats stats)
+void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, MouseCoordinates mouse,
+	Grunt gArray[], int arrSizes[], WeaponStats stats)
 {
 	if (isAlive())
 	{
@@ -98,23 +98,26 @@ void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, in
 		}
 		else
 		{
-			if ((mouseX > 0 && mouseX < screenWidth) && (mouseY > 0 && mouseY < screenHeight))
+			int collidingGrunt = -1;
+
+			if ((mouse.x > 0 && mouse.x < screen.width) && (mouse.y > 0 && mouse.y < screen.height))
 			{
 				SDL_SetRenderDrawColor(renderer, 215, 215, 0, 0xFF);
-				int xDif = mouseX - screenWidth / 2;
-				int yDif = mouseY - screenHeight / 2;
+				int xDif = mouse.x - map->getX() + getX();
+				int yDif = mouse.y - map->getY() + getY();
+				printf("%d %d\n", xDif, yDif);
 				double hypotenus = hypot((double)xDif, (double)yDif);
 				double convertingFactor = 1 / hypotenus;
 
 				float x1, y1, x2, y2, xUnit, yUnit;
-				x1 = (float)(screenWidth / 2);
-				y1 = (float)(screenHeight / 2);
+				x1 = (float)(map->getX() + getX());
+				y1 = (float)(map->getY() + getY());
 				x2 = (float)(x1 + xDif * convertingFactor);
 				y2 = (float)(y1 + yDif * convertingFactor);
 				xUnit = x2 - x1;
 				yUnit = y2 - y1;
 
-				while ((x1 > 0 && x1 < screenWidth) && (y1 > 0 && y1 < screenHeight))
+				while ((x1 >= 0 && x1 <= map->getWidth()) && (y1 >= 0 && y1 <= map->getHeight()))
 				{
 					SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
 					SDL_RenderDrawLineF(renderer, x1 + 1, y1 + 1, x2 + 1, y2 + 1);
@@ -126,10 +129,22 @@ void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, in
 					x2 += xUnit;
 					y1 += yUnit;
 					y2 += yUnit;
+
+					collidingGrunt = checkPointCollideGrunt((int)x1, (int)y1, gArray, arrSizes[GRUNT]);
+					if (collidingGrunt >= 0)
+					{
+						printf("HIT!.\n");
+						break;
+					}
 				}
 			}
 
-			// bulletFrameCounter++;
+			if (collidingGrunt > 0)
+			{
+				gArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
+				printf("Dealing %d points of damage. Remaining health: %d.\n", stats.getGunDamage(getGun()),
+					gArray[collidingGrunt].getCurrentHealth());
+			}
 
 			Uint32 fireRateMilliseconds = (Uint32)(1000 /
 				stats.getGunFireRate(PISTOL));
@@ -139,11 +154,11 @@ void Player::shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, in
 }
 
 void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
-	int screenWidth, int screenHeight)
+	ScreenDimensions screen)
 {
 	if (isAlive())
 	{
-		SDL_Rect renderClip = { screenWidth / 2 - spriteClip.w / 2, screenHeight / 2 - spriteClip.h / 2, spriteClip.w, spriteClip.h };
+		SDL_Rect renderClip = { screen.width / 2 - spriteClip.w / 2, screen.height / 2 - spriteClip.h / 2, spriteClip.w, spriteClip.h };
 
 		SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
 	}

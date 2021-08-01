@@ -65,12 +65,16 @@ void Map::render(SDL_Renderer* renderer)
 
 		SDL_RenderCopy(renderer, floor, NULL, &renderRect);
 	}
+	else
+	{
+		printf("Map floor cannot be found!\n");
+	}
 }
 
-void Map::setCentrePlayer(Player player, int screenWidth, int screenHeight)
+void Map::setCentrePlayer(int playerX, int playerY, ScreenDimensions screen)
 {
-	xPos = screenWidth / 2 - player.getX();
-	yPos = screenHeight / 2 - player.getY();
+	xPos = screen.width / 2 - playerX;
+	yPos = screen.height / 2 - playerY;
 }
 
 SDL_Texture* Map::getFloor()

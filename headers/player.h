@@ -1,4 +1,5 @@
 #pragma once
+#include <map.h>
 #include <character.h>
 #include <grunt.h>
 #include <weaponStats.h>
@@ -39,12 +40,13 @@ public:
 		int gun = PISTOL, int melee = FISTS);
 	// Functions
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
-	void move(bool* states, int mapWidth, int mapHeight);
+	void move(bool* states, Map* map);
 	// Fires the gun that is equipped in the general direction of the mouse.
-	void shoot(SDL_Renderer* renderer, int screenWidth, int screenHeight, int mouseX, int mouseY, WeaponStats stats);
+	void shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, MouseCoordinates mouse,
+		Grunt gArray[], int arrSizes[], WeaponStats stats);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
-		int screenWidth, int screenHeight);
+		ScreenDimensions screen);
 	// Returns the distance between the Player's position and another position according to the x and y parameters.
 	double distanceTo(int x, int y);
 	// Checks if the points specified by the x and y parameters collide with any hitbox belonging to any grunt in the array provided. It returns the grunt's array index if there is a collision. Otherwise returns -1.
