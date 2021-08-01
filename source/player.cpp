@@ -103,9 +103,8 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 			if ((mouse.x > 0 && mouse.x < screen.width) && (mouse.y > 0 && mouse.y < screen.height))
 			{
 				SDL_SetRenderDrawColor(renderer, 215, 215, 0, 0xFF);
-				int xDif = mouse.x - map->getX() + getX();
-				int yDif = mouse.y - map->getY() + getY();
-				printf("%d %d\n", xDif, yDif);
+				int xDif = mouse.x - (map->getX() + getX());
+				int yDif = mouse.y - (map->getY() + getY());
 				double hypotenus = hypot((double)xDif, (double)yDif);
 				double convertingFactor = 1 / hypotenus;
 
@@ -117,13 +116,18 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 				xUnit = x2 - x1;
 				yUnit = y2 - y1;
 
-				while ((x1 >= 0 && x1 <= map->getWidth()) && (y1 >= 0 && y1 <= map->getHeight()))
+				while ((x1 >= map->getX() && x1 <= map->getX() + map->getWidth()) &&
+					(y1 >= map->getY() && y1 <= map->getY() + map->getHeight()))
 				{
 					SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
 					SDL_RenderDrawLineF(renderer, x1 + 1, y1 + 1, x2 + 1, y2 + 1);
 					SDL_RenderDrawLineF(renderer, x1 - 1, y1 - 1, x2 - 1, y2 - 1);
 					SDL_RenderDrawLineF(renderer, x1 + 1, y1 - 1, x2 + 1, y2 - 1);
 					SDL_RenderDrawLineF(renderer, x1 - 1, y1 + 1, x2 - 1, y2 + 1);
+					SDL_RenderDrawLineF(renderer, x1 + 2, y1 + 2, x2 + 2, y2 + 2);
+					SDL_RenderDrawLineF(renderer, x1 - 2, y1 - 2, x2 - 2, y2 - 2);
+					SDL_RenderDrawLineF(renderer, x1 + 2, y1 - 2, x2 + 2, y2 - 2);
+					SDL_RenderDrawLineF(renderer, x1 - 2, y1 + 2, x2 - 2, y2 + 2);
 
 					x1 += xUnit;
 					x2 += xUnit;
@@ -137,9 +141,11 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 						break;
 					}
 				}
+
+				printf("Ends at (%f, %f).\n", x1, y1);
 			}
 
-			if (collidingGrunt > 0)
+			if (collidingGrunt >= 0)
 			{
 				gArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
 				printf("Dealing %d points of damage. Remaining health: %d.\n", stats.getGunDamage(getGun()),

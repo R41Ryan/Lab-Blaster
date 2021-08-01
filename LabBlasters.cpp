@@ -7,7 +7,7 @@
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
-const int TOTAL_GRUNTS = 5;
+const int TOTAL_GRUNTS = 1;
 
 SDL_Window* gameWindow = NULL;
 
