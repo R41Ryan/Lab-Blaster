@@ -134,7 +134,7 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 					y1 += yUnit;
 					y2 += yUnit;
 
-					collidingGrunt = checkPointCollideGrunt((int)x1, (int)y1, gArray, arrSizes[GRUNT]);
+					collidingGrunt = checkPointCollideGrunt((int)x1, (int)y1, gArray, arrSizes[GRUNT], map);
 					if (collidingGrunt >= 0)
 					{
 						printf("HIT!.\n");
@@ -148,8 +148,8 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 			if (collidingGrunt >= 0)
 			{
 				gArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
-				printf("Dealing %d points of damage. Remaining health: %d.\n", stats.getGunDamage(getGun()),
-					gArray[collidingGrunt].getCurrentHealth());
+				printf("Dealing %d points of damage to Grunt %d. Remaining health: %d.\n", stats.getGunDamage(getGun()),
+					collidingGrunt, gArray[collidingGrunt].getCurrentHealth());
 			}
 
 			Uint32 fireRateMilliseconds = (Uint32)(1000 /
@@ -177,7 +177,7 @@ double Player::distanceTo(int x, int y)
 	return hypot(xDif, yDif);
 }
 
-int Player::checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize)
+int Player::checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize, Map* map)
 {
 	int closestIndex = -1;
 	double smallestDistance = -1.f;
@@ -190,10 +190,10 @@ int Player::checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize)
 	{
 		if (gArray[i].isAlive())
 		{
-			currentLeft = gArray[i].getX() - gArray[i].getHitboxWidth() / 2;
-			currentRight = gArray[i].getX() + gArray[i].getHitboxWidth() / 2;
-			currentTop = gArray[i].getY() - gArray[i].getHitboxHeight() / 2;
-			currentBottom = gArray[i].getY() + gArray[i].getHitboxHeight() / 2;
+			currentLeft = map->getX() + gArray[i].getX() - gArray[i].getHitboxWidth() / 2;
+			currentRight = map->getX() + gArray[i].getX() + gArray[i].getHitboxWidth() / 2;
+			currentTop = map->getY() + gArray[i].getY() - gArray[i].getHitboxHeight() / 2;
+			currentBottom = map->getY() + gArray[i].getY() + gArray[i].getHitboxHeight() / 2;
 
 			// If the point is in the hitbox
 			if ((x >= currentLeft && x <= currentRight) && (y >= currentTop && y <= currentBottom))

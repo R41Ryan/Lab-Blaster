@@ -50,7 +50,7 @@ public:
 	// Returns the distance between the Player's position and another position according to the x and y parameters.
 	double distanceTo(int x, int y);
 	// Checks if the points specified by the x and y parameters collide with any hitbox belonging to any grunt in the array provided. It returns the grunt's array index if there is a collision. Otherwise returns -1.
-	int checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize);
+	int checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize, Map* map);
 
 	// Getters
 	int getGun();

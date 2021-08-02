@@ -7,7 +7,7 @@
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
-const int TOTAL_GRUNTS = 1;
+const int TOTAL_GRUNTS = 5;
 
 SDL_Window* gameWindow = NULL;
 
@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
 			WeaponStats gameWeapStats = WeaponStats();
 
 			characterArraySizes[PLAYER] = 1;
-			characterArraySizes[GRUNT] = 1;
+			characterArraySizes[GRUNT] = TOTAL_GRUNTS;
 
 			if (!gameMap.loadFloor(gameRenderer, "map/map_floor.png"))
 			{

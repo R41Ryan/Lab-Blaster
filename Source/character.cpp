@@ -44,7 +44,7 @@ void Character::incrementHealth(int h)
 	{
 		currentHealth = maxHealth;
 	}
-	else if (currentHealth + h < 0)
+	else if (currentHealth + h <= 0)
 	{
 		currentHealth = 0;
 		living = false;
