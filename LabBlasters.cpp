@@ -1,5 +1,5 @@
 #include <player.h>
-#include <grunt.h>
+#include <enemy.h>
 #include <map.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -7,7 +7,7 @@
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
-const int TOTAL_GRUNTS = 5;
+const int TOTAL_GRUNTS = 1;
 
 SDL_Window* gameWindow = NULL;
 
@@ -16,7 +16,7 @@ SDL_Renderer* gameRenderer = NULL;
 SDL_Rect* spriteClips[TOTAL_CHARACTER_TYPES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
-WeaponStats stats;
+WeaponStats stats = WeaponStats();
 Map gameMap;
 MouseCoordinates mouse = MouseCoordinates();
 
@@ -25,7 +25,7 @@ bool mouseStates[TOTAL_MOUSE_BUTTONS];
 
 int characterArraySizes[TOTAL_CHARACTER_TYPES];
 
-Grunt arrGrunt[TOTAL_GRUNTS];
+Enemy arrEnemy[TOTAL_GRUNTS];
 
 bool init() {
 	bool success = true;
@@ -212,7 +212,6 @@ int main(int argc, char* argv[])
 		else
 		{
 			setupClips();
-			WeaponStats gameWeapStats = WeaponStats();
 
 			characterArraySizes[PLAYER] = 1;
 			characterArraySizes[GRUNT] = TOTAL_GRUNTS;
@@ -224,12 +223,12 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			Player gamePlayer = Player(0, SCREEN_DIMENSIONS.width / 2, SCREEN_DIMENSIONS.height / 2, 100,
+			Player gamePlayer = Player(0, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
 				5, 50, 50, PISTOL, FISTS);
 
-			for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+			for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 			{
-				arrGrunt[i] = Grunt(i, rand() % gameMap.getWidth(), rand() % gameMap.getHeight(),
+				arrEnemy[i] = Enemy((float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
 					100, 3, 50, 50);
 			}
 
@@ -269,15 +268,15 @@ int main(int argc, char* argv[])
 				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS);
 				gameMap.render(gameRenderer);
 
-				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 				{
-					arrGrunt[i].move(gamePlayer.getX(), gamePlayer.getY());
+					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY());
 				}
 								
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
-						arrGrunt, characterArraySizes, gameWeapStats);
+						arrEnemy, characterArraySizes, stats);
 				}
 				else
 				{
@@ -290,10 +289,10 @@ int main(int argc, char* argv[])
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
 				
-				for (int i = 0; i < sizeof(arrGrunt) / sizeof(Grunt); i++)
+				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 				{
-					arrGrunt[i].render(gameRenderer, characterSpriteSheets[GRUNT],
-						spriteClips[GRUNT][GRUNT_IDLE], gameMap.getX(), gameMap.getY());
+					arrEnemy[i].render(gameRenderer, characterSpriteSheets[GRUNT],
+						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);
 				}
 				
 				SDL_RenderPresent(gameRenderer);

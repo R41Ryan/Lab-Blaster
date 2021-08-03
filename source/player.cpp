@@ -1,6 +1,6 @@
 #include "..\headers\player.h"
 
-Player::Player(int e, int x, int y, int mHealth, int s, int w, int h, int gun, int melee)
+Player::Player(int e, float x, float y, int mHealth, int s, int w, int h, int gun, int melee)
 {
 	setX(x);
 	setY(y);
@@ -55,8 +55,8 @@ void Player::move(bool* states, Map* map)
 			double xVel = (double)xDir * convertingFactor;
 			double yVel = (double)yDir * convertingFactor;
 
-			int newX = getX() + (int)xVel;
-			int newY = getY() + (int)yVel;
+			float newX = getX() + (float)xVel;
+			float newY = getY() + (float)yVel;
 
 			if (newX < 0)
 			{
@@ -88,7 +88,7 @@ void Player::move(bool* states, Map* map)
 }
 
 void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, MouseCoordinates mouse,
-	Grunt gArray[], int arrSizes[], WeaponStats stats)
+	Enemy eArray[], int arrSizes[], WeaponStats stats)
 {
 	if (isAlive())
 	{
@@ -134,22 +134,17 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 					y1 += yUnit;
 					y2 += yUnit;
 
-					collidingGrunt = checkPointCollideGrunt((int)x1, (int)y1, gArray, arrSizes[GRUNT], map);
+					collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, arrSizes[GRUNT], map);
 					if (collidingGrunt >= 0)
 					{
-						printf("HIT!.\n");
 						break;
 					}
 				}
-
-				printf("Ends at (%f, %f).\n", x1, y1);
 			}
 
 			if (collidingGrunt >= 0)
 			{
-				gArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
-				printf("Dealing %d points of damage to Grunt %d. Remaining health: %d.\n", stats.getGunDamage(getGun()),
-					collidingGrunt, gArray[collidingGrunt].getCurrentHealth());
+				eArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
 			}
 
 			Uint32 fireRateMilliseconds = (Uint32)(1000 /
@@ -177,7 +172,7 @@ double Player::distanceTo(int x, int y)
 	return hypot(xDif, yDif);
 }
 
-int Player::checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize, Map* map)
+int Player::checkPointCollide(int x, int y, Enemy eArray[], int arrSize, Map* map)
 {
 	int closestIndex = -1;
 	double smallestDistance = -1.f;
@@ -188,17 +183,18 @@ int Player::checkPointCollideGrunt(int x, int y, Grunt gArray[], int arrSize, Ma
 	int currentBottom;
 	for (int i = 0; i < arrSize; i++)
 	{
-		if (gArray[i].isAlive())
+		if (eArray[i].isAlive())
 		{
-			currentLeft = map->getX() + gArray[i].getX() - gArray[i].getHitboxWidth() / 2;
-			currentRight = map->getX() + gArray[i].getX() + gArray[i].getHitboxWidth() / 2;
-			currentTop = map->getY() + gArray[i].getY() - gArray[i].getHitboxHeight() / 2;
-			currentBottom = map->getY() + gArray[i].getY() + gArray[i].getHitboxHeight() / 2;
+			// Added map positions since the positions of grunts are relative to the map, but the point in quesiton is relative to the renderer.
+			currentLeft = map->getX() + eArray[i].getX() - eArray[i].getHitboxWidth() / 2;
+			currentRight = map->getX() + eArray[i].getX() + eArray[i].getHitboxWidth() / 2;
+			currentTop = map->getY() + eArray[i].getY() - eArray[i].getHitboxHeight() / 2;
+			currentBottom = map->getY() + eArray[i].getY() + eArray[i].getHitboxHeight() / 2;
 
 			// If the point is in the hitbox
 			if ((x >= currentLeft && x <= currentRight) && (y >= currentTop && y <= currentBottom))
 			{
-				currentDistance = distanceTo(gArray[i].getX(), gArray[i].getY());
+				currentDistance = distanceTo(eArray[i].getX(), eArray[i].getY());
 				if (closestIndex == -1)
 				{
 					closestIndex = i;

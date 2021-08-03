@@ -64,6 +64,7 @@ public:
 
 	// Sets the stats for the pistol;
 	void setPistol();
+	
 	/*
 	// Sets the stats for the shotgun;
 	void setShotgun();

@@ -39,9 +39,6 @@
     <ClInclude Include="headers\enemy.h">
       <Filter>Header Files\characters</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\grunt.h">
-      <Filter>Header Files\characters</Filter>
-    </ClInclude>
     <ClInclude Include="headers\player.h">
       <Filter>Header Files\characters</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
       <Filter>Source Files\characters</Filter>
     </ClCompile>
     <ClCompile Include="source\enemy.cpp">
-      <Filter>Source Files\characters</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\grunt.cpp">
       <Filter>Source Files\characters</Filter>
     </ClCompile>
     <ClCompile Include="source\player.cpp">

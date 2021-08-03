@@ -71,7 +71,7 @@ void Map::render(SDL_Renderer* renderer)
 	}
 }
 
-void Map::setCentrePlayer(int playerX, int playerY, ScreenDimensions screen)
+void Map::setCentrePlayer(float playerX, float playerY, ScreenDimensions screen)
 {
 	xPos = screen.width / 2 - playerX;
 	yPos = screen.height / 2 - playerY;

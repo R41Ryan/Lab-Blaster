@@ -1,7 +1,7 @@
 #include <character.h>
 #include <math.h>
 
-Character::Character(int e, int x, int y, int mHealth, int s, int w, int h)
+Character::Character(float x, float y, int mHealth, int s, int w, int h)
 {
 	xPos = x;
 	yPos = y;
@@ -14,12 +14,12 @@ Character::Character(int e, int x, int y, int mHealth, int s, int w, int h)
 	hitboxHeight = h;
 }
 
-int Character::move(int x, int y)
+int Character::move(float x, float y)
 {
 	if (living)
 	{
-		int xDif = x - xPos;
-		int yDif = y - yPos;
+		float xDif = x - xPos;
+		float yDif = y - yPos;
 
 		if (xDif + yDif == 0)
 		{
@@ -30,8 +30,8 @@ int Character::move(int x, int y)
 		double hypotenuse = hypot((double)xDif, (double)yDif);
 		double convertingFactor = speed / hypotenuse;
 
-		xPos += (int)(xDif * convertingFactor);
-		yPos += (int)(yDif * convertingFactor);
+		xPos += (float)(xDif * convertingFactor);
+		yPos += (float)(yDif * convertingFactor);
 
 		return 0;
 	}
@@ -62,12 +62,12 @@ void Character::restoreHealth()
 }
 
 void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
-	int mapXPos, int mapYPos)
+	Map* map)
 {
 	if (living)
 	{
-		int renderXPos = mapXPos + xPos;
-		int renderYPos = mapYPos + yPos;
+		int renderXPos = (int)(map->getX() + xPos);
+		int renderYPos = (int)(map->getY() + yPos);
 
 		SDL_Rect renderClip = { renderXPos - spriteClip.w / 2, renderYPos - spriteClip.h / 2, spriteClip.w, spriteClip.h };
 
@@ -75,12 +75,12 @@ void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rec
 	}
 }
 
-int Character::getX()
+float Character::getX()
 {
 	return xPos;
 }
 
-int Character::getY()
+float Character::getY()
 {
 	return yPos;
 }
@@ -115,12 +115,12 @@ int Character::getHitboxHeight()
 	return hitboxHeight;
 }
 
-void Character::setX(int x)
+void Character::setX(float x)
 {
 	xPos = x;
 }
 
-void Character::setY(int y)
+void Character::setY(float y)
 {
 	yPos = y;
 }
