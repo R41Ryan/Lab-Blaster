@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\character.h" />
     <ClInclude Include="headers\enemy.h" />
+    <ClInclude Include="headers\hitbox.h" />
     <ClInclude Include="Headers\map.h" />
     <ClInclude Include="Headers\mouseCoordinates.h" />
     <ClInclude Include="Headers\myMath.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="LabBlasters.cpp" />
     <ClCompile Include="Source\character.cpp" />
     <ClCompile Include="source\enemy.cpp" />
+    <ClCompile Include="source\hitbox.cpp" />
     <ClCompile Include="Source\map.cpp" />
     <ClCompile Include="Source\mouseCoordinates.cpp" />
     <ClCompile Include="Source\myMath.cpp" />

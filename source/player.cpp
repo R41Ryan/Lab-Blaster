@@ -7,8 +7,7 @@ Player::Player(int e, float x, float y, int mHealth, int s, int w, int h, int gu
 	setMaxHealth(mHealth);
 	setCurrentHealth(mHealth);
 	setSpeed(s);
-	setHitboxWidth(w);
-	setHitboxHeight(h);
+	setHitbox(w, h);
 	shooting = false;
 	meleeing = false;
 	this->gun = gun;
@@ -19,7 +18,7 @@ Player::Player(int e, float x, float y, int mHealth, int s, int w, int h, int gu
 	meleeTimer = Timer();
 }
 
-void Player::move(bool* states, Map* map)
+void Player::move(bool* states, Map* map, Enemy eArray[])
 {
 	if (isAlive())
 	{
@@ -49,14 +48,25 @@ void Player::move(bool* states, Map* map)
 		if (xDir != 0 || yDir != 0)
 		{
 			// Finding x velocity and y velocity using similar triangles
-			double hypotenuse = hypot((double)xDir, (double)yDir);
-			double convertingFactor = getSpeed() / hypotenuse;
+			float hypotenuse = hypotf((float)xDir, (float)yDir);
+			float convertingFactor = getSpeed() / hypotenuse;
 
-			double xVel = (double)xDir * convertingFactor;
-			double yVel = (double)yDir * convertingFactor;
+			float xVel = xDir * convertingFactor;
+			float yVel = yDir * convertingFactor;
 
-			float newX = getX() + (float)xVel;
-			float newY = getY() + (float)yVel;
+			for (int i = 0; i < TOTAL_ENEMIES; i++)
+			{
+				if (eArray[i].isAlive())
+				{
+					if (willCollide(xVel, yVel, eArray[i].getHitbox()))
+					{
+						return;
+					}
+				}
+			}
+
+			float newX = getX() + xVel;
+			float newY = getY() + yVel;
 
 			if (newX < 0)
 			{
@@ -84,11 +94,13 @@ void Player::move(bool* states, Map* map)
 				setY(newY);
 			}
 		}
+
+		updateHitbox();
 	}
 }
 
 void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, MouseCoordinates mouse,
-	Enemy eArray[], int arrSizes[], WeaponStats stats)
+	Enemy eArray[], WeaponStats stats)
 {
 	if (isAlive())
 	{
@@ -134,7 +146,7 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 					y1 += yUnit;
 					y2 += yUnit;
 
-					collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, arrSizes[GRUNT], map);
+					collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, map);
 					if (collidingGrunt >= 0)
 					{
 						break;
@@ -172,7 +184,7 @@ double Player::distanceTo(int x, int y)
 	return hypot(xDif, yDif);
 }
 
-int Player::checkPointCollide(int x, int y, Enemy eArray[], int arrSize, Map* map)
+int Player::checkPointCollide(int x, int y, Enemy eArray[], Map* map)
 {
 	int closestIndex = -1;
 	double smallestDistance = -1.f;
@@ -181,15 +193,15 @@ int Player::checkPointCollide(int x, int y, Enemy eArray[], int arrSize, Map* ma
 	int currentRight;
 	int currentTop;
 	int currentBottom;
-	for (int i = 0; i < arrSize; i++)
+	for (int i = 0; i < TOTAL_ENEMIES; i++)
 	{
 		if (eArray[i].isAlive())
 		{
 			// Added map positions since the positions of grunts are relative to the map, but the point in quesiton is relative to the renderer.
-			currentLeft = map->getX() + eArray[i].getX() - eArray[i].getHitboxWidth() / 2;
-			currentRight = map->getX() + eArray[i].getX() + eArray[i].getHitboxWidth() / 2;
-			currentTop = map->getY() + eArray[i].getY() - eArray[i].getHitboxHeight() / 2;
-			currentBottom = map->getY() + eArray[i].getY() + eArray[i].getHitboxHeight() / 2;
+			currentLeft = map->getX() + eArray[i].getX() - eArray[i].getHitbox().width / 2;
+			currentRight = map->getX() + eArray[i].getX() + eArray[i].getHitbox().width / 2;
+			currentTop = map->getY() + eArray[i].getY() - eArray[i].getHitbox().height / 2;
+			currentBottom = map->getY() + eArray[i].getY() + eArray[i].getHitbox().height / 2;
 
 			// If the point is in the hitbox
 			if ((x >= currentLeft && x <= currentRight) && (y >= currentTop && y <= currentBottom))

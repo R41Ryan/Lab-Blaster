@@ -10,11 +10,13 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	speed = s;
 	living = true;
 	
-	hitboxWidth = w;
-	hitboxHeight = h;
+	cHitbox.xPos = (float)(x - w / 2);
+	cHitbox.yPos = (float)(y - h / 2);
+	cHitbox.width = w;
+	cHitbox.height = h;
 }
 
-int Character::move(float x, float y)
+int Character::move(float x, float y, Hitbox playerHitbox)
 {
 	if (living)
 	{
@@ -30,8 +32,18 @@ int Character::move(float x, float y)
 		double hypotenuse = hypot((double)xDif, (double)yDif);
 		double convertingFactor = speed / hypotenuse;
 
-		xPos += (float)(xDif * convertingFactor);
-		yPos += (float)(yDif * convertingFactor);
+		float xVel = (float)(xDif * convertingFactor);
+		float yVel = (float)(yDif * convertingFactor);
+
+		if (willCollide(xVel, yVel, playerHitbox))
+		{
+			return 1;
+		}
+
+		xPos += xVel;
+		yPos += yVel;
+
+		cHitbox.update(xPos, yPos);
 
 		return 0;
 	}
@@ -75,6 +87,59 @@ void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rec
 	}
 }
 
+bool Character::willCollide(float xVel, float yVel, Hitbox hitbox)
+{
+	bool isLeft = cHitbox.xPos + cHitbox.width <= hitbox.xPos;
+	bool isRight = cHitbox.xPos >= hitbox.xPos + hitbox.width;
+	bool isAbove = cHitbox.yPos + cHitbox.height <= hitbox.yPos;
+	bool isBelow = cHitbox.yPos >= hitbox.yPos + hitbox.height;
+	bool collided = false;
+
+	if ((isLeft && cHitbox.xPos + cHitbox.width + xVel > hitbox.xPos) && !(isAbove || isBelow))
+	{
+		printf("Hits left side.\n");
+		xPos = hitbox.xPos - cHitbox.width/2;
+		collided = true;
+	}
+
+	if ((isRight && cHitbox.xPos + xVel < hitbox.xPos + hitbox.width) && !(isAbove || isBelow))
+	{
+		printf("Hits right side.\n");
+		xPos = hitbox.xPos + hitbox.width + cHitbox.width/2;
+		collided = true;
+	}
+
+	if ((isAbove && cHitbox.yPos + cHitbox.height + yVel > hitbox.yPos) && !(isLeft || isRight))
+	{
+		printf("Hits top side.\n");
+		yPos = hitbox.yPos - cHitbox.height/2;
+		collided = true;
+	}
+
+	if ((isBelow && cHitbox.yPos + yVel < hitbox.yPos + hitbox.height) && !(isLeft || isRight))
+	{
+		printf("Hits top side.\n");
+		yPos = hitbox.yPos + hitbox.height + cHitbox.height/2;
+		collided = true;
+	}
+
+	cHitbox.update(xPos, yPos);
+
+	return collided;
+}
+
+void Character::updateHitbox()
+{
+	cHitbox.update(xPos, yPos);
+}
+
+void Character::drawHitbox(SDL_Renderer* renderer, Map* map)
+{
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+	SDL_Rect renderRect = { map->getX() + cHitbox.xPos, map->getY() + cHitbox.yPos, cHitbox.width, cHitbox.height };
+	SDL_RenderDrawRect(renderer, &renderRect);
+}
+
 float Character::getX()
 {
 	return xPos;
@@ -105,14 +170,9 @@ int Character::getSpeed()
 	return speed;
 }
 
-int Character::getHitboxWidth()
+Hitbox Character::getHitbox()
 {
-	return hitboxWidth;
-}
-
-int Character::getHitboxHeight()
-{
-	return hitboxHeight;
+	return cHitbox;
 }
 
 void Character::setX(float x)
@@ -140,12 +200,10 @@ void Character::setSpeed(int s)
 	speed = s;
 }
 
-void Character::setHitboxWidth(int w)
+void Character::setHitbox(int w, int h)
 {
-	hitboxWidth = w;
-}
-
-void Character::setHitboxHeight(int h)
-{
-	hitboxHeight = h;
+	cHitbox.xPos = this->xPos - w / 2;
+	cHitbox.yPos = this->yPos - h / 2;
+	cHitbox.width = w;
+	cHitbox.height = h;
 }

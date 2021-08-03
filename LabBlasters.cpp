@@ -7,8 +7,6 @@
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
-const int TOTAL_GRUNTS = 1;
-
 SDL_Window* gameWindow = NULL;
 
 SDL_Renderer* gameRenderer = NULL;
@@ -260,7 +258,7 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				gamePlayer.move(keyStates, &gameMap);
+				gamePlayer.move(keyStates, &gameMap, arrEnemy);
 				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
@@ -270,13 +268,13 @@ int main(int argc, char* argv[])
 
 				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 				{
-					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY());
+					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox());
 				}
 								
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
-						arrEnemy, characterArraySizes, stats);
+						arrEnemy, stats);
 				}
 				else
 				{
@@ -288,13 +286,15 @@ int main(int argc, char* argv[])
 				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
+				gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				
 				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 				{
 					arrEnemy[i].render(gameRenderer, characterSpriteSheets[GRUNT],
 						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);
+					arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
 				}
-				
+
 				SDL_RenderPresent(gameRenderer);
 			}
 		}
