@@ -222,12 +222,12 @@ int main(int argc, char* argv[])
 			bool quit = false;
 
 			Player gamePlayer = Player(0, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
-				5, 50, 50, PISTOL, FISTS);
+				5, 40, 40, PISTOL, FISTS);
 
 			for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 			{
 				arrEnemy[i] = Enemy((float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
-					100, 3, 50, 50);
+					100, 3, 40, 40);
 			}
 
 			SDL_Event e;
@@ -285,7 +285,7 @@ int main(int argc, char* argv[])
 				}
 				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
-					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
+					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS, &gameMap);
 				gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				
 				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)

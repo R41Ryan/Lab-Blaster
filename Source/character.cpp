@@ -35,9 +35,9 @@ int Character::move(float x, float y, Hitbox playerHitbox)
 		float xVel = (float)(xDif * convertingFactor);
 		float yVel = (float)(yDif * convertingFactor);
 
-		if (willCollide(xVel, yVel, playerHitbox))
+		if (willCollide(&xVel, &yVel, playerHitbox))
 		{
-			return 1;
+			
 		}
 
 		xPos += xVel;
@@ -87,7 +87,7 @@ void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rec
 	}
 }
 
-bool Character::willCollide(float xVel, float yVel, Hitbox hitbox)
+bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
 {
 	bool isLeft = cHitbox.xPos + cHitbox.width <= hitbox.xPos;
 	bool isRight = cHitbox.xPos >= hitbox.xPos + hitbox.width;
@@ -95,31 +95,35 @@ bool Character::willCollide(float xVel, float yVel, Hitbox hitbox)
 	bool isBelow = cHitbox.yPos >= hitbox.yPos + hitbox.height;
 	bool collided = false;
 
-	if ((isLeft && cHitbox.xPos + cHitbox.width + xVel > hitbox.xPos) && !(isAbove || isBelow))
+	if ((isLeft && cHitbox.xPos + cHitbox.width + *xVel > hitbox.xPos) && !(isAbove || isBelow))
 	{
 		printf("Hits left side.\n");
 		xPos = hitbox.xPos - cHitbox.width/2;
+		*xVel = 0;
 		collided = true;
 	}
 
-	if ((isRight && cHitbox.xPos + xVel < hitbox.xPos + hitbox.width) && !(isAbove || isBelow))
+	if ((isRight && cHitbox.xPos + *xVel < hitbox.xPos + hitbox.width) && !(isAbove || isBelow))
 	{
 		printf("Hits right side.\n");
 		xPos = hitbox.xPos + hitbox.width + cHitbox.width/2;
+		*xVel = 0;
 		collided = true;
 	}
 
-	if ((isAbove && cHitbox.yPos + cHitbox.height + yVel > hitbox.yPos) && !(isLeft || isRight))
+	if ((isAbove && cHitbox.yPos + cHitbox.height + *yVel > hitbox.yPos) && !(isLeft || isRight))
 	{
 		printf("Hits top side.\n");
 		yPos = hitbox.yPos - cHitbox.height/2;
+		*yVel = 0;
 		collided = true;
 	}
 
-	if ((isBelow && cHitbox.yPos + yVel < hitbox.yPos + hitbox.height) && !(isLeft || isRight))
+	if ((isBelow && cHitbox.yPos + *yVel < hitbox.yPos + hitbox.height) && !(isLeft || isRight))
 	{
 		printf("Hits top side.\n");
 		yPos = hitbox.yPos + hitbox.height + cHitbox.height/2;
+		*yVel = 0;
 		collided = true;
 	}
 

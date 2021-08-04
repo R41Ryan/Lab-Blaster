@@ -58,9 +58,9 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 			{
 				if (eArray[i].isAlive())
 				{
-					if (willCollide(xVel, yVel, eArray[i].getHitbox()))
+					if (willCollide(&xVel, &yVel, eArray[i].getHitbox()))
 					{
-						return;
+						break;
 					}
 				}
 			}
@@ -68,26 +68,26 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 			float newX = getX() + xVel;
 			float newY = getY() + yVel;
 
-			if (newX < 0)
+			if (newX < getHitbox().width / 2)
 			{
-				setX(0);
+				setX(getHitbox().width/2);
 			}
-			else if (newX > map->getWidth())
+			else if (newX > map->getWidth() - getHitbox().width / 2)
 			{
-				setX(map->getWidth());
+				setX(map->getWidth() - getHitbox().width / 2);
 			}
 			else
 			{
 				setX(newX);
 			}
 
-			if (newY < 0)
+			if (newY < getHitbox().height/2)
 			{
-				setY(0);
+				setY(getHitbox().height / 2);
 			}
-			else if (newY > map->getHeight())
+			else if (newY > map->getHeight() - getHitbox().height / 2)
 			{
-				setY(map->getHeight());
+				setY(map->getHeight() - getHitbox().height / 2);
 			}
 			else
 			{
@@ -167,11 +167,12 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 }
 
 void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
-	ScreenDimensions screen)
+	ScreenDimensions screen, Map* map)
 {
 	if (isAlive())
 	{
-		SDL_Rect renderClip = { screen.width / 2 - spriteClip.w / 2, screen.height / 2 - spriteClip.h / 2, spriteClip.w, spriteClip.h };
+		SDL_Rect renderClip = { map->getX() + getX() - spriteClip.w / 2, map->getY() + getY() - spriteClip.h / 2, 
+			spriteClip.w, spriteClip.h };
 
 		SDL_RenderCopy(renderer, spriteSheet, &spriteClip, &renderClip);
 	}

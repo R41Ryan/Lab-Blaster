@@ -75,6 +75,24 @@ void Map::setCentrePlayer(float playerX, float playerY, ScreenDimensions screen)
 {
 	xPos = screen.width / 2 - playerX;
 	yPos = screen.height / 2 - playerY;
+
+	if (xPos > 0)
+	{
+		xPos = 0;
+	}
+	else if (xPos < screen.width - width)
+	{
+		xPos = screen.width - width;
+	}
+
+	if (yPos > 0)
+	{
+		yPos = 0;
+	}
+	else if (yPos < screen.height - height)
+	{
+		yPos = screen.height - height;
+	}
 }
 
 SDL_Texture* Map::getFloor()
