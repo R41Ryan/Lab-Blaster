@@ -97,7 +97,7 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
 
 	if ((isLeft && cHitbox.xPos + cHitbox.width + *xVel > hitbox.xPos) && !(isAbove || isBelow))
 	{
-		printf("Hits left side.\n");
+		// printf("Hits left side.\n");
 		xPos = hitbox.xPos - cHitbox.width/2;
 		*xVel = 0;
 		collided = true;
@@ -105,7 +105,7 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
 
 	if ((isRight && cHitbox.xPos + *xVel < hitbox.xPos + hitbox.width) && !(isAbove || isBelow))
 	{
-		printf("Hits right side.\n");
+		// printf("Hits right side.\n");
 		xPos = hitbox.xPos + hitbox.width + cHitbox.width/2;
 		*xVel = 0;
 		collided = true;
@@ -113,7 +113,7 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
 
 	if ((isAbove && cHitbox.yPos + cHitbox.height + *yVel > hitbox.yPos) && !(isLeft || isRight))
 	{
-		printf("Hits top side.\n");
+		// printf("Hits top side.\n");
 		yPos = hitbox.yPos - cHitbox.height/2;
 		*yVel = 0;
 		collided = true;
@@ -121,7 +121,7 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
 
 	if ((isBelow && cHitbox.yPos + *yVel < hitbox.yPos + hitbox.height) && !(isLeft || isRight))
 	{
-		printf("Hits top side.\n");
+		// printf("Hits top side.\n");
 		yPos = hitbox.yPos + hitbox.height + cHitbox.height/2;
 		*yVel = 0;
 		collided = true;

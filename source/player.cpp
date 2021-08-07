@@ -114,19 +114,45 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 
 			if ((mouse.x > 0 && mouse.x < screen.width) && (mouse.y > 0 && mouse.y < screen.height))
 			{
+				double randomAngle = (double)(rand() % (int)(stats.getGunAngle(gun) * 100)) / 100;
+				randomAngle = randomAngle / 180 * M_PI;
+				// printf("Random angle: %f\n", randomAngle);
+
 				SDL_SetRenderDrawColor(renderer, 215, 215, 0, 0xFF);
-				int xDif = mouse.x - (map->getX() + getX());
-				int yDif = mouse.y - (map->getY() + getY());
+				float xDif = (float)mouse.x - ((float)map->getX() + getX());
+				float yDif = (float)mouse.y - ((float)map->getY() + getY());
+
+				// printf("xDif: %f, yDif: %f\n", xDif, yDif);
+
+				float shootAngle = atanf((yDif / xDif));
+
+				// printf("shootAngle before change: %f\n", shootAngle);
+
+				if (xDif < 0)
+				{
+					shootAngle += M_PI;
+				}
+				shootAngle -= stats.getGunAngle(gun)/180 * M_PI / 2;
+
+				// printf("shootAngle after change 1: %f\n", shootAngle);
+
+				shootAngle += randomAngle;
+
+				// printf("shootAngle after change 2: %f\n", shootAngle);
+
+				xDif = cosf(shootAngle);
+				yDif = sinf(shootAngle);
+
+				// printf("xDif: %f, yDif: %f\n", xDif, yDif);
+
 				double hypotenus = hypot((double)xDif, (double)yDif);
 				double convertingFactor = 1 / hypotenus;
 
-				float x1, y1, x2, y2, xUnit, yUnit;
+				float x1, y1, x2, y2;
 				x1 = (float)(map->getX() + getX());
 				y1 = (float)(map->getY() + getY());
-				x2 = (float)(x1 + xDif * convertingFactor);
-				y2 = (float)(y1 + yDif * convertingFactor);
-				xUnit = x2 - x1;
-				yUnit = y2 - y1;
+				x2 = (float)(x1 + xDif);
+				y2 = (float)(y1 + yDif);
 
 				while ((x1 >= map->getX() && x1 <= map->getX() + map->getWidth()) &&
 					(y1 >= map->getY() && y1 <= map->getY() + map->getHeight()))
@@ -141,10 +167,10 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 					SDL_RenderDrawLineF(renderer, x1 + 2, y1 - 2, x2 + 2, y2 - 2);
 					SDL_RenderDrawLineF(renderer, x1 - 2, y1 + 2, x2 - 2, y2 + 2);
 
-					x1 += xUnit;
-					x2 += xUnit;
-					y1 += yUnit;
-					y2 += yUnit;
+					x1 += xDif;
+					x2 += xDif;
+					y1 += yDif;
+					y2 += yDif;
 
 					collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, map);
 					if (collidingGrunt >= 0)

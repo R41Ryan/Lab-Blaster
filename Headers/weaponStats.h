@@ -41,7 +41,7 @@ public:
 	WeaponStats();
 	// Get the damage of the specified gun type.
 	int getGunDamage(int weapon);
-	// Get the angle of the accuracy cone of the specified gun type in radians.
+	// Get the angle of the accuracy cone of the specified gun type in degrees.
 	double getGunAngle(int weapon);
 	// Get the price of the specified gun type.
 	int getGunPrice(int weapon);
@@ -51,7 +51,7 @@ public:
 	int getGunFireRate(int weapon);
 	// Get the damage of the specified melee type.
 	int getMeleeDamage(int weapon);
-	// Get the angle of the cone of effect for the specified melee type in radians.
+	// Get the angle of the cone of effect for the specified melee type in degrees.
 	double getMeleeAngle(int weapon);
 	// Get the range of the cone of effect for the specified melee type in pixels.
 	int getMeleeRange(int weapon);

@@ -5,6 +5,7 @@
 #include <SDL_surface.h>
 #include <string>
 #include <screenDimensions.h>
+#include <mouseCoordinates.h>
 
 enum mapAssets
 {
@@ -32,8 +33,8 @@ public:
 	bool loadFloor(SDL_Renderer* renderer, std::string path);
 	// Renders the map.
 	void render(SDL_Renderer* renderer);
-	// Set the x and y rendering position of the map such that the player's location on the map is at the centre of the renderer.
-	void setCentrePlayer(float playerX, float playerY, ScreenDimensions screen);
+	// Set the x and y rendering position of the map such that it is between the player's location on the map and the mouse.
+	void setCentrePlayer(float playerX, float playerY, ScreenDimensions screen, MouseCoordinates mouse);
 	// Getters
 	SDL_Texture* getFloor();
 	int getX();

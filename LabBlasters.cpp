@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <screenDimensions.h>
+#include <time.h>
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
@@ -192,6 +193,8 @@ void setMouseState(SDL_MouseButtonEvent button, bool state)
 
 int main(int argc, char* argv[])
 {
+	srand(time(NULL)); // Initializes random number generator
+
 	for (int i = 0; i < TOTAL_KEYS; i++)
 	{
 		keyStates[i] = false;
@@ -263,7 +266,8 @@ int main(int argc, char* argv[])
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
 				
-				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS);
+				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS,
+					mouse);
 				gameMap.render(gameRenderer);
 
 				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)

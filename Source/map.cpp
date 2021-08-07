@@ -71,10 +71,37 @@ void Map::render(SDL_Renderer* renderer)
 	}
 }
 
-void Map::setCentrePlayer(float playerX, float playerY, ScreenDimensions screen)
+void Map::setCentrePlayer(float playerX, float playerY, ScreenDimensions screen, MouseCoordinates mouse)
 {
-	xPos = screen.width / 2 - playerX;
-	yPos = screen.height / 2 - playerY;
+	int mouseRelativeToMapX = mouse.x - xPos;
+	int mouseRelativeToMapY = mouse.y - yPos;
+	
+	float playerMouseAvgX = ((float)mouseRelativeToMapX + playerX) / 2;
+	float playerMouseAvgY = ((float)mouseRelativeToMapY + playerY) / 2;
+
+	// Number to indicate whether the camera should closer to the mouse or the player. 2 means centre on mouse, 0 means centre on player;
+	float playerToMouseFactor = 2.f / 3.f;
+
+	if (playerMouseAvgX > playerX)
+	{
+		playerMouseAvgX = playerX + (playerMouseAvgX - playerX) * playerToMouseFactor;
+	}
+	else
+	{
+		playerMouseAvgX = playerX - (playerX - playerMouseAvgX) * playerToMouseFactor;
+	}
+
+	if (playerMouseAvgY > playerY)
+	{
+		playerMouseAvgY = playerY + (playerMouseAvgY - playerY) * playerToMouseFactor;
+	}
+	else
+	{
+		playerMouseAvgY = playerY - (playerY - playerMouseAvgY) * playerToMouseFactor;
+	}
+
+	xPos = (float)screen.width / 2 - playerMouseAvgX;
+	yPos = (float)screen.height / 2 - playerMouseAvgY;
 
 	if (xPos > 0)
 	{
