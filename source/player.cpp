@@ -1,6 +1,6 @@
 #include "..\headers\player.h"
 
-Player::Player(int e, float x, float y, int mHealth, int s, int w, int h, int gun, int melee)
+Player::Player(WeaponStats stats, float x, float y, int mHealth, int s, int w, int h, int gun, int melee)
 {
 	setX(x);
 	setY(y);
@@ -16,6 +16,8 @@ Player::Player(int e, float x, float y, int mHealth, int s, int w, int h, int gu
 	gunTimer = Timer();
 
 	meleeTimer = Timer();
+	printf("%f, %f.\n", stats.getMeleeRange(melee), stats.getMeleeAngle(melee));
+	meleeCone = ConeRays(x, y, stats.getMeleeRange(melee), stats.getMeleeAngle(melee) * M_PI / 180, 0);
 }
 
 void Player::move(bool* states, Map* map, Enemy eArray[])
@@ -96,6 +98,7 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 		}
 
 		updateHitbox();
+		meleeCone.move(getX(), getY());
 	}
 }
 
@@ -249,6 +252,17 @@ int Player::checkPointCollide(int x, int y, Enemy eArray[], Map* map)
 	}
 
 	return closestIndex;
+}
+
+void Player::updateCone(MouseCoordinates mouse, Map* map)
+{
+	meleeCone.changeDirection((float)(mouse.x - map->getX()), (float)(mouse.y - map->getY()));
+	// printf("%d, %d.\n", mouse.x - map->getX(), mouse.y - map->getY());
+}
+
+void Player::drawCone(SDL_Renderer* renderer, Map* map)
+{
+	meleeCone.draw(renderer, map);
 }
 
 int Player::getGun()

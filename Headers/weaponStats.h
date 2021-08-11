@@ -31,7 +31,7 @@ private:
 
 	int meleeDamage[TOTAL_MELEE_TYPES];
 	double meleeConeOfEffectAngle[TOTAL_MELEE_TYPES];
-	int meleeRange[TOTAL_MELEE_TYPES];
+	float meleeRange[TOTAL_MELEE_TYPES];
 	int meleePrice[TOTAL_MELEE_TYPES];
 	int meleeKnockback[TOTAL_MELEE_TYPES];
 	int meleeSwingRate[TOTAL_MELEE_TYPES];
@@ -54,7 +54,7 @@ public:
 	// Get the angle of the cone of effect for the specified melee type in degrees.
 	double getMeleeAngle(int weapon);
 	// Get the range of the cone of effect for the specified melee type in pixels.
-	int getMeleeRange(int weapon);
+	float getMeleeRange(int weapon);
 	// Get the price of the specified melee type.
 	int getMeleePrice(int weapon);
 	// Get the knockback power of the specified melee type in the number of pixels the target would be knocked back by.

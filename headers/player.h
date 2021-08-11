@@ -4,6 +4,7 @@
 #include <enemy.h>
 #include <weaponStats.h>
 #include <myMath.h>
+#include <coneRays.h>
 
 enum playerSprites {
 	PLAYER_IDLE,
@@ -34,11 +35,16 @@ private:
 
 	Timer gunTimer;
 	Timer meleeTimer;
+
+	ConeRays meleeCone;
 public:
 	// Constructors
-	Player(int e = 0, float x = 0, float y = 0, int mHealth = 100, int s = 5, int w = 50, int h = 50, 
+
+	Player(WeaponStats stats, float x = 0, float y = 0, int mHealth = 100, int s = 5, int w = 50, int h = 50,
 		int gun = PISTOL, int melee = FISTS);
+
 	// Functions
+
 	// Takes in user input and moves the player character such that it is always moving at a set speed regardless of direction.
 	void move(bool* states, Map* map, Enemy eArray[]);
 	// Fires the gun that is equipped in the general direction of the mouse.
@@ -51,8 +57,13 @@ public:
 	double distanceTo(int x, int y);
 	// Checks if the points specified by the x and y parameters collide with any hitbox belonging to any grunt in the array provided. It returns the grunt's array index if there is a collision. Otherwise returns -1.
 	int checkPointCollide(int x, int y, Enemy eArray[], Map* map);
+	// Updates melee cone such that it points to the coordinates given
+	void updateCone(MouseCoordinates mouse, Map* map);
+	// Draws the melee cone
+	void drawCone(SDL_Renderer* renderer, Map* map);
 
 	// Getters
+
 	int getGun();
 	int getMelee();
 	bool isShooting();

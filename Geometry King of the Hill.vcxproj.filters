@@ -51,6 +51,12 @@
     <ClInclude Include="headers\hitbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\mLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\coneRays.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LabBlasters.cpp">
@@ -84,6 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\hitbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\coneRays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -224,7 +224,10 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			Player gamePlayer = Player(0, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
+			printf("Test: %f.\n", stats.getGunAngle(PISTOL));
+			printf("Test: %f, %f.\n", stats.getMeleeRange(FISTS), stats.getMeleeAngle(FISTS));
+
+			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
 				5, 40, 40, PISTOL, FISTS);
 
 			for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
@@ -262,6 +265,7 @@ int main(int argc, char* argv[])
 				}
 
 				gamePlayer.move(keyStates, &gameMap, arrEnemy);
+				gamePlayer.updateCone(mouse, &gameMap);
 				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
@@ -274,7 +278,7 @@ int main(int argc, char* argv[])
 				{
 					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox());
 				}
-								
+				
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
@@ -291,6 +295,7 @@ int main(int argc, char* argv[])
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS, &gameMap);
 				gamePlayer.drawHitbox(gameRenderer, &gameMap);
+				gamePlayer.drawCone(gameRenderer, &gameMap);
 				
 				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
 				{

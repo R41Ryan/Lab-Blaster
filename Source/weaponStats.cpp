@@ -8,8 +8,10 @@ WeaponStats::WeaponStats()
 	setSMG();
 	setSniper();
 	setMachineGun();
+	*/
 	
 	setFists();
+	/*
 	setKnife();
 	setBaseballBat();
 	setSword();
@@ -52,7 +54,7 @@ double WeaponStats::getMeleeAngle(int weapon)
 	return meleeConeOfEffectAngle[weapon];
 }
 
-int WeaponStats::getMeleeRange(int weapon)
+float WeaponStats::getMeleeRange(int weapon)
 {
 	return meleeRange[weapon];
 }
@@ -75,7 +77,7 @@ int WeaponStats::getMeleeSwingRate(int weapon)
 void WeaponStats::setPistol()
 {
 	gunDamage[PISTOL] = 50;
-	gunAccuracyConeAngle[PISTOL] = 10;
+	gunAccuracyConeAngle[PISTOL] = 5;
 	gunPrice[PISTOL] = 0;
 	gunKnockback[PISTOL] = 1;
 	gunFireRate[PISTOL] = 3;
@@ -84,7 +86,7 @@ void WeaponStats::setPistol()
 void WeaponStats::setFists()
 {
 	meleeDamage[FISTS] = 50;
-	meleeConeOfEffectAngle[FISTS] = 30;
+	meleeConeOfEffectAngle[FISTS] = 90;
 	meleeRange[FISTS] = 30;
 	meleePrice[FISTS] = 0;
 	meleeKnockback[FISTS] = 5;
