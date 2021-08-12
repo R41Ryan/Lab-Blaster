@@ -24,7 +24,8 @@ bool mouseStates[TOTAL_MOUSE_BUTTONS];
 
 int characterArraySizes[TOTAL_CHARACTER_TYPES];
 
-Enemy arrEnemy[TOTAL_GRUNTS];
+Enemy arrEnemy[TOTAL_ENEMIES];
+Hitbox enemyHitboxes[TOTAL_ENEMIES];
 
 bool init() {
 	bool success = true;
@@ -261,9 +262,6 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				gamePlayer.move(keyStates, &gameMap, arrEnemy);
-				gamePlayer.updateCone(mouse, &gameMap);
-				
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
 				
@@ -271,10 +269,18 @@ int main(int argc, char* argv[])
 					mouse);
 				gameMap.render(gameRenderer);
 
-				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
+				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox());
+					enemyHitboxes[i] = arrEnemy[i].getHitbox();
 				}
+				for (int i = 0; i < TOTAL_ENEMIES; i++)
+				{
+					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox(),
+						enemyHitboxes);
+				}
+
+				gamePlayer.move(keyStates, &gameMap, arrEnemy);
+				gamePlayer.updateCone(mouse, &gameMap);
 				
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
@@ -294,7 +300,7 @@ int main(int argc, char* argv[])
 				gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				gamePlayer.drawCone(gameRenderer, &gameMap);
 				
-				for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
+				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
 					arrEnemy[i].render(gameRenderer, characterSpriteSheets[GRUNT],
 						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);

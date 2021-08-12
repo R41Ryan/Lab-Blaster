@@ -16,7 +16,7 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	cHitbox.height = h;
 }
 
-int Character::move(float x, float y, Hitbox playerHitbox)
+int Character::move(float x, float y, Hitbox playerHitbox, Hitbox enemyHitboxes[])
 {
 	if (living)
 	{
@@ -35,10 +35,12 @@ int Character::move(float x, float y, Hitbox playerHitbox)
 		float xVel = (float)(xDif * convertingFactor);
 		float yVel = (float)(yDif * convertingFactor);
 
-		if (willCollide(&xVel, &yVel, playerHitbox))
+		willCollide(&xVel, &yVel, playerHitbox);
+		for (int i = 0; i < TOTAL_ENEMIES; i++)
 		{
-			
+			willCollide(&xVel, &yVel, enemyHitboxes[i]);
 		}
+		
 
 		xPos += xVel;
 		yPos += yVel;

@@ -37,7 +37,7 @@ public:
 	// 
 	// Based on the given x and y coordinates, move the character in the direction of the coordinates using its speed as the distance travelled.
 	// If the character is already at the desired location, it returns 1. If dead, returns -1. Otherwise, it returns 0.
-	int move(float x, float y, Hitbox playerHitbox);
+	int move(float x, float y, Hitbox playerHitbox, Hitbox enemyHitboxes[]);
 	// Increment the character's health by h points. Negative units are allowed. Health cannot be greater than max or less than 0.
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.
@@ -45,7 +45,7 @@ public:
 	// Renders the character according onto the given renderer based clip of the sprite sheet and the x and y positions of the map.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip, Map* map);
 	// Checks whether the character will collide with the given hitbox parameters at the given velocities. 
-	// If it will, it adjusts the positions and velocities so that it is merely at the edge of the hitbox. 
+	// If it will, it adjusts the positions and velocities so that it is merely at the edge of the hitboxes. 
 	// It returns true if it collided, returns false otherwise.
 	bool willCollide(float* xVel, float* yVel, Hitbox hitbox);
 	// Updates hitbox position
