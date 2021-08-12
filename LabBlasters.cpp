@@ -224,9 +224,6 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			printf("Test: %f.\n", stats.getGunAngle(PISTOL));
-			printf("Test: %f, %f.\n", stats.getMeleeRange(FISTS), stats.getMeleeAngle(FISTS));
-
 			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
 				5, 40, 40, PISTOL, FISTS);
 

@@ -17,8 +17,8 @@ ConeRays::ConeRays(float xStart, float yStart, float rayLength, double deg, doub
 		numRays = abs((int)(deg * 180 / M_PI));
 	}
 
-	printf("coneDirection: %f, coneDegrees: %f, range: %f, centre: (%f, %f), numeRays: %d.\n",
-		coneDirection, coneDegrees, range, centreX, centreY, numRays);
+	// printf("coneDirection: %f, coneDegrees: %f, range: %f, centre: (%f, %f), numeRays: %d.\n",
+		// coneDirection, coneDegrees, range, centreX, centreY, numRays);
 
 	fillLines();
 }
@@ -94,7 +94,7 @@ bool ConeRays::checkCollision(Hitbox hitbox)
 void ConeRays::fillLines()
 {
 	double currentLineAngle = coneDirection - coneDegrees / 2;
-	printf("%f, %f, %f\n", coneDirection, coneDegrees, currentLineAngle);
+	// printf("%f, %f, %f\n", coneDirection, coneDegrees, currentLineAngle);
 	float currentLengthX, currentLengthY;
 	for (int i = 0; i < numRays; i++)
 	{

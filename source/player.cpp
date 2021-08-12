@@ -16,7 +16,7 @@ Player::Player(WeaponStats stats, float x, float y, int mHealth, int s, int w, i
 	gunTimer = Timer();
 
 	meleeTimer = Timer();
-	printf("%f, %f.\n", stats.getMeleeRange(melee), stats.getMeleeAngle(melee));
+	// printf("%f, %f.\n", stats.getMeleeRange(melee), stats.getMeleeAngle(melee));
 	meleeCone = ConeRays(x, y, stats.getMeleeRange(melee), stats.getMeleeAngle(melee) * M_PI / 180, 0);
 }
 
@@ -62,7 +62,7 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 				{
 					if (willCollide(&xVel, &yVel, eArray[i].getHitbox()))
 					{
-						break;
+						
 					}
 				}
 			}
