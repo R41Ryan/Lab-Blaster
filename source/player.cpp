@@ -8,6 +8,7 @@ Player::Player(WeaponStats stats, float x, float y, int mHealth, int s, int w, i
 	setCurrentHealth(mHealth);
 	setSpeed(s);
 	setHitbox(w, h);
+	getHitbox()->active = isAlive();
 	shooting = false;
 	meleeing = false;
 	this->gun = gun;
@@ -70,26 +71,26 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 			float newX = getX() + xVel;
 			float newY = getY() + yVel;
 
-			if (newX < getHitbox().width / 2)
+			if (newX < getHitbox()->width / 2)
 			{
-				setX(getHitbox().width/2);
+				setX(getHitbox()->width/2);
 			}
-			else if (newX > map->getWidth() - getHitbox().width / 2)
+			else if (newX > map->getWidth() - getHitbox()->width / 2)
 			{
-				setX(map->getWidth() - getHitbox().width / 2);
+				setX(map->getWidth() - getHitbox()->width / 2);
 			}
 			else
 			{
 				setX(newX);
 			}
 
-			if (newY < getHitbox().height/2)
+			if (newY < getHitbox()->height/2)
 			{
-				setY(getHitbox().height / 2);
+				setY(getHitbox()->height / 2);
 			}
-			else if (newY > map->getHeight() - getHitbox().height / 2)
+			else if (newY > map->getHeight() - getHitbox()->height / 2)
 			{
-				setY(map->getHeight() - getHitbox().height / 2);
+				setY(map->getHeight() - getHitbox()->height / 2);
 			}
 			else
 			{
@@ -228,10 +229,10 @@ int Player::checkPointCollide(int x, int y, Enemy eArray[], Map* map)
 		if (eArray[i].isAlive())
 		{
 			// Added map positions since the positions of grunts are relative to the map, but the point in quesiton is relative to the renderer.
-			currentLeft = map->getX() + eArray[i].getX() - eArray[i].getHitbox().width / 2;
-			currentRight = map->getX() + eArray[i].getX() + eArray[i].getHitbox().width / 2;
-			currentTop = map->getY() + eArray[i].getY() - eArray[i].getHitbox().height / 2;
-			currentBottom = map->getY() + eArray[i].getY() + eArray[i].getHitbox().height / 2;
+			currentLeft = map->getX() + eArray[i].getX() - eArray[i].getHitbox()->width / 2;
+			currentRight = map->getX() + eArray[i].getX() + eArray[i].getHitbox()->width / 2;
+			currentTop = map->getY() + eArray[i].getY() - eArray[i].getHitbox()->height / 2;
+			currentBottom = map->getY() + eArray[i].getY() + eArray[i].getHitbox()->height / 2;
 
 			// If the point is in the hitbox
 			if ((x >= currentLeft && x <= currentRight) && (y >= currentTop && y <= currentBottom))

@@ -25,7 +25,7 @@ bool mouseStates[TOTAL_MOUSE_BUTTONS];
 int characterArraySizes[TOTAL_CHARACTER_TYPES];
 
 Enemy arrEnemy[TOTAL_ENEMIES];
-Hitbox enemyHitboxes[TOTAL_ENEMIES];
+Hitbox* enemyHitboxes[TOTAL_ENEMIES];
 
 bool init() {
 	bool success = true;

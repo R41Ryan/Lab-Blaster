@@ -6,6 +6,7 @@ struct Hitbox
 	float yPos;
 	int width;
 	int height;
+	bool active;
 
 	// updates the location of the hitbox according to the given parameters for the position of the object it possesses.
 	void update(float x, float y);

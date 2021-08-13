@@ -14,9 +14,10 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	cHitbox.yPos = (float)(y - h / 2);
 	cHitbox.width = w;
 	cHitbox.height = h;
+	cHitbox.active = living;
 }
 
-int Character::move(float x, float y, Hitbox playerHitbox, Hitbox enemyHitboxes[])
+int Character::move(float x, float y, Hitbox* playerHitbox, Hitbox* enemyHitboxes[])
 {
 	if (living)
 	{
@@ -39,6 +40,7 @@ int Character::move(float x, float y, Hitbox playerHitbox, Hitbox enemyHitboxes[
 		for (int i = 0; i < TOTAL_ENEMIES; i++)
 		{
 			willCollide(&xVel, &yVel, enemyHitboxes[i]);
+			// printf("%f, %f\n", xVel, yVel);
 		}
 		
 
@@ -89,44 +91,96 @@ void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rec
 	}
 }
 
-bool Character::willCollide(float* xVel, float* yVel, Hitbox hitbox)
+bool Character::willCollide(float* xVel, float* yVel, Hitbox* hitbox)
 {
-	bool isLeft = cHitbox.xPos + cHitbox.width <= hitbox.xPos;
-	bool isRight = cHitbox.xPos >= hitbox.xPos + hitbox.width;
-	bool isAbove = cHitbox.yPos + cHitbox.height <= hitbox.yPos;
-	bool isBelow = cHitbox.yPos >= hitbox.yPos + hitbox.height;
+	if (hitbox == &cHitbox || !hitbox->active)
+	{
+		printf("%d\n", hitbox->active);
+		return false;
+	}
+
+	bool isLeft = cHitbox.xPos + cHitbox.width <= hitbox->xPos;
+	bool isRight = cHitbox.xPos >= hitbox->xPos + hitbox->width;
+	bool isAbove = cHitbox.yPos + cHitbox.height <= hitbox->yPos;
+	bool isBelow = cHitbox.yPos >= hitbox->yPos + hitbox->height;
 	bool collided = false;
 
-	if ((isLeft && cHitbox.xPos + cHitbox.width + *xVel > hitbox.xPos) && !(isAbove || isBelow))
+	if ((!isLeft && !isRight) && (!isAbove && !isBelow))
 	{
-		// printf("Hits left side.\n");
-		xPos = hitbox.xPos - cHitbox.width/2;
-		*xVel = 0;
+		printf("Colliding hitboxes.\n");
+		// This means the hitbox is already within the target hitbox.
 		collided = true;
-	}
 
-	if ((isRight && cHitbox.xPos + *xVel < hitbox.xPos + hitbox.width) && !(isAbove || isBelow))
-	{
-		// printf("Hits right side.\n");
-		xPos = hitbox.xPos + hitbox.width + cHitbox.width/2;
-		*xVel = 0;
-		collided = true;
-	}
+		float distanceToSides[4]; // 0 = left, 1 = top, 2 = right, 3 = bottom.
+		distanceToSides[0] = abs(xPos - hitbox->xPos);
+		distanceToSides[1] = abs(yPos - hitbox->yPos);
+		distanceToSides[2] = abs(xPos - hitbox->xPos - hitbox->width);
+		distanceToSides[3] = abs(yPos - hitbox->yPos - hitbox->height);
 
-	if ((isAbove && cHitbox.yPos + cHitbox.height + *yVel > hitbox.yPos) && !(isLeft || isRight))
-	{
-		// printf("Hits top side.\n");
-		yPos = hitbox.yPos - cHitbox.height/2;
-		*yVel = 0;
-		collided = true;
-	}
+		int closestSide = 0;
+		float smallestDistance = distanceToSides[closestSide];
+		for (int i = 0; i < 4; i++)
+		{
+			if (distanceToSides[i] < smallestDistance)
+			{
+				closestSide = i;
+				smallestDistance = distanceToSides[closestSide];
+			}
+		}
 
-	if ((isBelow && cHitbox.yPos + *yVel < hitbox.yPos + hitbox.height) && !(isLeft || isRight))
+		switch (closestSide)
+		{
+		case 0:
+			xPos = hitbox->xPos - cHitbox.width / 2;
+			*xVel = 0;
+			break;
+		case 1:
+			yPos = hitbox->yPos - cHitbox.height / 2;
+			*yVel = 0;
+			break;
+		case 2:
+			xPos = hitbox->xPos + hitbox->width + cHitbox.width / 2;
+			*xVel = 0;
+			break;
+		case 3:
+			yPos = hitbox->yPos + hitbox->height + cHitbox.height / 2;
+			*yVel = 0;
+			break;
+		}
+	}
+	else
 	{
-		// printf("Hits top side.\n");
-		yPos = hitbox.yPos + hitbox.height + cHitbox.height/2;
-		*yVel = 0;
-		collided = true;
+		if ((isLeft && cHitbox.xPos + cHitbox.width + *xVel > hitbox->xPos) && !(isAbove || isBelow))
+		{
+			// printf("Hits left side.\n");
+			xPos = hitbox->xPos - cHitbox.width / 2;
+			*xVel = 0;
+			collided = true;
+		}
+
+		if ((isRight && cHitbox.xPos + *xVel < hitbox->xPos + hitbox->width) && !(isAbove || isBelow))
+		{
+			// printf("Hits right side.\n");
+			xPos = hitbox->xPos + hitbox->width + cHitbox.width / 2;
+			*xVel = 0;
+			collided = true;
+		}
+
+		if ((isAbove && cHitbox.yPos + cHitbox.height + *yVel > hitbox->yPos) && !(isLeft || isRight))
+		{
+			// printf("Hits top side.\n");
+			yPos = hitbox->yPos - cHitbox.height / 2;
+			*yVel = 0;
+			collided = true;
+		}
+
+		if ((isBelow && cHitbox.yPos + *yVel < hitbox->yPos + hitbox->height) && !(isLeft || isRight))
+		{
+			// printf("Hits top side.\n");
+			yPos = hitbox->yPos + hitbox->height + cHitbox.height / 2;
+			*yVel = 0;
+			collided = true;
+		}
 	}
 
 	cHitbox.update(xPos, yPos);
@@ -176,9 +230,9 @@ int Character::getSpeed()
 	return speed;
 }
 
-Hitbox Character::getHitbox()
+Hitbox* Character::getHitbox()
 {
-	return cHitbox;
+	return &cHitbox;
 }
 
 void Character::setX(float x)
