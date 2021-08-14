@@ -228,12 +228,13 @@ int main(int argc, char* argv[])
 			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
 				5, 40, 40, PISTOL, FISTS);
 
-			for (int i = 0; i < sizeof(arrEnemy) / sizeof(Enemy); i++)
+			for (int i = 0; i < TOTAL_ENEMIES; i++)
 			{
 				arrEnemy[i] = Enemy((float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
 					100, 3, 40, 40);
+				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
-
+			
 			SDL_Event e;
 			
 			while (!quit)
@@ -269,10 +270,6 @@ int main(int argc, char* argv[])
 					mouse);
 				gameMap.render(gameRenderer);
 
-				for (int i = 0; i < TOTAL_ENEMIES; i++)
-				{
-					enemyHitboxes[i] = arrEnemy[i].getHitbox();
-				}
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
 					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox(),

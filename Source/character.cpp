@@ -95,7 +95,7 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox* hitbox)
 {
 	if (hitbox == &cHitbox || !hitbox->active)
 	{
-		printf("%d\n", hitbox->active);
+		// printf("%d\n", hitbox->active);
 		return false;
 	}
 
@@ -104,16 +104,16 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox* hitbox)
 	bool isAbove = cHitbox.yPos + cHitbox.height <= hitbox->yPos;
 	bool isBelow = cHitbox.yPos >= hitbox->yPos + hitbox->height;
 	bool collided = false;
-
+	
 	if ((!isLeft && !isRight) && (!isAbove && !isBelow))
 	{
-		printf("Colliding hitboxes.\n");
+		// printf("Colliding hitboxes.\n");
 		// This means the hitbox is already within the target hitbox.
 		collided = true;
 
 		float distanceToSides[4]; // 0 = left, 1 = top, 2 = right, 3 = bottom.
-		distanceToSides[0] = abs(xPos - hitbox->xPos);
-		distanceToSides[1] = abs(yPos - hitbox->yPos);
+		distanceToSides[0] = abs(xPos + cHitbox.width - hitbox->xPos);
+		distanceToSides[1] = abs(yPos + cHitbox.height- hitbox->yPos);
 		distanceToSides[2] = abs(xPos - hitbox->xPos - hitbox->width);
 		distanceToSides[3] = abs(yPos - hitbox->yPos - hitbox->height);
 
@@ -180,6 +180,36 @@ bool Character::willCollide(float* xVel, float* yVel, Hitbox* hitbox)
 			yPos = hitbox->yPos + hitbox->height + cHitbox.height / 2;
 			*yVel = 0;
 			collided = true;
+		}
+
+		if ((cHitbox.xPos + cHitbox.width + *xVel > hitbox->xPos && cHitbox.xPos + *xVel < hitbox->xPos + hitbox->width)
+			&& (cHitbox.yPos + cHitbox.height + *yVel > hitbox->yPos && cHitbox.yPos + *yVel < hitbox->yPos + hitbox->height))
+		{
+			// printf("Hits corner.\n");
+			if (abs(*xVel) < abs(*yVel))
+			{
+				*xVel = 0;
+				if (isLeft)
+				{
+					xPos = hitbox->xPos - cHitbox.width / 2;
+				}
+				else if (isRight)
+				{
+					xPos = hitbox->xPos + hitbox->width / 2 + cHitbox.width / 2;
+				}
+			}
+			else
+			{
+				*yVel = 0;
+				if (isAbove)
+				{
+					yPos = hitbox->yPos - cHitbox.height / 2;
+				}
+				else if (isBelow)
+				{
+					yPos = hitbox->yPos + hitbox->height / 2 + cHitbox.height / 2;
+				}
+			}
 		}
 	}
 
