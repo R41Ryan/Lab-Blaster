@@ -269,6 +269,7 @@ int main(int argc, char* argv[])
 				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS,
 					mouse);
 				gameMap.render(gameRenderer);
+				SDL_SetRenderDrawColor(gameRenderer, 0, 0xFF, 0, 0xFF);
 
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
@@ -290,6 +291,11 @@ int main(int argc, char* argv[])
 					{
 						gamePlayer.getGunTimer().setTimerState(false);
 					}
+				}
+
+				if (mouseStates[RIGHT_MOUSE_BUTTON])
+				{
+					gamePlayer.melee(arrEnemy, stats);
 				}
 				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 

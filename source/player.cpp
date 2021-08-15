@@ -12,7 +12,7 @@ Player::Player(WeaponStats stats, float x, float y, int mHealth, int s, int w, i
 	shooting = false;
 	meleeing = false;
 	this->gun = gun;
-	this->melee = melee;
+	this->meleeWeapon = melee;
 
 	gunTimer = Timer();
 
@@ -196,6 +196,20 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 	}
 }
 
+void Player::melee(Enemy eArray[], WeaponStats stats)
+{
+	for (int i = 0; i < TOTAL_ENEMIES; i++)
+	{
+		if (eArray[i].isAlive())
+		{
+			if (meleeCone.checkCollision(*eArray[i].getHitbox()))
+			{
+				printf("Melee hit on %d!.\n", i);
+			}
+		}
+	}
+}
+
 void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 	ScreenDimensions screen, Map* map)
 {
@@ -273,7 +287,7 @@ int Player::getGun()
 
 int Player::getMelee()
 {
-	return melee;
+	return meleeWeapon;
 }
 
 bool Player::isShooting()
@@ -303,7 +317,7 @@ void Player::setGun(int newGun)
 
 void Player::setMelee(int newMelee)
 {
-	melee = newMelee;
+	meleeWeapon = newMelee;
 }
 
 void Player::setShooting(bool s)

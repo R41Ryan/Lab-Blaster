@@ -86,8 +86,8 @@ void WeaponStats::setPistol()
 void WeaponStats::setFists()
 {
 	meleeDamage[FISTS] = 50;
-	meleeConeOfEffectAngle[FISTS] = 90;
-	meleeRange[FISTS] = 30;
+	meleeConeOfEffectAngle[FISTS] = 45;
+	meleeRange[FISTS] = 90;
 	meleePrice[FISTS] = 0;
 	meleeKnockback[FISTS] = 5;
 }

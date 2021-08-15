@@ -64,6 +64,7 @@ void Character::incrementHealth(int h)
 	{
 		currentHealth = 0;
 		living = false;
+		cHitbox.active = false;
 	}
 	else
 	{
@@ -75,6 +76,7 @@ void Character::restoreHealth()
 {
 	currentHealth = maxHealth;
 	living = true;
+	cHitbox.active = true;
 }
 
 void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,

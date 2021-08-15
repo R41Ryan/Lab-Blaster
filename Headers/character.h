@@ -9,7 +9,7 @@
 #include <screenDimensions.h>
 #include <mouseCoordinates.h>
 
-const int TOTAL_GRUNTS = 4;
+const int TOTAL_GRUNTS = 2;
 const int TOTAL_ENEMIES = TOTAL_GRUNTS;
 
 enum characterTypes {
