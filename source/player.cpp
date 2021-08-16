@@ -196,17 +196,28 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 	}
 }
 
-void Player::melee(Enemy eArray[], WeaponStats stats)
+void Player::melee(Enemy eArray[], WeaponStats stats, Hitbox* enemyHitboxes[])
 {
-	for (int i = 0; i < TOTAL_ENEMIES; i++)
+	if (meleeTimer.isTimerOn())
 	{
-		if (eArray[i].isAlive())
+		meleeTimer.updateTime();
+	}
+	else
+	{
+		for (int i = 0; i < TOTAL_ENEMIES; i++)
 		{
-			if (meleeCone.checkCollision(*eArray[i].getHitbox()))
+			if (eArray[i].isAlive())
 			{
-				printf("Melee hit on %d!.\n", i);
+				if (meleeCone.checkCollision(*eArray[i].getHitbox()))
+				{
+					printf("Melee hit.\n");
+					eArray[i].incrementHealth(-stats.getMeleeDamage(meleeWeapon));
+					eArray[i].moveFrom(getX(), getY(), stats.getMeleeKnockback(meleeWeapon),
+						getHitbox(), enemyHitboxes);
+				}
 			}
 		}
+		meleeTimer.markTimer(1000 / stats.getMeleeSwingRate(meleeWeapon));
 	}
 }
 

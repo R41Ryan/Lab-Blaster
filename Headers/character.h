@@ -37,7 +37,11 @@ public:
 	// 
 	// Based on the given x and y coordinates, move the character in the direction of the coordinates using its speed as the distance travelled.
 	// If the character is already at the desired location, it returns 1. If dead, returns -1. Otherwise, it returns 0.
-	int move(float x, float y, Hitbox* playerHitbox, Hitbox* enemyHitboxes[]);
+	// The hitboxes are to avoid collisions with entities.
+	int moveTo(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[]);
+	// Moves the player away from a point given by the x and y coordinates by distance pixels. 
+	// The hitboxes are to avoid collisions with entities.
+	void moveFrom(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[]);
 	// Increment the character's health by h points. Negative units are allowed. Health cannot be greater than max or less than 0.
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.

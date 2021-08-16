@@ -273,8 +273,8 @@ int main(int argc, char* argv[])
 
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					arrEnemy[i].move(gamePlayer.getX(), gamePlayer.getY(), gamePlayer.getHitbox(),
-						enemyHitboxes);
+					arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(), 
+						arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
 				}
 
 				gamePlayer.move(keyStates, &gameMap, arrEnemy);
@@ -289,13 +289,20 @@ int main(int argc, char* argv[])
 				{
 					if (gamePlayer.getGunTimer().isTimerOn())
 					{
-						gamePlayer.getGunTimer().setTimerState(false);
+						gamePlayer.getGunTimer().updateTime();
 					}
 				}
 
 				if (mouseStates[RIGHT_MOUSE_BUTTON])
 				{
-					gamePlayer.melee(arrEnemy, stats);
+					gamePlayer.melee(arrEnemy, stats, enemyHitboxes);
+				}
+				else
+				{
+					if (gamePlayer.getMeleeTimer().isTimerOn())
+					{
+						gamePlayer.getMeleeTimer().updateTime();
+					}
 				}
 				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 

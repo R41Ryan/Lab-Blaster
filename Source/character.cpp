@@ -17,7 +17,7 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	cHitbox.active = living;
 }
 
-int Character::move(float x, float y, Hitbox* playerHitbox, Hitbox* enemyHitboxes[])
+int Character::moveTo(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[])
 {
 	if (living)
 	{
@@ -30,11 +30,11 @@ int Character::move(float x, float y, Hitbox* playerHitbox, Hitbox* enemyHitboxe
 		}
 
 		// Using similar triangles to determing xVel and yVel.
-		double hypotenuse = hypot((double)xDif, (double)yDif);
-		double convertingFactor = speed / hypotenuse;
+		float hypotenuse = hypotf(xDif, yDif);
+		float convertingFactor = distance / hypotenuse;
 
-		float xVel = (float)(xDif * convertingFactor);
-		float yVel = (float)(yDif * convertingFactor);
+		float xVel = xDif * convertingFactor;
+		float yVel = yDif * convertingFactor;
 
 		willCollide(&xVel, &yVel, playerHitbox);
 		for (int i = 0; i < TOTAL_ENEMIES; i++)
@@ -52,6 +52,22 @@ int Character::move(float x, float y, Hitbox* playerHitbox, Hitbox* enemyHitboxe
 		return 0;
 	}
 	return -1;
+}
+
+void Character::moveFrom(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[])
+{
+	float xDif = x - xPos;
+	float yDif = y - yPos;
+
+	float targetAngle = atan2f(yDif, xDif);
+	float moveToAngle = targetAngle + M_PI;
+
+	float moveToX = xPos + cosf(moveToAngle) * distance;
+	float moveToY = yPos + sinf(moveToAngle) * distance;
+
+	// printf("(%f, %f) -> (%f, %f).\n", xPos, yPos, moveToX, moveToY);
+
+	moveTo(moveToX, moveToY, distance, playerHitbox, enemyHitboxes);
 }
 
 void Character::incrementHealth(int h)

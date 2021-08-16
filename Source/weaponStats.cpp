@@ -64,12 +64,12 @@ int WeaponStats::getMeleePrice(int weapon)
 	return meleePrice[weapon];
 }
 
-int WeaponStats::getMeleeKnockback(int weapon)
+float WeaponStats::getMeleeKnockback(int weapon)
 {
 	return meleeKnockback[weapon];
 }
 
-int WeaponStats::getMeleeSwingRate(int weapon)
+float WeaponStats::getMeleeSwingRate(int weapon)
 {
 	return meleeSwingRate[weapon];
 }
@@ -85,9 +85,10 @@ void WeaponStats::setPistol()
 
 void WeaponStats::setFists()
 {
-	meleeDamage[FISTS] = 50;
-	meleeConeOfEffectAngle[FISTS] = 45;
-	meleeRange[FISTS] = 90;
+	meleeDamage[FISTS] = 25;
+	meleeConeOfEffectAngle[FISTS] = 60;
+	meleeRange[FISTS] = 50;
 	meleePrice[FISTS] = 0;
-	meleeKnockback[FISTS] = 5;
+	meleeKnockback[FISTS] = 35;
+	meleeSwingRate[FISTS] = 2;
 }

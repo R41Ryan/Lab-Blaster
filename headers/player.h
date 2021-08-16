@@ -55,7 +55,7 @@ public:
 		Enemy eArray[], WeaponStats stats);
 	// It will scan for any enemies within the player's melee cone.
 	// For all enemies that are detected, it will do the appropriate amount of damage while also moving them away from the player according to the player's melee knockback stat.
-	void melee(Enemy eArray[], WeaponStats stats);
+	void melee(Enemy eArray[], WeaponStats stats, Hitbox* enemyHitboxes[]);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 		ScreenDimensions screen, Map* map);
