@@ -176,6 +176,9 @@ void setKeyState(SDL_Keycode sym, bool state)
 	case SDLK_d:
 		keyStates[KEY_D] = state;
 		break;
+	case SDLK_p:
+		keyStates[KEY_P] = state;
+		break;
 	}
 }
 
@@ -280,6 +283,14 @@ int main(int argc, char* argv[])
 				gamePlayer.move(keyStates, &gameMap, arrEnemy);
 				gamePlayer.updateCone(mouse, &gameMap);
 				
+				if (keyStates[KEY_P])
+				{
+					for (int i = 0; i < TOTAL_ENEMIES; i++)
+					{
+						arrEnemy[i].spawn(&gameMap);
+					}
+				}
+
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 

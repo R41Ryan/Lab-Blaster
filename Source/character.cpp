@@ -70,6 +70,27 @@ void Character::moveFrom(float x, float y, float distance, Hitbox* playerHitbox,
 	moveTo(moveToX, moveToY, distance, playerHitbox, enemyHitboxes);
 }
 
+void Character::spawn(Map* map, float x, float y)
+{
+	if (x != NULL and y != NULL)
+	{
+		xPos = x;
+		yPos = y;
+	}
+	else
+	{
+		int mostLeft = cHitbox.width / 2;
+		int mostRight = map->getWidth() - cHitbox.width / 2;
+		int mostAbove = cHitbox.height / 2;
+		int mostBelow = map->getWidth() - cHitbox.height / 2;
+		
+		xPos = (float)(rand() % mostRight + mostLeft);
+		yPos = (float)(rand() % mostBelow + mostAbove);
+	}
+	cHitbox.update(xPos, yPos);
+	restoreHealth();
+}
+
 void Character::incrementHealth(int h)
 {
 	if (currentHealth + h > maxHealth)

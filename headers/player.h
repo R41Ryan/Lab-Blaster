@@ -16,6 +16,7 @@ enum inputKeys {
 	KEY_S,
 	KEY_A,
 	KEY_D,
+	KEY_P,
 	TOTAL_KEYS
 };
 

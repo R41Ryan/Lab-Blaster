@@ -34,7 +34,7 @@ public:
 	Character(float x = 0, float y = 0, int mHealth = 0, int s = 5, int w = 50, int h = 50);
 
 	// Functions
-	// 
+	
 	// Based on the given x and y coordinates, move the character in the direction of the coordinates using its speed as the distance travelled.
 	// If the character is already at the desired location, it returns 1. If dead, returns -1. Otherwise, it returns 0.
 	// The hitboxes are to avoid collisions with entities.
@@ -42,6 +42,9 @@ public:
 	// Moves the player away from a point given by the x and y coordinates by distance pixels. 
 	// The hitboxes are to avoid collisions with entities.
 	void moveFrom(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[]);
+	// Teleports the character to the given coordinates on the given map with full health. 
+	// If no coordinates are inputted, it teleports to a random location on the given map.
+	void spawn(Map* map, float x = NULL, float y = NULL);
 	// Increment the character's health by h points. Negative units are allowed. Health cannot be greater than max or less than 0.
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.
