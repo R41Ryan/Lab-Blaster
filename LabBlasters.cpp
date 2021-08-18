@@ -231,9 +231,9 @@ int main(int argc, char* argv[])
 			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
 				5, 40, 40, PISTOL, FISTS);
 
-			for (int i = 0; i < TOTAL_ENEMIES; i++)
+			for (int i = 0; i < TOTAL_GRUNTS; i++)
 			{
-				arrEnemy[i] = Enemy((float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
+				arrEnemy[i] = Enemy(GRUNT ,(float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
 					100, 3, 40, 40);
 				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
@@ -276,8 +276,15 @@ int main(int argc, char* argv[])
 
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(), 
-						arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+					if (arrEnemy[i].canAttack(gamePlayer.getHitbox()))
+					{
+						printf("Enemy Attack!.\n");
+					}
+					else
+					{
+						arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
+							arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+					}
 				}
 
 				gamePlayer.move(keyStates, &gameMap, arrEnemy);

@@ -60,8 +60,6 @@ public:
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
 		ScreenDimensions screen, Map* map);
-	// Returns the distance between the Player's position and another position according to the x and y parameters.
-	double distanceTo(int x, int y);
 	// Checks if the points specified by the x and y parameters collide with any hitbox belonging to any grunt in the array provided. It returns the grunt's array index if there is a collision. Otherwise returns -1.
 	int checkPointCollide(int x, int y, Enemy eArray[], Map* map);
 	// Updates melee cone such that it points to the coordinates given

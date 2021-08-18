@@ -10,10 +10,7 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	speed = s;
 	living = true;
 	
-	cHitbox.xPos = (float)(x - w / 2);
-	cHitbox.yPos = (float)(y - h / 2);
-	cHitbox.width = w;
-	cHitbox.height = h;
+	setHitbox(w, h);
 	cHitbox.active = living;
 }
 
@@ -114,6 +111,13 @@ void Character::restoreHealth()
 	currentHealth = maxHealth;
 	living = true;
 	cHitbox.active = true;
+}
+
+float Character::distanceTo(int x, int y)
+{
+	float xDif = x - xPos;
+	float yDif = y - yPos;
+	return hypotf(xDif, yDif);
 }
 
 void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
@@ -327,6 +331,11 @@ void Character::setCurrentHealth(int h)
 void Character::setSpeed(int s)
 {
 	speed = s;
+}
+
+void Character::setLiving(bool state)
+{
+	living = state;
 }
 
 void Character::setHitbox(int w, int h)

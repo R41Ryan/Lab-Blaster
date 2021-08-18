@@ -9,7 +9,7 @@
 #include <screenDimensions.h>
 #include <mouseCoordinates.h>
 
-const int TOTAL_GRUNTS = 2;
+const int TOTAL_GRUNTS = 1;
 const int TOTAL_ENEMIES = TOTAL_GRUNTS;
 
 enum characterTypes {
@@ -31,6 +31,7 @@ private:
 	Hitbox cHitbox;
 public:
 	// Constructors
+
 	Character(float x = 0, float y = 0, int mHealth = 0, int s = 5, int w = 50, int h = 50);
 
 	// Functions
@@ -49,6 +50,8 @@ public:
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.
 	void restoreHealth();
+	// Returns the distance between the character's position and another position according to the x and y parameters.
+	float distanceTo(int x, int y);
 	// Renders the character according onto the given renderer based clip of the sprite sheet and the x and y positions of the map.
 	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip, Map* map);
 	// Checks whether the character will collide with the given hitbox parameters at the given velocities. 
@@ -61,6 +64,7 @@ public:
 	void drawHitbox(SDL_Renderer* renderer, Map* map);
 
 	// Getter Functions
+
 	float getX();
 	float getY();
 	int getMaxHealth();
@@ -70,10 +74,12 @@ public:
 	Hitbox* getHitbox();
 
 	// Setter Functions
+
 	void setX(float x);
 	void setY(float y);
 	void setMaxHealth(int mHealth);
 	void setCurrentHealth(int cHealth);
 	void setSpeed(int s);
+	void setLiving(bool state);
 	void setHitbox(int w, int h);
 };

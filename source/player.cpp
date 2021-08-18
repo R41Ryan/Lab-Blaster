@@ -7,6 +7,14 @@ Player::Player(WeaponStats stats, float x, float y, int mHealth, int s, int w, i
 	setMaxHealth(mHealth);
 	setCurrentHealth(mHealth);
 	setSpeed(s);
+	if (mHealth > 0)
+	{
+		setLiving(true);
+	}
+	else
+	{
+		setLiving(false);
+	}
 	setHitbox(w, h);
 	getHitbox()->active = isAlive();
 	shooting = false;
@@ -233,18 +241,11 @@ void Player::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect s
 	}
 }
 
-double Player::distanceTo(int x, int y)
-{
-	double xDif = (double)(x - getX());
-	double yDif = (double)(y - getY());
-	return hypot(xDif, yDif);
-}
-
 int Player::checkPointCollide(int x, int y, Enemy eArray[], Map* map)
 {
 	int closestIndex = -1;
-	double smallestDistance = -1.f;
-	double currentDistance;
+	float smallestDistance = -1.f;
+	float currentDistance;
 	int currentLeft;
 	int currentRight;
 	int currentTop;
