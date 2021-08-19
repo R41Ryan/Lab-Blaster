@@ -280,7 +280,7 @@ int main(int argc, char* argv[])
 					{
 						printf("Enemy Attack!.\n");
 					}
-					else
+					else if (arrEnemy[i].getEnemyState() != ENEMY_STATE_PREPARE_ATTACK)
 					{
 						arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
 							arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
@@ -325,14 +325,14 @@ int main(int argc, char* argv[])
 				
 				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS, &gameMap);
-				gamePlayer.drawHitbox(gameRenderer, &gameMap);
-				gamePlayer.drawCone(gameRenderer, &gameMap);
+				// gamePlayer.drawHitbox(gameRenderer, &gameMap);
+				// gamePlayer.drawCone(gameRenderer, &gameMap);
 				
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
 					arrEnemy[i].render(gameRenderer, characterSpriteSheets[GRUNT],
 						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);
-					arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
+					// arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
 				}
 
 				SDL_RenderPresent(gameRenderer);

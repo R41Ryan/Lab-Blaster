@@ -15,7 +15,7 @@ enum enemyDamage
 
 enum enemyRange // Units are in pixels
 {
-	GRUNT_RANGE = 90
+	GRUNT_RANGE = 75
 };
 
 enum enemyAttackRate // Units are in attacks per second
@@ -23,10 +23,19 @@ enum enemyAttackRate // Units are in attacks per second
 	GRUNT_ATTACK_RATE = 1
 };
 
+enum enemyState
+{
+	ENEMY_STATE_NOT_ATTACKING,
+	ENEMY_STATE_PREPARE_ATTACK,
+	ENEMY_STATE_ATTACKING,
+	ENEMY_STATE_ATTACK_RECOVERY
+};
+
 class Enemy : public Character
 {
 private:
 	int enemyType;
+	int enemyState;
 
 	Timer attackTimer;
 public:
@@ -42,8 +51,11 @@ public:
 	// Getters
 
 	int getEnemyType();
+	int getEnemyState();
+	Timer getAttackTimer();
 
 	// Setters
 
 	void setEnemyType(int type);
+	void setEnemyState(int state);
 };
