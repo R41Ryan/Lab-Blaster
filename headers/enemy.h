@@ -18,9 +18,9 @@ enum enemyRange // Units are in pixels
 	GRUNT_RANGE = 75
 };
 
-enum enemyAttackRate // Units are in attacks per second
+enum enemyAttackRecovery // Units are in milliseconds
 {
-	GRUNT_ATTACK_RATE = 1
+	GRUNT_RECOVERY = 500
 };
 
 enum enemyState
@@ -45,8 +45,11 @@ public:
 
 	// Functions
 
-	// Returns true if in attack range of hitbox. the distance depends on the current enemyType.
-	bool canAttack(Hitbox* hitbox);
+	// Update the enemyState in regards to attacking the hitbox. 
+	// There are three states: not attacking, prepare attack, attacking, and attack recovery.
+	// In addition, if the hitbox given is within range of the enemy during the attacking state, returns true. 
+	// Otherwise, returns false.
+	bool updateAttackState(Hitbox* hitbox);
 
 	// Getters
 

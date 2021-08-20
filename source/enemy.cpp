@@ -34,9 +34,9 @@ Enemy::Enemy(int type, float x, float y, int mHealth, int s, int w, int h)
 	attackTimer = Timer();
 }
 
-bool Enemy::canAttack(Hitbox* hitbox)
+bool Enemy::updateAttackState(Hitbox* hitbox)
 {
-	bool ableToAttack = false;;
+	bool canAttack = false;
 	if (attackTimer.isTimerOn())
 	{
 		attackTimer.updateTime();
@@ -62,14 +62,24 @@ bool Enemy::canAttack(Hitbox* hitbox)
 			break;
 		case ENEMY_STATE_PREPARE_ATTACK:
 			enemyState = ENEMY_STATE_ATTACKING;
+			centreX = hitbox->xPos + hitbox->width / 2;
+			centreY = hitbox->yPos + hitbox->height / 2;
+			switch (enemyType)
+			{
+			case GRUNT:
+				if (distanceTo(centreX, centreY) <= (float)GRUNT_RANGE)
+				{
+					canAttack = true;
+				}
+				break;
+			}
 			break;
 		case ENEMY_STATE_ATTACKING:
-			ableToAttack = true;
 			enemyState = ENEMY_STATE_ATTACK_RECOVERY;
 			switch (enemyType)
 			{
 			case GRUNT:
-				attackTimer.markTimer(1000 / GRUNT_ATTACK_RATE);
+				attackTimer.markTimer(GRUNT_RECOVERY);
 				break;
 			}
 			break;
@@ -78,7 +88,7 @@ bool Enemy::canAttack(Hitbox* hitbox)
 			break;
 		}
 	}
-	return ableToAttack;
+	return canAttack;
 }
 
 int Enemy::getEnemyType()

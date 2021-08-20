@@ -276,11 +276,11 @@ int main(int argc, char* argv[])
 
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					if (arrEnemy[i].canAttack(gamePlayer.getHitbox()))
+					if (arrEnemy[i].updateAttackState(gamePlayer.getHitbox()))
 					{
-						printf("Enemy Attack!.\n");
+						printf("Enemy Attacks Player!.\n");
 					}
-					else if (arrEnemy[i].getEnemyState() != ENEMY_STATE_PREPARE_ATTACK)
+					else if (arrEnemy[i].getEnemyState() == ENEMY_STATE_NOT_ATTACKING)
 					{
 						arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
 							arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
