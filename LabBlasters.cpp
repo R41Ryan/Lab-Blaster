@@ -5,6 +5,7 @@
 #include <SDL_mixer.h>
 #include <screenDimensions.h>
 #include <time.h>
+#include <userInterface.h>;
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
@@ -237,6 +238,8 @@ int main(int argc, char* argv[])
 					100, 3, 40, 40);
 				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
+
+			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer);
 			
 			SDL_Event e;
 			
@@ -278,7 +281,7 @@ int main(int argc, char* argv[])
 				{
 					if (arrEnemy[i].updateAttackState(gamePlayer.getHitbox()))
 					{
-						printf("Enemy Attacks Player!.\n");
+						gamePlayer.incrementHealth(-GRUNT_DAMAGE);
 					}
 					else if (arrEnemy[i].getEnemyState() == ENEMY_STATE_NOT_ATTACKING)
 					{
@@ -334,6 +337,8 @@ int main(int argc, char* argv[])
 						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);
 					// arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
 				}
+
+				gameUI.displayHealth(SCREEN_DIMENSIONS);
 
 				SDL_RenderPresent(gameRenderer);
 			}
