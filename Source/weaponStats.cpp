@@ -3,12 +3,10 @@
 WeaponStats::WeaponStats()
 {
 	setPistol();
-	/*
 	setShotgun();
 	setSMG();
 	setSniper();
 	setMachineGun();
-	*/
 	
 	setFists();
 	/*
@@ -42,6 +40,11 @@ int WeaponStats::getGunKnockback(int weapon)
 int WeaponStats::getGunFireRate(int weapon)
 {
 	return gunFireRate[weapon];
+}
+
+int WeaponStats::getGunPelletNum(int weapon)
+{
+	return gunPelletNum[weapon];
 }
 
 int WeaponStats::getMeleeDamage(int weapon)
@@ -79,13 +82,54 @@ void WeaponStats::setPistol()
 	gunDamage[PISTOL] = 50;
 	gunAccuracyConeAngle[PISTOL] = 5;
 	gunPrice[PISTOL] = 0;
-	gunKnockback[PISTOL] = 1;
+	gunKnockback[PISTOL] = 10;
 	gunFireRate[PISTOL] = 3;
+	gunPelletNum[PISTOL] = 1;
+}
+
+void WeaponStats::setShotgun()
+{
+	gunDamage[SHOTGUN] = 40;
+	gunAccuracyConeAngle[SHOTGUN] = 30;
+	gunPrice[SHOTGUN] = 400;
+	gunKnockback[SHOTGUN] = 50;
+	gunFireRate[SHOTGUN] = 1;
+	gunPelletNum[SHOTGUN] = 8;
+}
+
+void WeaponStats::setSMG()
+{
+	gunDamage[SMG] = 40;
+	gunAccuracyConeAngle[SMG] = 15;
+	gunPrice[SMG] = 750;
+	gunKnockback[SMG] = 1;
+	gunFireRate[SMG] = 13;
+	gunPelletNum[SMG] = 1;
+}
+
+void WeaponStats::setSniper()
+{
+	gunDamage[SNIPER] = 100;
+	gunAccuracyConeAngle[SNIPER] = 1;
+	gunPrice[SNIPER] = 1500;
+	gunKnockback[SNIPER] = 50;
+	gunFireRate[SNIPER] = 1;
+	gunPelletNum[SNIPER] = 1;
+}
+
+void WeaponStats::setMachineGun()
+{
+	gunDamage[MACHINE_GUN] = 20;
+	gunAccuracyConeAngle[MACHINE_GUN] = 20;
+	gunPrice[MACHINE_GUN] = 2500;
+	gunKnockback[MACHINE_GUN] = 5;
+	gunFireRate[MACHINE_GUN] = 15;
+	gunPelletNum[MACHINE_GUN] = 3;
 }
 
 void WeaponStats::setFists()
 {
-	meleeDamage[FISTS] = 25;
+	meleeDamage[FISTS] = 40;
 	meleeConeOfEffectAngle[FISTS] = 60;
 	meleeRange[FISTS] = 50;
 	meleePrice[FISTS] = 0;

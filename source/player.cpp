@@ -112,7 +112,7 @@ void Player::move(bool* states, Map* map, Enemy eArray[])
 }
 
 void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, MouseCoordinates mouse,
-	Enemy eArray[], WeaponStats stats)
+	Enemy eArray[], WeaponStats stats, Hitbox* enemyHitboxes[])
 {
 	if (isAlive())
 	{
@@ -122,83 +122,77 @@ void Player::shoot(SDL_Renderer* renderer, Map* map, ScreenDimensions screen, Mo
 		}
 		else
 		{
-			int collidingGrunt = -1;
-
 			if ((mouse.x > 0 && mouse.x < screen.width) && (mouse.y > 0 && mouse.y < screen.height))
 			{
-				double randomAngle = (double)(rand() % (int)(stats.getGunAngle(gun) * 100)) / 100;
-				randomAngle = randomAngle / 180 * M_PI;
-				// printf("Random angle: %f\n", randomAngle);
-
 				SDL_SetRenderDrawColor(renderer, 215, 215, 0, 0xFF);
-				float xDif = (float)mouse.x - ((float)map->getX() + getX());
-				float yDif = (float)mouse.y - ((float)map->getY() + getY());
+				float xMouseDif = (float)mouse.x - ((float)map->getX() + getX());
+				float yMouseDif = (float)mouse.y - ((float)map->getY() + getY());
 
+				float mouseAngle = atan2f(yMouseDif, xMouseDif);
 				// printf("xDif: %f, yDif: %f\n", xDif, yDif);
 
-				float shootAngle = atanf((yDif / xDif));
+				int collidingGrunt;
+				float randomAngle;
+				float shootAngle;
 
-				// printf("shootAngle before change: %f\n", shootAngle);
-
-				if (xDif < 0)
-				{
-					shootAngle += M_PI;
-				}
-				shootAngle -= stats.getGunAngle(gun)/180 * M_PI / 2;
-
-				// printf("shootAngle after change 1: %f\n", shootAngle);
-
-				shootAngle += randomAngle;
-
-				// printf("shootAngle after change 2: %f\n", shootAngle);
-
-				xDif = cosf(shootAngle);
-				yDif = sinf(shootAngle);
-
-				// printf("xDif: %f, yDif: %f\n", xDif, yDif);
-
-				double hypotenus = hypot((double)xDif, (double)yDif);
-				double convertingFactor = 1 / hypotenus;
-
+				float xDif, yDif;
 				float x1, y1, x2, y2;
-				x1 = (float)(map->getX() + getX());
-				y1 = (float)(map->getY() + getY());
-				x2 = (float)(x1 + xDif);
-				y2 = (float)(y1 + yDif);
-
-				while ((x1 >= map->getX() && x1 <= map->getX() + map->getWidth()) &&
-					(y1 >= map->getY() && y1 <= map->getY() + map->getHeight()))
+				for (int i = 0; i < stats.getGunPelletNum(gun); i++)
 				{
-					SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
-					SDL_RenderDrawLineF(renderer, x1 + 1, y1 + 1, x2 + 1, y2 + 1);
-					SDL_RenderDrawLineF(renderer, x1 - 1, y1 - 1, x2 - 1, y2 - 1);
-					SDL_RenderDrawLineF(renderer, x1 + 1, y1 - 1, x2 + 1, y2 - 1);
-					SDL_RenderDrawLineF(renderer, x1 - 1, y1 + 1, x2 - 1, y2 + 1);
-					SDL_RenderDrawLineF(renderer, x1 + 2, y1 + 2, x2 + 2, y2 + 2);
-					SDL_RenderDrawLineF(renderer, x1 - 2, y1 - 2, x2 - 2, y2 - 2);
-					SDL_RenderDrawLineF(renderer, x1 + 2, y1 - 2, x2 + 2, y2 - 2);
-					SDL_RenderDrawLineF(renderer, x1 - 2, y1 + 2, x2 - 2, y2 + 2);
+					collidingGrunt = -1;
+					randomAngle = (float)(rand() % (int)(stats.getGunAngle(gun) * 100)) / 100;
+					randomAngle = randomAngle / 180 * M_PI;
+					// printf("Random angle: %f\n", randomAngle);
 
-					x1 += xDif;
-					x2 += xDif;
-					y1 += yDif;
-					y2 += yDif;
+					shootAngle = mouseAngle - stats.getGunAngle(gun) / 180 * M_PI / 2;
+					shootAngle += randomAngle;
 
-					collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, map);
+					xDif = cosf(shootAngle);
+					yDif = sinf(shootAngle);
+
+					x1 = (float)map->getX() + getX();
+					y1 = (float)map->getY() + getY();
+					x2 = x1 + xDif;
+					y2 = y1 + yDif;
+
+					while ((x1 >= map->getX() && x1 <= map->getX() + map->getWidth()) &&
+						(y1 >= map->getY() && y1 <= map->getY() + map->getHeight()))
+					{
+						SDL_RenderDrawLineF(renderer, x1, y1, x2, y2);
+						SDL_RenderDrawLineF(renderer, x1 + 1, y1 + 1, x2 + 1, y2 + 1);
+						SDL_RenderDrawLineF(renderer, x1 - 1, y1 - 1, x2 - 1, y2 - 1);
+						SDL_RenderDrawLineF(renderer, x1 + 1, y1 - 1, x2 + 1, y2 - 1);
+						SDL_RenderDrawLineF(renderer, x1 - 1, y1 + 1, x2 - 1, y2 + 1);
+						/*
+						SDL_RenderDrawLineF(renderer, x1 + 2, y1 + 2, x2 + 2, y2 + 2);
+						SDL_RenderDrawLineF(renderer, x1 - 2, y1 - 2, x2 - 2, y2 - 2);
+						SDL_RenderDrawLineF(renderer, x1 + 2, y1 - 2, x2 + 2, y2 - 2);
+						SDL_RenderDrawLineF(renderer, x1 - 2, y1 + 2, x2 - 2, y2 + 2);
+						*/
+
+						x1 += xDif;
+						x2 += xDif;
+						y1 += yDif;
+						y2 += yDif;
+
+						collidingGrunt = checkPointCollide((int)x1, (int)y1, eArray, map);
+						if (collidingGrunt >= 0)
+						{
+							break;
+						}
+					}
+
 					if (collidingGrunt >= 0)
 					{
-						break;
+						eArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
+						eArray[collidingGrunt].moveFrom(getX(), getY(), stats.getGunKnockback(gun),
+							getHitbox(), enemyHitboxes);
 					}
 				}
 			}
 
-			if (collidingGrunt >= 0)
-			{
-				eArray[collidingGrunt].incrementHealth(-stats.getGunDamage(getGun()));
-			}
-
 			Uint32 fireRateMilliseconds = (Uint32)(1000 /
-				stats.getGunFireRate(PISTOL));
+				stats.getGunFireRate(gun));
 			gunTimer.markTimer(fireRateMilliseconds);
 		}
 	}

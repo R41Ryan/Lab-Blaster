@@ -9,8 +9,10 @@
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
-SDL_Window* gameWindow = NULL;
+const int FRAME_RATE_CAP = 60;
+Timer frameRateTimer = Timer();
 
+SDL_Window* gameWindow = NULL;
 SDL_Renderer* gameRenderer = NULL;
 
 SDL_Rect* spriteClips[TOTAL_CHARACTER_TYPES];
@@ -22,8 +24,6 @@ MouseCoordinates mouse = MouseCoordinates();
 
 bool keyStates[TOTAL_KEYS];
 bool mouseStates[TOTAL_MOUSE_BUTTONS];
-
-int characterArraySizes[TOTAL_CHARACTER_TYPES];
 
 Enemy arrEnemy[TOTAL_ENEMIES];
 Hitbox* enemyHitboxes[TOTAL_ENEMIES];
@@ -219,9 +219,6 @@ int main(int argc, char* argv[])
 		{
 			setupClips();
 
-			characterArraySizes[PLAYER] = 1;
-			characterArraySizes[GRUNT] = TOTAL_GRUNTS;
-
 			if (!gameMap.loadFloor(gameRenderer, "map/map_floor.png"))
 			{
 				printf("Failed to load floor.\n");
@@ -230,7 +227,7 @@ int main(int argc, char* argv[])
 			bool quit = false;
 
 			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
-				5, 40, 40, PISTOL, FISTS);
+				5, 40, 40, SHOTGUN, FISTS);
 
 			for (int i = 0; i < TOTAL_GRUNTS; i++)
 			{
@@ -245,6 +242,7 @@ int main(int argc, char* argv[])
 			
 			while (!quit)
 			{
+				frameRateTimer.markTimer((Uint32)(1000 / FRAME_RATE_CAP));
 				mouse.update();
 
 				while (SDL_PollEvent(&e) > 0)
@@ -304,7 +302,7 @@ int main(int argc, char* argv[])
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
 					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
-						arrEnemy, stats);
+						arrEnemy, stats, enemyHitboxes);
 				}
 				else
 				{
@@ -341,6 +339,20 @@ int main(int argc, char* argv[])
 				gameUI.displayHealth(SCREEN_DIMENSIONS);
 
 				SDL_RenderPresent(gameRenderer);
+
+				int frameLoopCount = 0;
+
+				while (frameRateTimer.isTimerOn())
+				{
+					frameRateTimer.updateTime();
+					frameLoopCount = 0;
+					if (frameLoopCount >= 1000)
+					{
+						printf("Frame Rate Timer malfunctioning. Ending program.\n");
+						quit = true;
+					}
+					frameLoopCount++;
+				}
 			}
 		}
 		

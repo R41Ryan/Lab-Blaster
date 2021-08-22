@@ -52,7 +52,7 @@ bool Enemy::updateAttackState(Hitbox* hitbox)
 			switch (enemyType)
 			{
 			case GRUNT:
-				if (distanceTo(centreX, centreY) <= (float)GRUNT_RANGE)
+				if (distanceTo(centreX, centreY) <= (float)GRUNT_RANGE * 2/3)
 				{
 					enemyState = ENEMY_STATE_PREPARE_ATTACK;
 					attackTimer.markTimer(250);
