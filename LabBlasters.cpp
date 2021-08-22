@@ -277,14 +277,17 @@ int main(int argc, char* argv[])
 
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					if (arrEnemy[i].updateAttackState(gamePlayer.getHitbox()))
+					if (arrEnemy[i].isAlive())
 					{
-						gamePlayer.incrementHealth(-GRUNT_DAMAGE);
-					}
-					else if (arrEnemy[i].getEnemyState() == ENEMY_STATE_NOT_ATTACKING)
-					{
-						arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
-							arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+						if (arrEnemy[i].updateAttackState(gamePlayer.getHitbox()))
+						{
+							gamePlayer.incrementHealth(-GRUNT_DAMAGE);
+						}
+						else if (arrEnemy[i].getEnemyState() == ENEMY_STATE_NOT_ATTACKING)
+						{
+							arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
+								arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+						}
 					}
 				}
 
