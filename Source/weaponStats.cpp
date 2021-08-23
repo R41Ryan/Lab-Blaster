@@ -9,12 +9,10 @@ WeaponStats::WeaponStats()
 	setMachineGun();
 	
 	setFists();
-	/*
 	setKnife();
 	setBaseballBat();
 	setSword();
 	setChainsaw();
-	*/
 }
 
 int WeaponStats::getGunDamage(int weapon)
@@ -135,4 +133,44 @@ void WeaponStats::setFists()
 	meleePrice[FISTS] = 0;
 	meleeKnockback[FISTS] = 35;
 	meleeSwingRate[FISTS] = 2;
+}
+
+void WeaponStats::setKnife()
+{
+	meleeDamage[KNIFE] = 50;
+	meleeConeOfEffectAngle[KNIFE] = 25;
+	meleeRange[KNIFE] = 100;
+	meleePrice[KNIFE] = 500;
+	meleeKnockback[KNIFE] = 25;
+	meleeSwingRate[KNIFE] = 4;
+}
+
+void WeaponStats::setBaseballBat()
+{
+	meleeDamage[BASEBALL_BAT] = 100;
+	meleeConeOfEffectAngle[BASEBALL_BAT] = 90;
+	meleeRange[BASEBALL_BAT] = 100;
+	meleePrice[BASEBALL_BAT] = 1100;
+	meleeKnockback[BASEBALL_BAT] = 50;
+	meleeSwingRate[BASEBALL_BAT] = 2;
+}
+
+void WeaponStats::setSword()
+{
+	meleeDamage[SWORD] = 125;
+	meleeConeOfEffectAngle[SWORD] = 90;
+	meleeRange[SWORD] = 125;
+	meleePrice[SWORD] = 1500;
+	meleeKnockback[SWORD] = 50;
+	meleeSwingRate[SWORD] = 4;
+}
+
+void WeaponStats::setChainsaw()
+{
+	meleeDamage[CHAINSAW] = 20;
+	meleeConeOfEffectAngle[CHAINSAW] = 30;
+	meleeRange[CHAINSAW] = 75;
+	meleePrice[CHAINSAW] = 2000;
+	meleeKnockback[CHAINSAW] = 10;
+	meleeSwingRate[CHAINSAW] = 15;
 }

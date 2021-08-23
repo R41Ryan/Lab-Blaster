@@ -270,8 +270,11 @@ int main(int argc, char* argv[])
 				SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gameRenderer);
 				
-				gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS,
-					mouse);
+				if (gamePlayer.isAlive())
+				{
+					gameMap.setCentrePlayer(gamePlayer.getX(), gamePlayer.getY(), SCREEN_DIMENSIONS,
+						mouse);
+				}
 				gameMap.render(gameRenderer);
 				SDL_SetRenderDrawColor(gameRenderer, 0, 0xFF, 0, 0xFF);
 
@@ -285,8 +288,11 @@ int main(int argc, char* argv[])
 						}
 						else if (arrEnemy[i].getEnemyState() == ENEMY_STATE_NOT_ATTACKING)
 						{
-							arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
-								arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+							if (gamePlayer.isAlive())
+							{
+								arrEnemy[i].moveTo(gamePlayer.getX(), gamePlayer.getY(),
+									arrEnemy[i].getSpeed(), gamePlayer.getHitbox(), enemyHitboxes);
+							}
 						}
 					}
 				}
@@ -296,6 +302,7 @@ int main(int argc, char* argv[])
 				
 				if (keyStates[KEY_P])
 				{
+					gamePlayer.restoreHealth();
 					for (int i = 0; i < TOTAL_ENEMIES; i++)
 					{
 						arrEnemy[i].spawn(&gameMap);
