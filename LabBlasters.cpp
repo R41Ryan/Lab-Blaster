@@ -18,6 +18,10 @@ SDL_Renderer* gameRenderer = NULL;
 SDL_Rect* spriteClips[TOTAL_CHARACTER_TYPES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
+SDL_Rect* playerGunIdleClips[TOTAL_GUN_TYPES];
+SDL_Rect* playerGunFireClips[TOTAL_GUN_TYPES];
+SDL_Texture* playerGunSpriteSheets[TOTAL_GUN_TYPES];
+
 WeaponStats stats = WeaponStats();
 Map gameMap;
 MouseCoordinates mouse = MouseCoordinates();
@@ -96,6 +100,18 @@ void setupClips()
 	spriteClips[GRUNT][GRUNT_IDLE].y = 0;
 	spriteClips[GRUNT][GRUNT_IDLE].w = 50;
 	spriteClips[GRUNT][GRUNT_IDLE].h = 50;
+
+	// Setting up pistol clips
+	playerGunIdleClips[PISTOL] = new SDL_Rect;
+	playerGunIdleClips[PISTOL]->x = 0;
+	playerGunIdleClips[PISTOL]->y = 0;
+	playerGunIdleClips[PISTOL]->w = 30;
+	playerGunIdleClips[PISTOL]->h = 30;
+
+	playerGunFireClips[PISTOL]->x = 0;
+	playerGunFireClips[PISTOL]->y = 30;
+	playerGunFireClips[PISTOL]->w = 30;
+	playerGunFireClips[PISTOL]->h = 30;
 }
 
 bool loadSpriteSheet(SDL_Texture* spriteSheet[], std::string path)
@@ -141,6 +157,7 @@ bool loadSpriteSheets()
 		success = false;
 	}
 
+	if (!loadSpriteSheet(&playerGunSpriteSheets[PISTOL], "sprites/pistol.png"))
 	return success;
 }
 
