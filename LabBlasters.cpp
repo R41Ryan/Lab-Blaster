@@ -18,8 +18,7 @@ SDL_Renderer* gameRenderer = NULL;
 SDL_Rect* spriteClips[TOTAL_CHARACTER_TYPES];
 SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 
-SDL_Rect* playerGunIdleClips[TOTAL_GUN_TYPES];
-SDL_Rect* playerGunFireClips[TOTAL_GUN_TYPES];
+SDL_Rect* playerGunClips[TOTAL_GUN_TYPES];
 SDL_Texture* playerGunSpriteSheets[TOTAL_GUN_TYPES];
 
 WeaponStats stats = WeaponStats();
@@ -102,16 +101,15 @@ void setupClips()
 	spriteClips[GRUNT][GRUNT_IDLE].h = 50;
 
 	// Setting up pistol clips
-	playerGunIdleClips[PISTOL] = new SDL_Rect;
-	playerGunIdleClips[PISTOL]->x = 0;
-	playerGunIdleClips[PISTOL]->y = 0;
-	playerGunIdleClips[PISTOL]->w = 30;
-	playerGunIdleClips[PISTOL]->h = 30;
-
-	playerGunFireClips[PISTOL]->x = 0;
-	playerGunFireClips[PISTOL]->y = 30;
-	playerGunFireClips[PISTOL]->w = 30;
-	playerGunFireClips[PISTOL]->h = 30;
+	playerGunClips[PISTOL] = new SDL_Rect[TOTAL_GUN_STATES];
+	playerGunClips[PISTOL][GUN_IDLE].x = 0;
+	playerGunClips[PISTOL][GUN_IDLE].y = 0;
+	playerGunClips[PISTOL][GUN_IDLE].w = 30;
+	playerGunClips[PISTOL][GUN_IDLE].h = 30;
+	playerGunClips[PISTOL][GUN_FIRING].x = 0;
+	playerGunClips[PISTOL][GUN_FIRING].y = 30;
+	playerGunClips[PISTOL][GUN_FIRING].w = 30;
+	playerGunClips[PISTOL][GUN_FIRING].h = 30;
 }
 
 bool loadSpriteSheet(SDL_Texture* spriteSheet[], std::string path)
@@ -158,6 +156,10 @@ bool loadSpriteSheets()
 	}
 
 	if (!loadSpriteSheet(&playerGunSpriteSheets[PISTOL], "sprites/pistol.png"))
+	{
+		printf("Failed to load pistol sprite sheet.\n");
+		success = false;
+	}
 	return success;
 }
 
@@ -243,13 +245,13 @@ int main(int argc, char* argv[])
 
 			bool quit = false;
 
-			Player gamePlayer = Player(stats, (float)SCREEN_DIMENSIONS.width / 2, (float)SCREEN_DIMENSIONS.height / 2, 100,
-				5, 40, 40, SHOTGUN, FISTS);
+			Player gamePlayer = Player(gameRenderer, &gameMap, stats, (float)SCREEN_DIMENSIONS.width / 2,
+				(float)SCREEN_DIMENSIONS.height / 2, 100, 5, 40, 40, PISTOL, FISTS);
 
 			for (int i = 0; i < TOTAL_GRUNTS; i++)
 			{
-				arrEnemy[i] = Enemy(GRUNT ,(float)(rand() % gameMap.getWidth()), (float)(rand() % gameMap.getHeight()),
-					100, 3, 40, 40);
+				arrEnemy[i] = Enemy(gameRenderer, &gameMap, GRUNT, (float)(rand() % gameMap.getWidth()),
+					(float)(rand() % gameMap.getHeight()), 100, 3, 40, 40);
 				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
 
@@ -314,21 +316,21 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				gamePlayer.move(keyStates, &gameMap, arrEnemy);
-				gamePlayer.updateCone(mouse, &gameMap);
+				gamePlayer.move(keyStates, arrEnemy);
+				gamePlayer.updateCone(mouse);
 				
 				if (keyStates[KEY_P])
 				{
 					gamePlayer.restoreHealth();
 					for (int i = 0; i < TOTAL_ENEMIES; i++)
 					{
-						arrEnemy[i].spawn(&gameMap);
+						arrEnemy[i].spawn();
 					}
 				}
 
 				if (mouseStates[LEFT_MOUSE_BUTTON])
 				{
-					gamePlayer.shoot(gameRenderer, &gameMap, SCREEN_DIMENSIONS, mouse, 
+					gamePlayer.shoot(SCREEN_DIMENSIONS, mouse, 
 						arrEnemy, stats, enemyHitboxes);
 				}
 				else
@@ -351,15 +353,15 @@ int main(int argc, char* argv[])
 					}
 				}
 				
-				gamePlayer.render(gameRenderer, characterSpriteSheets[PLAYER], 
-					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS, &gameMap);
+				gamePlayer.render(characterSpriteSheets[PLAYER], 
+					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
 				// gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				// gamePlayer.drawCone(gameRenderer, &gameMap);
 				
 				for (int i = 0; i < TOTAL_ENEMIES; i++)
 				{
-					arrEnemy[i].render(gameRenderer, characterSpriteSheets[GRUNT],
-						spriteClips[GRUNT][GRUNT_IDLE], &gameMap);
+					arrEnemy[i].render(characterSpriteSheets[GRUNT],
+						spriteClips[GRUNT][GRUNT_IDLE]);
 					// arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
 				}
 

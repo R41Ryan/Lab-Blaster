@@ -1,6 +1,6 @@
 #include "..\headers\enemy.h"
 
-Enemy::Enemy(int type, float x, float y, int mHealth, int s, int w, int h)
+Enemy::Enemy(SDL_Renderer* r, Map* m, int type, float x, float y, int mHealth, int s, int w, int h)
 {
 	if (type == 0)
 	{
@@ -32,6 +32,9 @@ Enemy::Enemy(int type, float x, float y, int mHealth, int s, int w, int h)
 	getHitbox()->active = isAlive();
 
 	attackTimer = Timer();
+
+	setRenderer(r);
+	setMap(m);
 }
 
 bool Enemy::updateAttackState(Hitbox* hitbox)

@@ -41,7 +41,8 @@ private:
 public:
 	// Constructors
 
-	Enemy(int type = NULL, float x = 0, float y = 0, int mHealth = 100, int s = 5, int w = 50, int h = 50);
+	Enemy(SDL_Renderer* r = NULL, Map* m = NULL, int type = NULL, float x = 0,
+		float y = 0, int mHealth = 100, int s = 5, int w = 50, int h = 50);
 
 	// Functions
 

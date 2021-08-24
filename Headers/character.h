@@ -29,10 +29,13 @@ private:
 	bool living;
 
 	Hitbox cHitbox;
+
+	Map* map;
+	SDL_Renderer* renderer;
 public:
 	// Constructors
 
-	Character(float x = 0, float y = 0, int mHealth = 0, int s = 5, int w = 50, int h = 50);
+	Character(SDL_Renderer* r = NULL, Map* m = NULL, float x = 0, float y = 0, int mHealth = 0, int s = 5, int w = 50, int h = 50);
 
 	// Functions
 	
@@ -45,7 +48,7 @@ public:
 	void moveFrom(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[]);
 	// Teleports the character to the given coordinates on the given map with full health. 
 	// If no coordinates are inputted, it teleports to a random location on the given map.
-	void spawn(Map* map, float x = NULL, float y = NULL);
+	void spawn(float x = NULL, float y = NULL);
 	// Increment the character's health by h points. Negative units are allowed. Health cannot be greater than max or less than 0.
 	void incrementHealth(int h);
 	// Restores the character's health to maxHealth.
@@ -53,7 +56,7 @@ public:
 	// Returns the distance between the character's position and another position according to the x and y parameters.
 	float distanceTo(int x, int y);
 	// Renders the character according onto the given renderer based clip of the sprite sheet and the x and y positions of the map.
-	void render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip, Map* map);
+	void render(SDL_Texture* spriteSheet, SDL_Rect spriteClip);
 	// Checks whether the character will collide with the given hitbox parameters at the given velocities. 
 	// If it will, it adjusts the positions and velocities so that it is merely at the edge of the hitboxes. 
 	// It returns true if it collided, returns false otherwise.
@@ -61,7 +64,7 @@ public:
 	// Updates hitbox position
 	void updateHitbox();
 	// Draws their hitbox
-	void drawHitbox(SDL_Renderer* renderer, Map* map);
+	void drawHitbox();
 
 	// Getter Functions
 
@@ -72,6 +75,8 @@ public:
 	bool isAlive();
 	int getSpeed();
 	Hitbox* getHitbox();
+	SDL_Renderer* getRenderer();
+	Map* getMap();
 
 	// Setter Functions
 
@@ -82,4 +87,6 @@ public:
 	void setSpeed(int s);
 	void setLiving(bool state);
 	void setHitbox(int w, int h);
+	void setRenderer(SDL_Renderer* r);
+	void setMap(Map* m);
 };

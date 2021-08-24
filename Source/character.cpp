@@ -1,7 +1,8 @@
 #include <character.h>
 #include <math.h>
 
-Character::Character(float x, float y, int mHealth, int s, int w, int h)
+Character::Character(SDL_Renderer* r, Map* m, float x, float y, int mHealth,
+	int s, int w, int h)
 {
 	xPos = x;
 	yPos = y;
@@ -12,6 +13,9 @@ Character::Character(float x, float y, int mHealth, int s, int w, int h)
 	
 	setHitbox(w, h);
 	cHitbox.active = living;
+
+	renderer = r;
+	map = m;
 }
 
 int Character::moveTo(float x, float y, float distance, Hitbox* playerHitbox, Hitbox* enemyHitboxes[])
@@ -67,7 +71,7 @@ void Character::moveFrom(float x, float y, float distance, Hitbox* playerHitbox,
 	moveTo(moveToX, moveToY, distance, playerHitbox, enemyHitboxes);
 }
 
-void Character::spawn(Map* map, float x, float y)
+void Character::spawn(float x, float y)
 {
 	if (x != NULL and y != NULL)
 	{
@@ -120,8 +124,7 @@ float Character::distanceTo(int x, int y)
 	return hypotf(xDif, yDif);
 }
 
-void Character::render(SDL_Renderer* renderer, SDL_Texture* spriteSheet, SDL_Rect spriteClip,
-	Map* map)
+void Character::render(SDL_Texture* spriteSheet, SDL_Rect spriteClip)
 {
 	if (living)
 	{
@@ -266,7 +269,7 @@ void Character::updateHitbox()
 	cHitbox.update(xPos, yPos);
 }
 
-void Character::drawHitbox(SDL_Renderer* renderer, Map* map)
+void Character::drawHitbox()
 {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
 	SDL_Rect renderRect = { map->getX() + cHitbox.xPos, map->getY() + cHitbox.yPos, cHitbox.width, cHitbox.height };
@@ -308,6 +311,16 @@ Hitbox* Character::getHitbox()
 	return &cHitbox;
 }
 
+SDL_Renderer* Character::getRenderer()
+{
+	return renderer;
+}
+
+Map* Character::getMap()
+{
+	return map;
+}
+
 void Character::setX(float x)
 {
 	xPos = x;
@@ -344,4 +357,14 @@ void Character::setHitbox(int w, int h)
 	cHitbox.yPos = this->yPos - h / 2;
 	cHitbox.width = w;
 	cHitbox.height = h;
+}
+
+void Character::setRenderer(SDL_Renderer* r)
+{
+	renderer = r;
+}
+
+void Character::setMap(Map* m)
+{
+	map = m;
 }

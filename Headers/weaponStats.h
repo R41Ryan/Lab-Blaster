@@ -10,6 +10,13 @@ enum gunTypes
 	TOTAL_GUN_TYPES
 };
 
+enum gunStates
+{
+	GUN_IDLE,
+	GUN_FIRING,
+	TOTAL_GUN_STATES
+};
+
 enum meleeTypes
 {
 	FISTS,
