@@ -247,7 +247,17 @@ void Player::renderGun(SDL_Texture* gunSpriteSheet[], SDL_Rect* gunSpriteClips[]
 {
 	if (isAlive())
 	{
+		SDL_Rect renderClip = { getMap()->getX() + getX() + 25,
+			getMap()->getY() + getY(), gunSpriteClips[gun][GUN_IDLE].w, gunSpriteClips[gun][GUN_IDLE].h };
 
+		if (playerState == PLAYER_SHOOTING)
+		{
+			SDL_RenderCopy(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_FIRING], &renderClip);
+		}
+		else
+		{
+			SDL_RenderCopy(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_IDLE], &renderClip);
+		}
 	}
 }
 

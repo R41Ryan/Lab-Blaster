@@ -103,11 +103,11 @@ void setupClips()
 	// Setting up pistol clips
 	playerGunClips[PISTOL] = new SDL_Rect[TOTAL_GUN_STATES];
 	playerGunClips[PISTOL][GUN_IDLE].x = 0;
-	playerGunClips[PISTOL][GUN_IDLE].y = 0;
+	playerGunClips[PISTOL][GUN_IDLE].y = 12;
 	playerGunClips[PISTOL][GUN_IDLE].w = 30;
 	playerGunClips[PISTOL][GUN_IDLE].h = 30;
 	playerGunClips[PISTOL][GUN_FIRING].x = 0;
-	playerGunClips[PISTOL][GUN_FIRING].y = 30;
+	playerGunClips[PISTOL][GUN_FIRING].y = 45;
 	playerGunClips[PISTOL][GUN_FIRING].w = 30;
 	playerGunClips[PISTOL][GUN_FIRING].h = 30;
 }
@@ -355,6 +355,7 @@ int main(int argc, char* argv[])
 				
 				gamePlayer.render(characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
+				gamePlayer.renderGun(playerGunSpriteSheets, playerGunClips);
 				// gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				// gamePlayer.drawCone(gameRenderer, &gameMap);
 				
