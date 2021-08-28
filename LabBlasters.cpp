@@ -21,6 +21,8 @@ SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 SDL_Rect* playerGunClips[TOTAL_GUN_TYPES];
 SDL_Texture* playerGunSpriteSheets[TOTAL_GUN_TYPES];
 
+TTF_Font* gameFont;
+
 WeaponStats stats = WeaponStats();
 Map gameMap;
 MouseCoordinates mouse = MouseCoordinates();
@@ -71,6 +73,14 @@ bool init() {
 					printf("Failed to initialize SDL_TTF. TTF_ERROR: %s\n", TTF_GetError());
 					success = false;
 				}
+				else
+				{
+					gameFont = TTF_OpenFont("fonts/Nasa21-l23X.ttf", 28);
+					if (gameFont == NULL)
+					{
+						printf("Failed to load Nasa21 Font. TTF_ERROR: %s.\n", TTF_GetError());
+					}
+				}
 
 				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 				{
@@ -105,11 +115,22 @@ void setupClips()
 	playerGunClips[PISTOL][GUN_IDLE].x = 0;
 	playerGunClips[PISTOL][GUN_IDLE].y = 12;
 	playerGunClips[PISTOL][GUN_IDLE].w = 30;
-	playerGunClips[PISTOL][GUN_IDLE].h = 30;
+	playerGunClips[PISTOL][GUN_IDLE].h = 10;
 	playerGunClips[PISTOL][GUN_FIRING].x = 0;
-	playerGunClips[PISTOL][GUN_FIRING].y = 45;
+	playerGunClips[PISTOL][GUN_FIRING].y = 42;
 	playerGunClips[PISTOL][GUN_FIRING].w = 30;
-	playerGunClips[PISTOL][GUN_FIRING].h = 30;
+	playerGunClips[PISTOL][GUN_FIRING].h = 10;
+
+	// Setting up shotgun clips
+	playerGunClips[SHOTGUN] = new SDL_Rect[TOTAL_GUN_STATES];
+	playerGunClips[SHOTGUN][GUN_IDLE].x = 0;
+	playerGunClips[SHOTGUN][GUN_IDLE].y = 0;
+	playerGunClips[SHOTGUN][GUN_IDLE].w = 50;
+	playerGunClips[SHOTGUN][GUN_IDLE].h = 10;
+	playerGunClips[SHOTGUN][GUN_FIRING].x = 0;
+	playerGunClips[SHOTGUN][GUN_FIRING].y = 10;
+	playerGunClips[SHOTGUN][GUN_FIRING].w = 50;
+	playerGunClips[SHOTGUN][GUN_FIRING].h = 10;
 }
 
 bool loadSpriteSheet(SDL_Texture* spriteSheet[], std::string path)
@@ -160,11 +181,17 @@ bool loadSpriteSheets()
 		printf("Failed to load pistol sprite sheet.\n");
 		success = false;
 	}
+
+	if (!loadSpriteSheet(&playerGunSpriteSheets[SHOTGUN], "sprites/shotgun.png"))
+	{
+		printf("Failed to load shotgun sprite sheet.\n");
+	}
 	return success;
 }
 
 void close()
 {
+	TTF_CloseFont(gameFont);
 	for (int i = 0; i < TOTAL_CHARACTER_TYPES; i++)
 	{
 		SDL_DestroyTexture(characterSpriteSheets[i]);
@@ -246,7 +273,7 @@ int main(int argc, char* argv[])
 			bool quit = false;
 
 			Player gamePlayer = Player(gameRenderer, &gameMap, stats, (float)SCREEN_DIMENSIONS.width / 2,
-				(float)SCREEN_DIMENSIONS.height / 2, 100, 5, 40, 40, PISTOL, FISTS);
+				(float)SCREEN_DIMENSIONS.height / 2, 100, 5, 40, 40, MACHINE_GUN, FISTS);
 
 			for (int i = 0; i < TOTAL_GRUNTS; i++)
 			{
@@ -255,7 +282,7 @@ int main(int argc, char* argv[])
 				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
 
-			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer);
+			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer, gameFont);
 			
 			SDL_Event e;
 			
@@ -355,7 +382,7 @@ int main(int argc, char* argv[])
 				
 				gamePlayer.render(characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
-				gamePlayer.renderGun(playerGunSpriteSheets, playerGunClips);
+				// gamePlayer.renderGun(playerGunSpriteSheets, playerGunClips);
 				// gamePlayer.drawHitbox(gameRenderer, &gameMap);
 				// gamePlayer.drawCone(gameRenderer, &gameMap);
 				
@@ -367,6 +394,7 @@ int main(int argc, char* argv[])
 				}
 
 				gameUI.displayHealth(SCREEN_DIMENSIONS);
+				gameUI.displayWeapon(SCREEN_DIMENSIONS);
 
 				SDL_RenderPresent(gameRenderer);
 

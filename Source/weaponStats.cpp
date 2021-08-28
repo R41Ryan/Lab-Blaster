@@ -122,7 +122,7 @@ void WeaponStats::setMachineGun()
 	gunPrice[MACHINE_GUN] = 2500;
 	gunKnockback[MACHINE_GUN] = 5;
 	gunFireRate[MACHINE_GUN] = 15;
-	gunPelletNum[MACHINE_GUN] = 3;
+	gunPelletNum[MACHINE_GUN] = 2;
 }
 
 void WeaponStats::setFists()

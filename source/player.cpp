@@ -247,16 +247,21 @@ void Player::renderGun(SDL_Texture* gunSpriteSheet[], SDL_Rect* gunSpriteClips[]
 {
 	if (isAlive())
 	{
-		SDL_Rect renderClip = { getMap()->getX() + getX() + 25,
-			getMap()->getY() + getY(), gunSpriteClips[gun][GUN_IDLE].w, gunSpriteClips[gun][GUN_IDLE].h };
+		double xDif = cos(meleeCone.coneDirection);
+		double yDif = sin(meleeCone.coneDirection);
+		SDL_FPoint centre = { -25, gunSpriteClips[gun][GUN_IDLE].h / 2 };
+		SDL_FRect renderClip = { getMap()->getX() + getX() + 25, getMap()->getY() + getY() - gunSpriteClips[gun][GUN_IDLE].h / 2, 
+			gunSpriteClips[gun][GUN_IDLE].w, gunSpriteClips[gun][GUN_IDLE].h };
 
 		if (playerState == PLAYER_SHOOTING)
 		{
-			SDL_RenderCopy(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_FIRING], &renderClip);
+			SDL_RenderCopyExF(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_FIRING], &renderClip,
+				meleeCone.coneDirection * 180 / M_PI, &centre, SDL_FLIP_NONE);
 		}
 		else
 		{
-			SDL_RenderCopy(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_IDLE], &renderClip);
+			SDL_RenderCopyExF(getRenderer(), gunSpriteSheet[gun], &gunSpriteClips[gun][GUN_IDLE], &renderClip,
+				meleeCone.coneDirection * 180 / M_PI, &centre, SDL_FLIP_NONE);
 		}
 	}
 }
