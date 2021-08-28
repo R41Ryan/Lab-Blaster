@@ -15,6 +15,10 @@ private:
 	SDL_Texture* equippedGunDisplay[TOTAL_GUN_TYPES];
 	float gunTextureWidths[TOTAL_GUN_TYPES];
 	float gunTextureHeights[TOTAL_GUN_TYPES];
+
+	SDL_Texture* equippedMeleeDisplay[TOTAL_MELEE_TYPES];
+	float meleeTextureWidths[TOTAL_MELEE_TYPES];
+	float meleeTextureHeights[TOTAL_MELEE_TYPES];
 public:
 	// Constructors
 
@@ -22,17 +26,26 @@ public:
 
 	// Functions
 
-	// modifies the index of the arrays (given by gun) of textures, created from the given font using the given message and SDL_Color.
-	void loadRenderedText(TTF_Font* font, std::string textureText, SDL_Color textColor, int gun);
+	// modifies the index of the equipped gun array (given by gun) of textures, created from the given font using the given message and SDL_Color.
+	void loadRenderedGunText(TTF_Font* font, std::string textureText, SDL_Color textColor, int gun);
+
+	// modifies the index of the equipped melee arrays (given by gun) of textures, created from the given font using the given message and SDL_Color.
+	void loadRenderedMeleeText(TTF_Font* font, std::string textureText, SDL_Color textColor, int melee);
 
 	// Fills in the equippedGunDisplay array with rendered text textures for each of the guns.
 	void fillGunDisplays(TTF_Font* font);
 
+	// Fills in the equippedMeleeDisplay array with rendered text textures for each of the guns.
+	void fillMeleeDisplays(TTF_Font* font);
+
 	// Displays the player's current health as a health bar shown at the top-left of the rendering screen.
 	void displayHealth(ScreenDimensions sd);
 
-	// Displays what gun the player current has equipped on the screen.
-	void displayWeapon(ScreenDimensions sd);
+	// Displays what gun the player currently has equipped on the screen.
+	void displayGun(ScreenDimensions sd);
+
+	// Displays what melee the player currently has equipped on the screen.
+	void displayMelee(ScreenDimensions sd);
 
 	// Getters
 

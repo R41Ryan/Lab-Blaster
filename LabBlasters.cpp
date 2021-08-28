@@ -273,7 +273,7 @@ int main(int argc, char* argv[])
 			bool quit = false;
 
 			Player gamePlayer = Player(gameRenderer, &gameMap, stats, (float)SCREEN_DIMENSIONS.width / 2,
-				(float)SCREEN_DIMENSIONS.height / 2, 100, 5, 40, 40, MACHINE_GUN, FISTS);
+				(float)SCREEN_DIMENSIONS.height / 2, 100, 5, 40, 40, SMG, SWORD);
 
 			for (int i = 0; i < TOTAL_GRUNTS; i++)
 			{
@@ -394,7 +394,8 @@ int main(int argc, char* argv[])
 				}
 
 				gameUI.displayHealth(SCREEN_DIMENSIONS);
-				gameUI.displayWeapon(SCREEN_DIMENSIONS);
+				gameUI.displayGun(SCREEN_DIMENSIONS);
+				gameUI.displayMelee(SCREEN_DIMENSIONS);
 
 				SDL_RenderPresent(gameRenderer);
 
