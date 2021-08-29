@@ -5,7 +5,8 @@
 #include <SDL_mixer.h>
 #include <screenDimensions.h>
 #include <time.h>
-#include <userInterface.h>;
+#include <userInterface.h>
+#include <interactive.h>
 
 const ScreenDimensions SCREEN_DIMENSIONS(800, 600);
 
@@ -282,6 +283,8 @@ int main(int argc, char* argv[])
 				enemyHitboxes[i] = arrEnemy[i].getHitbox();
 			}
 
+			Interactive testInteractive = Interactive(gameMap.getWidth() / 2, gameMap.getHeight() / 2, 50, 50, gameRenderer, &gameMap);
+
 			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer, gameFont);
 			
 			SDL_Event e;
@@ -379,6 +382,11 @@ int main(int argc, char* argv[])
 						gamePlayer.getMeleeTimer().updateTime();
 					}
 				}
+
+				if (testInteractive.isColliding(gamePlayer.getHitbox()))
+				{
+					printf("Colliding with test interactive.\n");
+				}
 				
 				gamePlayer.render(characterSpriteSheets[PLAYER], 
 					spriteClips[PLAYER][PLAYER_IDLE], SCREEN_DIMENSIONS);
@@ -392,6 +400,8 @@ int main(int argc, char* argv[])
 						spriteClips[GRUNT][GRUNT_IDLE]);
 					// arrEnemy[i].drawHitbox(gameRenderer, &gameMap);
 				}
+
+				testInteractive.displayHitbox();
 
 				gameUI.displayHealth(SCREEN_DIMENSIONS);
 				gameUI.displayGun(SCREEN_DIMENSIONS);

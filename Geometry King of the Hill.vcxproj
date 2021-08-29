@@ -149,6 +149,7 @@
     <ClInclude Include="headers\coneRays.h" />
     <ClInclude Include="headers\enemy.h" />
     <ClInclude Include="headers\hitbox.h" />
+    <ClInclude Include="headers\interactive.h" />
     <ClInclude Include="Headers\map.h" />
     <ClInclude Include="headers\mLine.h" />
     <ClInclude Include="Headers\mouseCoordinates.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="headers\userInterface.h" />
     <ClInclude Include="headers\weaponStats.h" />
     <ClInclude Include="headers\player.h" />
+    <ClCompile Include="source\interactive.cpp" />
     <ClCompile Include="source\userInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
