@@ -157,6 +157,7 @@
     <ClInclude Include="Headers\screenDimensions.h" />
     <ClInclude Include="headers\timer.h" />
     <ClInclude Include="headers\userInterface.h" />
+    <ClInclude Include="headers\weaponShop.h" />
     <ClInclude Include="headers\weaponStats.h" />
     <ClInclude Include="headers\player.h" />
     <ClCompile Include="source\interactive.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Source\myMath.cpp" />
     <ClCompile Include="Source\screenDimensions.cpp" />
     <ClCompile Include="source\timer.cpp" />
+    <ClCompile Include="source\weaponShop.cpp" />
     <ClCompile Include="source\weaponStats.cpp" />
     <ClCompile Include="source\player.cpp" />
   </ItemGroup>

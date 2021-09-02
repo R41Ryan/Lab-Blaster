@@ -39,6 +39,7 @@ private:
 	int gun;
 	int meleeWeapon;
 	int playerState;
+	int credits;
 
 	Timer gunTimer;
 	Timer meleeTimer;
@@ -63,6 +64,9 @@ public:
 	// It will scan for any enemies within the player's melee cone.
 	// For all enemies that are detected, it will do the appropriate amount of damage while also moving them away from the player according to the player's melee knockback stat.
 	void melee(Enemy eArray[], WeaponStats stats, Hitbox* enemyHitboxes[]);
+	// Increase the number of credits available to the player by the c. Negative values are allowed. 
+	// Resulting total credits cannot be negative;
+	void increaseCredits(int c);
 	// Renders the character according to the given renderer and clip of the sprite sheet.
 	void render(SDL_Texture* spriteSheet, SDL_Rect spriteClip, ScreenDimensions screen);
 	// Renders the sprite for the appropriate gun in the appropriate state.

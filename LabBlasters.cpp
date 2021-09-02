@@ -23,6 +23,7 @@ SDL_Rect* playerGunClips[TOTAL_GUN_TYPES];
 SDL_Texture* playerGunSpriteSheets[TOTAL_GUN_TYPES];
 
 TTF_Font* gameFont;
+TTF_Font* shopFont;
 
 WeaponStats stats = WeaponStats();
 Map gameMap;
@@ -79,7 +80,13 @@ bool init() {
 					gameFont = TTF_OpenFont("fonts/Nasa21-l23X.ttf", 28);
 					if (gameFont == NULL)
 					{
-						printf("Failed to load Nasa21 Font. TTF_ERROR: %s.\n", TTF_GetError());
+						printf("Failed to load Nasa21 Font for game. TTF_ERROR: %s.\n", TTF_GetError());
+					}
+
+					shopFont = TTF_OpenFont("fonts/Nasa21-l23X.ttf", 24);
+					if (shopFont == NULL)
+					{
+						printf("Failed to load Nasa21 Font for shop. TTF_ERROR: %s.\n", TTF_GetError());
 					}
 				}
 
@@ -285,7 +292,7 @@ int main(int argc, char* argv[])
 
 			Interactive testInteractive = Interactive(gameMap.getWidth() / 2, gameMap.getHeight() / 2, 50, 50, gameRenderer, &gameMap);
 
-			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer, gameFont);
+			UserInterface gameUI = UserInterface(&gamePlayer, &gameMap, gameRenderer, gameFont, shopFont, SCREEN_DIMENSIONS);
 			
 			SDL_Event e;
 			
@@ -406,6 +413,8 @@ int main(int argc, char* argv[])
 				gameUI.displayHealth(SCREEN_DIMENSIONS);
 				gameUI.displayGun(SCREEN_DIMENSIONS);
 				gameUI.displayMelee(SCREEN_DIMENSIONS);
+
+				gameUI.displayShop(SCREEN_DIMENSIONS);
 
 				SDL_RenderPresent(gameRenderer);
 

@@ -23,6 +23,8 @@ Player::Player(SDL_Renderer* r, Map* map, WeaponStats stats, float x, float y,
 
 	playerState = PLAYER_NOT_ATTACKING;
 
+	credits = 0;
+
 	gunTimer = Timer();
 
 	meleeTimer = Timer();
@@ -228,6 +230,18 @@ void Player::melee(Enemy eArray[], WeaponStats stats, Hitbox* enemyHitboxes[])
 			}
 		}
 		meleeTimer.markTimer(1000 / stats.getMeleeSwingRate(meleeWeapon));
+	}
+}
+
+void Player::increaseCredits(int c)
+{
+	if (credits + c < 0)
+	{
+		credits = 0;
+	}
+	else
+	{
+		credits += c;
 	}
 }
 

@@ -63,6 +63,9 @@
     <ClInclude Include="headers\interactive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\weaponShop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LabBlasters.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\interactive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\weaponShop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

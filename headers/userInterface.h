@@ -1,6 +1,7 @@
 #pragma once
 #include <player.h>
 #include <enemy.h>
+#include "../headers/weaponShop.h"
 #include <screenDimensions.h>
 #include <SDL_render.h>
 #include <SDL_ttf.h>
@@ -11,6 +12,17 @@ private:
 	Player* player;
 	Map* map;
 	SDL_Renderer* renderer;
+	WeaponShop shop;
+	bool weaponShopActive;
+
+	SDL_Texture* tabs[2];
+	int tabHeight;
+	int tabWidth[2];
+
+	SDL_Rect shopMenuRect;
+	SDL_Rect gunTabRect;
+	SDL_Rect meleeTabRect;
+	SDL_Rect menuExitRect;
 
 	SDL_Texture* equippedGunDisplay[TOTAL_GUN_TYPES];
 	float gunTextureWidths[TOTAL_GUN_TYPES];
@@ -22,7 +34,7 @@ private:
 public:
 	// Constructors
 
-	UserInterface(Player* p, Map* m, SDL_Renderer* r, TTF_Font* textFont);
+	UserInterface(Player* p, Map* m, SDL_Renderer* r, TTF_Font* UIFont, TTF_Font* shopFont, ScreenDimensions sd);
 
 	// Functions
 
@@ -31,6 +43,9 @@ public:
 
 	// modifies the index of the equipped melee arrays (given by gun) of textures, created from the given font using the given message and SDL_Color.
 	void loadRenderedMeleeText(TTF_Font* font, std::string textureText, SDL_Color textColor, int melee);
+
+	// modifies the index of the given index of tabs array, created from the given font using the given message and SDL_Color.
+	void loadRenderedTabText(TTF_Font* font, std::string textureText, SDL_Color textColor, int index);
 
 	// Fills in the equippedGunDisplay array with rendered text textures for each of the guns.
 	void fillGunDisplays(TTF_Font* font);
@@ -46,6 +61,9 @@ public:
 
 	// Displays what melee the player currently has equipped on the screen.
 	void displayMelee(ScreenDimensions sd);
+
+	// Display the weapon shop according to the shop data member.
+	void displayShop(ScreenDimensions sd);
 
 	// Getters
 

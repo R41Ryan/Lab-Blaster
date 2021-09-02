@@ -1,13 +1,25 @@
 #include <userInterface.h>
 
-UserInterface::UserInterface(Player* p, Map* m, SDL_Renderer* r, TTF_Font* textFont)
+UserInterface::UserInterface(Player* p, Map* m, SDL_Renderer* r, TTF_Font* UIFont, TTF_Font* shopFont, ScreenDimensions sd)
 {
 	player = p;
 	map = m;
 	renderer = r;
+	shop = WeaponShop();
+	weaponShopActive = false;
 
-	fillGunDisplays(textFont);
-	fillMeleeDisplays(textFont);
+	SDL_Color shopFontColor = { 0, 0, 0, 0xFF };
+
+	loadRenderedTabText(shopFont, "Guns", shopFontColor, 0);
+	loadRenderedTabText(shopFont, "Melee", shopFontColor, 1);
+
+	shopMenuRect = {sd.width / 4, sd.height / 4, sd.width - sd.width / 2, sd.height - sd.height / 2};
+	gunTabRect = { shopMenuRect.x + 5, shopMenuRect.y + 5, tabWidth[0], tabHeight };
+	meleeTabRect = { gunTabRect.x + gunTabRect.w + 5, shopMenuRect.y + 5, tabWidth[1], tabHeight };
+	menuExitRect = { shopMenuRect.x + shopMenuRect.w - tabHeight - 5, shopMenuRect.y + 5, tabHeight, tabHeight };
+
+	fillGunDisplays(UIFont);
+	fillMeleeDisplays(UIFont);
 }
 
 void UserInterface::loadRenderedGunText(TTF_Font* font, std::string textureText, SDL_Color textColor, int gun)
@@ -51,6 +63,29 @@ void UserInterface::loadRenderedMeleeText(TTF_Font* font, std::string textureTex
 		{
 			meleeTextureWidths[melee] = textSurface->w;
 			meleeTextureHeights[melee] = textSurface->h;
+		}
+		SDL_FreeSurface(textSurface);
+	}
+}
+
+void UserInterface::loadRenderedTabText(TTF_Font* font, std::string textureText, SDL_Color textColor, int index)
+{
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str(), textColor);
+	if (textSurface == NULL)
+	{
+		printf("Unable to render text surface. TTF_ERROR: %s.\n", TTF_GetError());
+	}
+	else
+	{
+		tabs[index] = SDL_CreateTextureFromSurface(renderer, textSurface);
+		if (tabs[index] == NULL)
+		{
+			printf("Unable to create texture from surface. SDL_ERROR: %s.\n", SDL_GetError());
+		}
+		else
+		{
+			tabWidth[index] = textSurface->w;
+			tabHeight = textSurface->h;
 		}
 		SDL_FreeSurface(textSurface);
 	}
@@ -122,6 +157,22 @@ void UserInterface::displayMelee(ScreenDimensions sd)
 	// printf("%d.\n", player->getGun());
 	// printf("%f, %f.\n", gunTextureWidths[player->getGun()], gunTextureHeights[player->getGun()]);
 	SDL_RenderCopy(renderer, equippedMeleeDisplay[player->getMelee()], NULL, &textRenderRect);
+}
+
+void UserInterface::displayShop(ScreenDimensions sd)
+{
+	SDL_SetRenderDrawColor(renderer, 217, 204, 0, 0xFF);
+	SDL_RenderFillRect(renderer, &shopMenuRect);
+
+	SDL_SetRenderDrawColor(renderer, 235, 233, 0, 0xFF);
+	SDL_RenderFillRect(renderer, &gunTabRect);
+	SDL_RenderFillRect(renderer, &meleeTabRect);
+
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+	SDL_RenderFillRect(renderer, &menuExitRect);
+
+	SDL_RenderCopy(renderer, tabs[0], NULL, &gunTabRect);
+	SDL_RenderCopy(renderer, tabs[1], NULL, &meleeTabRect);
 }
 
 Player* UserInterface::getPlayer()
