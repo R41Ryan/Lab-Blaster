@@ -22,6 +22,8 @@ SDL_Texture* characterSpriteSheets[TOTAL_CHARACTER_TYPES];
 SDL_Rect* playerGunClips[TOTAL_GUN_TYPES];
 SDL_Texture* playerGunSpriteSheets[TOTAL_GUN_TYPES];
 
+SDL_Texture* gunIcons[TOTAL_GUN_TYPES];
+
 TTF_Font* gameFont;
 TTF_Font* shopFont;
 
@@ -168,6 +170,42 @@ bool loadSpriteSheet(SDL_Texture* spriteSheet[], std::string path)
 	return spriteSheet != NULL;
 }
 
+bool loadGunIcons()
+{
+	bool success = true;
+	if (!loadSpriteSheet(&gunIcons[PISTOL], "sprites/pistol_icon.png"))
+	{
+		printf("Error loading pistol icon.\n");
+		success = false;
+	}
+
+	if (!loadSpriteSheet(&gunIcons[SHOTGUN], "sprites/shotgun_icon.png"))
+	{
+		printf("Error loading shotgun icon.\n");
+		success = false;
+	}
+
+	if (!loadSpriteSheet(&gunIcons[SMG], "sprites/smg_icon.png"))
+	{
+		printf("Error loading SMG icon.\n");
+		success = false;
+	}
+
+	if (!loadSpriteSheet(&gunIcons[SNIPER], "sprites/sniper_icon.png"))
+	{
+		printf("Error loading sniper icon.\n");
+		success = false;
+	}
+
+	if (!loadSpriteSheet(&gunIcons[MACHINE_GUN], "sprites/machine_gun_icon.png"))
+	{
+		printf("Error loading machine gun icon.\n");
+		success = false;
+	}
+
+	return success;
+}
+
 bool loadSpriteSheets()
 {
 	bool success = true;
@@ -193,7 +231,15 @@ bool loadSpriteSheets()
 	if (!loadSpriteSheet(&playerGunSpriteSheets[SHOTGUN], "sprites/shotgun.png"))
 	{
 		printf("Failed to load shotgun sprite sheet.\n");
+		success = false;
 	}
+
+	if (!loadGunIcons())
+	{
+		printf("Failed to load all gun icons.\n");
+		success = false;
+	}
+
 	return success;
 }
 
