@@ -14,6 +14,13 @@ private:
 	SDL_Renderer* renderer;
 	WeaponShop shop;
 	bool weaponShopActive;
+	bool displayGuns;
+
+	int itemWidth;
+	int shopWidth;
+	int shopX;
+	int shopHeight;
+	int shopY;
 
 	SDL_Texture* tabs[2];
 	int tabHeight;
@@ -31,6 +38,10 @@ private:
 	SDL_Texture* equippedMeleeDisplay[TOTAL_MELEE_TYPES];
 	float meleeTextureWidths[TOTAL_MELEE_TYPES];
 	float meleeTextureHeights[TOTAL_MELEE_TYPES];
+
+	int priceTextHeight;
+	SDL_Texture* gunPrices[TOTAL_GUN_TYPES];
+	SDL_Texture* gunPrices[TOTAL_MELEE_TYPES];
 public:
 	// Constructors
 
@@ -63,7 +74,7 @@ public:
 	void displayMelee(ScreenDimensions sd);
 
 	// Display the weapon shop according to the shop data member.
-	void displayShop(ScreenDimensions sd);
+	void displayShop(ScreenDimensions sd, SDL_Texture** gunIcons);
 
 	// Getters
 

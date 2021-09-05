@@ -460,7 +460,7 @@ int main(int argc, char* argv[])
 				gameUI.displayGun(SCREEN_DIMENSIONS);
 				gameUI.displayMelee(SCREEN_DIMENSIONS);
 
-				gameUI.displayShop(SCREEN_DIMENSIONS);
+				gameUI.displayShop(SCREEN_DIMENSIONS, gunIcons);
 
 				SDL_RenderPresent(gameRenderer);
 

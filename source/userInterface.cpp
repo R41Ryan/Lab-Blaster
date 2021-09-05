@@ -7,13 +7,20 @@ UserInterface::UserInterface(Player* p, Map* m, SDL_Renderer* r, TTF_Font* UIFon
 	renderer = r;
 	shop = WeaponShop();
 	weaponShopActive = false;
+	displayGuns = true;
 
 	SDL_Color shopFontColor = { 0, 0, 0, 0xFF };
 
 	loadRenderedTabText(shopFont, "Guns", shopFontColor, 0);
 	loadRenderedTabText(shopFont, "Melee", shopFontColor, 1);
 
-	shopMenuRect = {sd.width / 4, sd.height / 4, sd.width - sd.width / 2, sd.height - sd.height / 2};
+	itemWidth = 100;
+	shopWidth = (itemWidth + 10) * (displayGuns * TOTAL_GUN_TYPES + !displayGuns * TOTAL_MELEE_TYPES) + 10;
+	shopX = sd.width / 2 - shopWidth / 2;
+	shopHeight = sd.height / 2;
+	shopY = sd.height / 2 - shopHeight / 2;
+
+	shopMenuRect = {shopX, shopY, shopWidth, shopHeight};
 	gunTabRect = { shopMenuRect.x + 5, shopMenuRect.y + 5, tabWidth[0], tabHeight };
 	meleeTabRect = { gunTabRect.x + gunTabRect.w + 5, shopMenuRect.y + 5, tabWidth[1], tabHeight };
 	menuExitRect = { shopMenuRect.x + shopMenuRect.w - tabHeight - 5, shopMenuRect.y + 5, tabHeight, tabHeight };
@@ -159,20 +166,37 @@ void UserInterface::displayMelee(ScreenDimensions sd)
 	SDL_RenderCopy(renderer, equippedMeleeDisplay[player->getMelee()], NULL, &textRenderRect);
 }
 
-void UserInterface::displayShop(ScreenDimensions sd)
+void UserInterface::displayShop(ScreenDimensions sd, SDL_Texture** gunIcons)
 {
+	// Draws the window
 	SDL_SetRenderDrawColor(renderer, 217, 204, 0, 0xFF);
 	SDL_RenderFillRect(renderer, &shopMenuRect);
 
+	// Draws the tabs
 	SDL_SetRenderDrawColor(renderer, 235, 233, 0, 0xFF);
 	SDL_RenderFillRect(renderer, &gunTabRect);
 	SDL_RenderFillRect(renderer, &meleeTabRect);
+	SDL_RenderCopy(renderer, tabs[0], NULL, &gunTabRect);
+	SDL_RenderCopy(renderer, tabs[1], NULL, &meleeTabRect);
 
+	// Draws the exit button
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
 	SDL_RenderFillRect(renderer, &menuExitRect);
 
-	SDL_RenderCopy(renderer, tabs[0], NULL, &gunTabRect);
-	SDL_RenderCopy(renderer, tabs[1], NULL, &meleeTabRect);
+	
+	// Drawing the displayed shop items
+	SDL_SetRenderDrawColor(renderer, 235, 233, 0, 0xFF);
+	const int totalItems = displayGuns * TOTAL_GUN_TYPES +
+		!displayGuns * TOTAL_MELEE_TYPES;
+	for (int i = 0; i < totalItems; i++)
+	{
+		SDL_Rect renderRect = { shopX + 10 + (itemWidth + 10) * i, shopY + (int)((float)3/5 * itemWidth), itemWidth, itemWidth };
+		SDL_RenderFillRect(renderer, &renderRect);
+		if (displayGuns)
+		{
+			SDL_RenderCopy(renderer, gunIcons[i], NULL, &renderRect);
+		}
+	}
 }
 
 Player* UserInterface::getPlayer()
